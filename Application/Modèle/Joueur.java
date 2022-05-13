@@ -7,7 +7,7 @@ public class Joueur extends Personnage {
 	private final static int MAX_FAIM = 7;
 	private Item objetEquiper;
 	private Inventaire inventaireRaccourci;
-	private Checkpoint checkpoint;
+	
 	
 	
 	public Joueur(int pv,int x, int y,
