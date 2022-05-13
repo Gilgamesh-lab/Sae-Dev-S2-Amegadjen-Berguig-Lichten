@@ -40,9 +40,6 @@ public class Joueur extends Personnage {
 	}
 	
 	
-	public void setObjetEquiper(Item item) {
-		this.objetEquiper = item;
-	}
 	
 	public void remplacerObjetRaccourci(int indice, Item item) {
 		this.inventaireRaccourci.remplacer(item, indice);
