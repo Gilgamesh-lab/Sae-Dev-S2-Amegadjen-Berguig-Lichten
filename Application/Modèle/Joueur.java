@@ -23,8 +23,8 @@ public class Joueur extends Personnage {
 			Environnement carte) {
 		super(MAX_PV, x, y,5, carte);
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
-		this.objetEquiper = new Poing();
-		this.inventaireRaccourci = new Inventaire(10);
+		// this.objetEquiper = new Poing();
+		// this.inventaireRaccourci = new Inventaire(10);
 	}
 	
 	public final int getFaim() {
