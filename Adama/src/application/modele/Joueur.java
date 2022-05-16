@@ -41,7 +41,7 @@ public class Joueur extends Personnage {
 	public final IntegerProperty faimProperty() {
 		return this.faimProperty;
 	}
-
+	
 	public void remplacerObjetRaccourci(int indice, Item item) {
 		this.inventaireRaccourci.remplacer(item, indice);
 	}
@@ -56,12 +56,11 @@ public class Joueur extends Personnage {
 	}
 
 	public void gauche(int nbPixel) {
-		super.setX(nbPixel+super.getX());
+		super.setX(super.getX()-nbPixel);
 	}
 	
 	public void droite(int nbPixel) {
-		gauche(-nbPixel);
+		this.gauche(-nbPixel);
 	}
-
 
 }
