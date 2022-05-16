@@ -25,11 +25,11 @@ public class EnvironnementVue {
 	private ImageView choixTuile(int val) {
 		ImageView img;
 		if (val==0)
-			img = new ImageView("ressource/bleu.jpeg");
+			img = new ImageView("ressources/bleu.jpeg");
 		else if (val==1)
-			img = new ImageView("ressource/marron.jpeg");
+			img = new ImageView("ressources/marron.jpeg");
 		else
-			img = new ImageView("ressource/herbe.png");
+			img = new ImageView("ressources/herbe.png");
 		img.setFitHeight(PIXEL);
 		img.setFitWidth(PIXEL);
 		return img;
