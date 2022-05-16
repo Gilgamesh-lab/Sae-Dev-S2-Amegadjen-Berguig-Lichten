@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="application.controleur.Controleur" >
-	<center>
-		<TilePane fx:id="carte" minHeight="-Infinity"
-			minWidth="-Infinity" maxHeight="-Infinity" maxWidth="-Infinity"
-			prefHeight="1080" prefWidth="1920">
-		</TilePane>
-	</center>
+<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
+    <center>
+   	 <StackPane>
+   		 <children>
+   			 <TilePane fx:id="carte" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080" prefWidth="1920">
+   			 </TilePane>
+   			 <ImageView fx:id="perso" fitHeight="64" fitWidth="32" focusTraversable="true" layoutX="196" layoutY="110" onKeyPressed="#onAction" pickOnBounds="true" preserveRatio="true">
+   				 <image>
+   					 <Image url="@../../ressources/perso.png" />
+   				 </image>
+   			 </ImageView>
+   		 </children>
+   	 </StackPane>
+    </center>
 </BorderPane>
