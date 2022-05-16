@@ -50,6 +50,8 @@ public abstract class Personnage {
 	}
 	
 	public final void setX(int val) {
+
+		System.out.println("personnage val"+val);
 		this.xProperty.setValue(val);
 	}
 	

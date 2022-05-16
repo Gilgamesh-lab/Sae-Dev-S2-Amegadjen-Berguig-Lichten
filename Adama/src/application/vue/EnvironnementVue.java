@@ -6,7 +6,7 @@ import javafx.scene.layout.TilePane;
 
 public class EnvironnementVue {
 	
-	private final static int PIXEL=32;//Ecran de l'iut 4*480 largeur 1920*1080 16/9
+	public final static int PIXEL=32;//Ecran de l'iut 4*480 largeur 1920*1080 16/9
 	private TilePane carte;
 	private Environnement env;
 	

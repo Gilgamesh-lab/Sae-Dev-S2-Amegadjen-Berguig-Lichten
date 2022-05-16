@@ -42,11 +42,6 @@ public class Joueur extends Personnage {
 		return this.faimProperty;
 	}
 
-
-	public void setObjetEquiper(Item item) {
-		this.objetEquiper = item;
-	}
-
 	public void remplacerObjetRaccourci(int indice, Item item) {
 		this.inventaireRaccourci.remplacer(item, indice);
 	}
@@ -60,6 +55,13 @@ public class Joueur extends Personnage {
 		// this.objetEquiper = main;
 	}
 
+	public void gauche(int nbPixel) {
+		super.setX(nbPixel+super.getX());
+	}
+	
+	public void droite(int nbPixel) {
+		gauche(-nbPixel);
+	}
 
 
 }
