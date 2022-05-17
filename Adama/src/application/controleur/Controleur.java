@@ -54,7 +54,7 @@ public class Controleur implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		envJoueur =new Environnement(new Carte());
 		env = new EnvironnementVue(envJoueur, carte);
-		perso  = new Joueur(7, 500, 490, envJoueur);
+		perso  = new Joueur(500, 490, envJoueur);
 		ImageView persoVue2 = new ImageView("ressource/perso.png");
 		plateau.getChildren().add(persoVue2);
 		env.creerEnvironnement();
