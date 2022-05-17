@@ -1,6 +1,7 @@
 package application.vue;
 
 import application.modele.Joueur;
+import javafx.animation.Timeline;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.image.ImageView;
 
@@ -8,10 +9,13 @@ public class JoueurVue {
 
 	private Joueur joueur;
 	private ImageView sprite;
+	private Timeline gameLoop;
+	private int temps;
 
 	public JoueurVue(Joueur joueur) {
 		this.joueur = joueur;
-		this.sprite = new ImageView("ressource/perso.png");
+		this.sprite = new ImageView("ressources/perso.png");
+		gameLoop = new Timeline();
 	}
 
 	public ImageView getSprite() {
@@ -29,13 +33,18 @@ public class JoueurVue {
 				perso.droite(perso.Deplacement(0));
 				break;
 			case "z":
-				perso.saut(40);//car les image font 32 pixel de coté
+				initAnimationSaut();
 				break;
 			case "s":
 				break;
 		}
 	}
 	
+	private void initAnimationSaut() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void orrientationSpriteGauche() {
 		if (sprite.effectiveNodeOrientationProperty().get()==NodeOrientation.RIGHT_TO_LEFT)
 			sprite.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
