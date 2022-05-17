@@ -29,6 +29,7 @@ public class JoueurVue {
 				perso.droite(perso.Deplacement(0));
 				break;
 			case "z":
+				perso.saut(40);//car les image font 32 pixel de coté
 				break;
 			case "s":
 				break;
