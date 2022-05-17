@@ -10,10 +10,8 @@ import application.vue.EnvironnementVue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelFormat;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 
 public class Controleur implements Initializable{
