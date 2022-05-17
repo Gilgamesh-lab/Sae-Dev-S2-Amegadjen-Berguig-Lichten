@@ -1,11 +1,11 @@
+package application.modele;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Environnement {
 	private ObservableList<Personnage> personnages;
 	private Carte carte;
-	
-	
 	
 	public Environnement(Carte carte) {
 		this.carte = carte;
@@ -35,7 +35,5 @@ public class Environnement {
 	
 	public Carte getCarte(){
 		return this.carte;
-	}
-	
-	
+	}	
 }

@@ -8,7 +8,7 @@ public abstract class Personnage {
 	private IntegerProperty pvProperty ;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
-	private int vitesseDeplacement;
+	private int vitesseDeplacementBase;
 	private Environnement environnement;
 	private Inventaire inventaire;
 	
@@ -18,7 +18,7 @@ public abstract class Personnage {
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
-		this.vitesseDeplacement = vitesseDeplacement;
+		this.vitesseDeplacementBase = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = inventaire;
 	}
@@ -28,7 +28,7 @@ public abstract class Personnage {
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
-		this.vitesseDeplacement = vitesseDeplacement;
+		this.vitesseDeplacementBase = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
 	}
@@ -50,7 +50,6 @@ public abstract class Personnage {
 	}
 	
 	public final void setX(int val) {
-
 		System.out.println("personnage val"+val);
 		this.xProperty.setValue(val);
 	}
@@ -70,15 +69,9 @@ public abstract class Personnage {
 	public final IntegerProperty yProperty() {
 		return this.yProperty;
 	}
-	
-	public void setVitesseDeplacement(int vitesseDeplacement) {
-		this.vitesseDeplacement = vitesseDeplacement;
-	}
-	
-	
-	
+		
 	public int getVitesseDeplacement() {
-		return this.vitesseDeplacement;
+		return this.vitesseDeplacementBase;
 	}
 	
 	public Environnement getEnvironnement() {
@@ -105,12 +98,12 @@ public abstract class Personnage {
 		this.yProperty.setValue(this.yProperty.getValue() - val);
 	}
 	
-	public void avancer() {
-		this.xProperty.setValue(this.xProperty.getValue() + this.vitesseDeplacement);
+	public int Deplacement(int vitesseBonus) {
+		return this.vitesseDeplacementBase*(vitesseBonus/100)+this.vitesseDeplacementBase;
 	}
 	
 	public void reculer() {
-		this.xProperty.setValue(this.xProperty.getValue() - this.vitesseDeplacement);
+		this.xProperty.setValue(this.xProperty.getValue() - this.vitesseDeplacementBase);
 	}
 	
 	public boolean estMort() {

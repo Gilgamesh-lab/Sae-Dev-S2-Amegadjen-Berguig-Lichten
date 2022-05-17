@@ -4,7 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Joueur extends Personnage {
-	
+
 	private final static int MAX_PV = 7;
 	private IntegerProperty faimProperty;
 	private final static int MAX_FAIM = 7;
@@ -14,8 +14,8 @@ public class Joueur extends Personnage {
 
 
 	public Joueur(int pv,int x, int y,
-	Environnement carte, int faim, Inventaire inventaire,
-	Item objetEquiper, Inventaire inventaireRaccourci) {
+			Environnement carte, int faim, Inventaire inventaire,
+			Item objetEquiper, Inventaire inventaireRaccourci) {
 		super(pv, x, y,5, carte,inventaire);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
@@ -41,7 +41,7 @@ public class Joueur extends Personnage {
 	public final IntegerProperty faimProperty() {
 		return this.faimProperty;
 	}
-	
+
 	public void remplacerObjetRaccourci(int indice, Item item) {
 		this.inventaireRaccourci.remplacer(item, indice);
 	}
@@ -55,12 +55,12 @@ public class Joueur extends Personnage {
 		// this.objetEquiper = main;
 	}
 
-	public void gauche(int nbPixel) {
-		super.setX(super.getX()-nbPixel);
+	public void gauche(int vitesse) {
+		super.setX(super.getX()-vitesse);
 	}
-	
-	public void droite(int nbPixel) {
-		this.gauche(-nbPixel);
+
+	public void droite(int vitesse) {
+		this.gauche(-vitesse);
 	}
 
 }

@@ -3,6 +3,7 @@ package application.controleur;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Joueur;
 import application.vue.EnvironnementVue;
@@ -35,10 +36,10 @@ public class Controleur implements Initializable{
         switch (touchePressé) {
 	        case "q":
 	        	//System.out.println(pers.getX());
-	        	perso.gauche(EnvironnementVue.PIXEL);
+	        	perso.gauche(perso.Deplacement(0));
 	            break;
 	        case "d":
-	            perso.droite(EnvironnementVue.PIXEL);
+	            perso.droite(perso.Deplacement(0));
 	            break;
 	        case "z":
 //	            perso.setTranslateY(32);
@@ -51,9 +52,9 @@ public class Controleur implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		envJoueur =new Environnement();
+		envJoueur =new Environnement(new Carte());
 		env = new EnvironnementVue(envJoueur, carte);
-		perso  = new Joueur(7, 50, 50, envJoueur);
+		perso  = new Joueur(7, 500, 490, envJoueur);
 		ImageView persoVue2 = new ImageView("ressource/perso.png");
 		plateau.getChildren().add(persoVue2);
 		env.creerEnvironnement();

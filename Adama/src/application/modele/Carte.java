@@ -1,7 +1,4 @@
-
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+package application.modele;
 
 public class Carte {
 	private int[][] carte;
@@ -9,22 +6,22 @@ public class Carte {
 	private final static int LARGEUR = 60;
 	
 	
-	public Carte(int[][] carte) {
-		this.carte = carte;
+	public Carte() {
+		this.carte = this.grille();
 		
 	}
 	
-	public int[][] getCarte(){
+	public int[][] getCarteTab(){
 		return this.carte;
 	}
 	
-	public final static int[][] grille() {
+	public int[][] grille() {
 		int[][] tab16l9 = new int[LARGEUR][HAUTEUR];
 		for (int i=0; i<LARGEUR; i++)
 			for(int j=0; j<HAUTEUR; j++)
-				if (i<20)
+				if (i<30)
 					tab16l9[i][j] = 0;
-				else if (tab16l9[i-1][j]==0)
+				else if (tab16l9[i-1][j]==0 || (tab16l9[i-2][j]==0 && j<28))
 					tab16l9[i][j] = 2;
 				else
 					tab16l9[i][j] = 1;
@@ -41,9 +38,6 @@ public class Carte {
 			System.out.println(tab[i][HAUTEUR-1]+"]");
 		}
 		System.out.println("]");
-	}
-	
-	
-	
-	
+	}	
 }
+
