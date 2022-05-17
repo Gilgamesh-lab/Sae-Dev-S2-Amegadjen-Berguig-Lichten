@@ -1,27 +1,43 @@
 package application.modele;
 
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Carte {
-	private int[][] carte;
+	private int[][] map;
 	private final static int HAUTEUR = 32;
 	private final static int LARGEUR = 60;
 	
 	
-	public Carte() {
-		this.carte = this.grille();
+	public Carte(int[][] carte) {
+		this.map = carte;
 		
 	}
 	
-	public int[][] getCarteTab(){
-		return this.carte;
+	public Carte() {
+		this.map = Carte.grille();
 	}
 	
-	public int[][] grille() {
+	public int[][] getMap(){
+		return this.map;
+	}
+	
+	public int getHauteur() {
+		return this.HAUTEUR;
+	}
+	
+	public int getLargeur() {
+		return this.LARGEUR;
+	}
+	
+	public final static int[][] grille() {
 		int[][] tab16l9 = new int[LARGEUR][HAUTEUR];
 		for (int i=0; i<LARGEUR; i++)
 			for(int j=0; j<HAUTEUR; j++)
-				if (i<30)
+				if (i<20)
 					tab16l9[i][j] = 0;
-				else if (tab16l9[i-1][j]==0 || (tab16l9[i-2][j]==0 && j<28))
+				else if (tab16l9[i-1][j]==0)
 					tab16l9[i][j] = 2;
 				else
 					tab16l9[i][j] = 1;
@@ -38,6 +54,9 @@ public class Carte {
 			System.out.println(tab[i][HAUTEUR-1]+"]");
 		}
 		System.out.println("]");
-	}	
+	}
+	
+	
+	
+	
 }
-
