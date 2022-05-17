@@ -7,11 +7,14 @@ import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Joueur;
 import application.vue.EnvironnementVue;
+import application.vue.JoueurVue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 
 public class Controleur implements Initializable{
@@ -23,40 +26,31 @@ public class Controleur implements Initializable{
 	
 	
 	private Joueur perso;
-	private Environnement envJoueur;
-	private EnvironnementVue env;
+	private JoueurVue persoVue;
+	private Environnement env;
+	private EnvironnementVue envVue;
+	
 	
 	@FXML
 	void touchePresse(KeyEvent event) {
+		
 		System.out.println("event");
-		String touchePressé = event.getCode().toString().toLowerCase();
-        System.out.println(touchePressé);
-        switch (touchePressé) {
-	        case "q":
-	        	//System.out.println(pers.getX());
-	        	perso.gauche(perso.Deplacement(0));
-	            break;
-	        case "d":
-	            perso.droite(perso.Deplacement(0));
-	            break;
-	        case "z":
-//	            perso.setTranslateY(32);
-	            break;
-	        case "s":
-//	            perso.setTranslateY(-32);
-	            break;
-        }
+		String touchePresse = event.getCode().toString().toLowerCase();
+        System.out.println(touchePresse);
+        persoVue.touchePresse(touchePresse, perso);
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		envJoueur =new Environnement(new Carte());
-		env = new EnvironnementVue(envJoueur, carte);
-		perso  = new Joueur(500, 490, envJoueur);
-		ImageView persoVue2 = new ImageView("ressource/perso.png");
-		plateau.getChildren().add(persoVue2);
-		env.creerEnvironnement();
-		persoVue2.xProperty().bind(perso.xProperty());
-		persoVue2.yProperty().bind(perso.yProperty());
+		env =new Environnement(new Carte());
+		envVue = new EnvironnementVue(env, carte);
+		perso  = new Joueur(7, 500, 450, env);
+		persoVue = new JoueurVue(perso);
+		plateau.getChildren().add(persoVue.getSprite());
+		envVue.creerEnvironnement();
+		persoVue.getSprite().xProperty().bind(perso.xProperty());
+		persoVue.getSprite().yProperty().bind(perso.yProperty());
+		persoVue.getSprite().setFitHeight(64);
+		persoVue.getSprite().setFitWidth(32);
 	}
 }

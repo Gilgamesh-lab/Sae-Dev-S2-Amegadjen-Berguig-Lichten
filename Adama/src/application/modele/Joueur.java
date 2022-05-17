@@ -22,7 +22,7 @@ public class Joueur extends Personnage {
 		this.inventaireRaccourci = inventaireRaccourci;
 	}
 
-	public Joueur(int x, int y,
+	public Joueur(int pv,int x, int y,
 			Environnement carte) {
 		super(MAX_PV, x, y,5, carte);
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
