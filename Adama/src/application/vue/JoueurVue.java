@@ -1,6 +1,7 @@
 package application.vue;
 
 import application.modele.Joueur;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.image.ImageView;
 
 public class JoueurVue {
@@ -20,9 +21,11 @@ public class JoueurVue {
 	public void touchePresse(String touchePresse, Joueur perso) {
 		switch (touchePresse) {
 			case "q":
+				orrientationSpriteGauche();
 				perso.gauche(perso.Deplacement(0));
 				break;
 			case "d":
+				orrientationSpriteDroite();
 				perso.droite(perso.Deplacement(0));
 				break;
 			case "z":
@@ -30,5 +33,15 @@ public class JoueurVue {
 			case "s":
 				break;
 		}
+	}
+	
+	public void orrientationSpriteGauche() {
+		if (sprite.effectiveNodeOrientationProperty().get()==NodeOrientation.RIGHT_TO_LEFT)
+			sprite.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+	}
+	
+	public void orrientationSpriteDroite() {
+		if (sprite.effectiveNodeOrientationProperty().get()==NodeOrientation.LEFT_TO_RIGHT)
+			sprite.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 	}
 }
