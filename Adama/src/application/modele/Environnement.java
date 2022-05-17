@@ -33,5 +33,9 @@ public class Environnement {
 		return this.personnages;
 	}
 	
+	public Carte getCarte(){
+		return this.carte;
+	}
+	
 	
 }
