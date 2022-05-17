@@ -62,5 +62,8 @@ public class Joueur extends Personnage {
 	public void droite(int vitesse) {
 		this.gauche(-vitesse);
 	}
-
+	
+	public void saut(int hauteur) {
+		super.setX(super.getX()+hauteur);
+	}
 }
