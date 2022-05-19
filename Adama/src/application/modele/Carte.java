@@ -11,8 +11,8 @@ public class Carte {
 	private Scanner map;
 	private final static int HAUTEUR = 32;
 	private final static int LARGEUR = 60;
-	
-	
+
+
 //	public Carte(int[][] carte) {
 //		this.map = carte;
 //		
@@ -23,19 +23,19 @@ public class Carte {
 		this.map.useDelimiter(",");
 //		this.map = this.grille();
 	}
-	
+
 	public Scanner getMap(){
 		return this.map;
 	}
-	
+
 	public int getHauteur() {
 		return this.HAUTEUR;
 	}
-	
+
 	public int getLargeur() {
 		return this.LARGEUR;
 	}
-	
+
 	public static int[][] grille() {
 		int[][] tab16l9 = new int[LARGEUR][HAUTEUR];
 		for (int i=0; i<LARGEUR; i++)
@@ -49,7 +49,6 @@ public class Carte {
 //		affichergrille(tab16l9);
 		return tab16l9;
 	}
-
 	private static void affichergrille(int[][] tab) {
 		System.out.println("[");
 		for (int i=0; i<LARGEUR; i++) {
@@ -60,8 +59,4 @@ public class Carte {
 		}
 		System.out.println("]");
 	}
-	
-	
-	
-	
 }

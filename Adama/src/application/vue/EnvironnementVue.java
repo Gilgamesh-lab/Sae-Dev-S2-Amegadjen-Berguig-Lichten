@@ -5,24 +5,42 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 
 public class EnvironnementVue {
-
-	//	public final static int PIXEL=32;//Ecran de l'iut 4*480 largeur 1920*1080 16/9
+	
+//	public final static int PIXEL=32;//Ecran de l'iut 4*480 largeur 1920*1080 16/9
 	private TilePane carte;
 	private Environnement env;
-
+	
 	public EnvironnementVue(Environnement env, TilePane carte) {
 		this.carte=carte;
 		this.env=env;
 	}
-
+	
 	public void creerEnvironnement() {
+//		carte.setPrefHeight(PIXEL);
+//		for(int[] tab : env.getCarte().getCarteTab())
+//			for (int val : tab)
+//				carte.getChildren().add(choixTuile(val));
 		int val;
-		while(env.getCarte().getMap().hasNext()) {
-			val = Integer.parseInt(env.getCarte().getMap().next());
-			carte.getChildren().add(choixTuile(val));
+		int compteurColone=0;
+		int compteurLigne=0;
+		boolean quitter=false;
+		while(env.getCarte().getMap().hasNext() && !quitter) {
+			if (compteurColone<60) {
+				val=Integer.parseInt(env.getCarte().getMap().next());
+				carte.getChildren().add(choixTuile(val));	
+			}
+			else if(compteurLigne>=32) {
+				quitter = true;
+			}
+			else {
+				System.out.println(env.getCarte().getMap().nextLine());
+				compteurColone=-1;
+				compteurLigne++;
+			}
+			compteurColone++;
 		}
 	}
-
+	
 	private ImageView choixTuile(int val) {
 		ImageView img = null;
 		switch(val){
@@ -49,5 +67,10 @@ public class EnvironnementVue {
 			break;
 		}
 		return img;
+	}
+	
+	
+	public boolean collision() {
+		return true;
 	}
 }
