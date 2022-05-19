@@ -66,4 +66,5 @@ public class Joueur extends Personnage {
 	public void saut(int hauteur) {
 		super.setY(super.getY()-hauteur);
 	}
+
 }

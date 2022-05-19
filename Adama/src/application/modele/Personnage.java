@@ -114,4 +114,8 @@ public abstract class Personnage {
 		this.inventaire = null;
 		return inventaire2;
 	}
+	
+	public void gravite() {
+		this.setY(this.getY()+1);
+	}
 }

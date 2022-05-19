@@ -22,7 +22,6 @@ public class Carte {
 		this.map = Csv.ouvrir("exemple.csv");
 		this.map.useDelimiter(",");
 //		this.map = this.grille();
-
 	}
 
 	public Scanner getMap(){
@@ -36,4 +35,7 @@ public class Carte {
 	public int getLargeur() {
 		return this.LARGEUR;
 	}
+	
+
+
 }

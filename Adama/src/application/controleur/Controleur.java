@@ -34,6 +34,7 @@ public class Controleur implements Initializable{
 	
 	private Joueur perso;
 	private JoueurVue persoVue;
+	private JoueurControleur persoControleur;
 	private Environnement env;
 	private EnvironnementVue envVue;
 	
@@ -41,8 +42,8 @@ public class Controleur implements Initializable{
 	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
-        //System.out.println(touchePresse);
-        persoVue.touchePresse(touchePresse, perso);
+        System.out.println(touchePresse);
+        persoControleur.touchePresse(touchePresse);
 	}
 	
 	@Override
@@ -55,14 +56,64 @@ public class Controleur implements Initializable{
 		}
 		envVue = new EnvironnementVue(env, carte);
 		perso  = new Joueur(500, 420, env);
-		persoVue = new JoueurVue(perso, gameLoop);
+		persoVue = new JoueurVue(perso);
+		persoControleur = new JoueurControleur(perso, persoVue);
 		plateau.getChildren().add(persoVue.getSprite());
 		envVue.creerEnvironnement();
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
 		persoVue.getSprite().setFitHeight(64);
 		persoVue.getSprite().setFitWidth(32);
+		
+		initAnimation();
+		gameLoop.play();
 	}
 
+	private void initAnimation() {
+		gameLoop = new Timeline();
+		temps=0;
+		gameLoop.setCycleCount(Timeline.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.seconds(0.017), 
+				(ev -> { 
+					if(temps==100)
+						gameLoop.stop();
+					else
+						perso.gravite();
+//					else if (temps<1) 
+//						this.sprite.setImage(new Image("ressource/persoAccroupi.jpg"));
+//					
+//					else if (temps==10) 
+//						this.sprite.setImage(new Image("ressource/perso.png"));
+//					
+//					else if (temps<55) 
+//						this.joueur.saut(1);
+//					
+//					else if(temps>90) 
+//						this.joueur.saut(-1);
+//					
+//					else 
+//						System.out.println("Accroupi");
+					temps++;							
+				})
+				);
+		gameLoop.getKeyFrames().add(kf);
+	}
 	
+//	
+//	private void initAnimationGravite() {
+//		gameLoop = new Timeline();
+//		temps=0;
+//		gameLoop.setCycleCount(Timeline.INDEFINITE);
+//		KeyFrame kf = new KeyFrame(Duration.seconds(0.01), 
+//				(ev -> { //Il ne detecte pas le lambdas a debug
+//					if(temps==100)
+//						gameLoop.stop(); 
+//					else 
+//						env.gravite();
+//					temps++;							
+//				})
+//				);
+//		gameLoop.getKeyFrames().add(kf);
+//	}
+//	
 }
