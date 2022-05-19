@@ -41,7 +41,7 @@ public class Controleur implements Initializable{
 	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
-        System.out.println(touchePresse);
+        //System.out.println(touchePresse);
         persoVue.touchePresse(touchePresse, perso);
 	}
 	

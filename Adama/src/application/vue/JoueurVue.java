@@ -58,7 +58,6 @@ public class JoueurVue {
 	private void initAnimationSaut() {
 		gameLoop = new Timeline();
 		temps=0;
-		System.out.println("ok");
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017), 
 			(ev -> { //Il ne detecte pas le lambdas a debug
 				if(temps==100) { 

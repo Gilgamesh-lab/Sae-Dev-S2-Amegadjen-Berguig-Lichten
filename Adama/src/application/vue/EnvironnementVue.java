@@ -33,7 +33,7 @@ public class EnvironnementVue {
 				quitter = true;
 			}
 			else {
-				System.out.println(env.getCarte().getMap().nextLine());
+				env.getCarte().getMap().nextLine();
 				compteurColone=-1;
 				compteurLigne++;
 			}
