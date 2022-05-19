@@ -1,6 +1,7 @@
 package application.modele;
 
 
+
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -8,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Carte {
+
 	private Scanner map;
 	private final static int HAUTEUR = 32;
 	private final static int LARGEUR = 60;
