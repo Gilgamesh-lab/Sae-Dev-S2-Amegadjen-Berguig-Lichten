@@ -30,7 +30,7 @@ public class Joueur extends Personnage {
 		this.inventaireRaccourci = inventaireRaccourci;
 		this.estAccroupiProperty = new SimpleBooleanProperty(false);
 	}
-	
+
 	public Joueur(int x, int y, Environnement environnement) {
 		super(MAX_PV, x, y, 5, environnement );
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
@@ -125,23 +125,11 @@ public class Joueur extends Personnage {
 		super.setX(super.getX()-nbPixel);
 	}
 	
+	public void saut(int hauteur) {
+		super.setY(super.getY()-hauteur);
+
 	public void droite(int nbPixel) {
 		this.gauche(-nbPixel);
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
+  }
 }
