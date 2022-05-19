@@ -60,6 +60,4 @@ public class Environnement {
 	public Carte getCarte(){
 		return this.carte;
 	}
-
-
 }

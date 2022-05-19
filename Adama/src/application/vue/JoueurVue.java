@@ -44,41 +44,43 @@ public class JoueurVue {
 				break;
 		}
 	}
-	
+
 	public void orrientationSpriteGauche() {
 		if (sprite.effectiveNodeOrientationProperty().get()==NodeOrientation.RIGHT_TO_LEFT)
 			sprite.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
 	}
-	
+
 	public void orrientationSpriteDroite() {
 		if (sprite.effectiveNodeOrientationProperty().get()==NodeOrientation.LEFT_TO_RIGHT)
 			sprite.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 	}
-	
+
 	private void initAnimationSaut() {
 		gameLoop = new Timeline();
 		temps=0;
+		gameLoop.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017), 
-			(ev -> { //Il ne detecte pas le lambdas a debug
-				if(temps==100) { 
-					System.out.println("fini");
-					gameLoop.stop();
-				}
-				else if (temps<10) {
-					System.out.println("Accroupi");
-//					this.sprite.setImage(new Image("ressource/persoAccroupi.jpg"));
-				}
-				else if (temps<90) {
-					System.out.println("Poing levé");
-					this.joueur.saut(45);
-//					this.sprite.setImage(new Image("ressource/perso.png"));
-				}
-				else {
-					System.out.println("Accroupi");
+				(ev -> { //Il ne detecte pas le lambdas a debug
+					if(temps==100)
+						gameLoop.stop();
+
+					else if (temps<1) 
+						this.sprite.setImage(new Image("ressource/persoAccroupi.jpg"));
 					
-				}
-				temps++;							
-		}));
-		
+					else if (temps==10) 
+						this.sprite.setImage(new Image("ressource/perso.png"));
+					
+					else if (temps<55) 
+						this.joueur.saut(1);
+					
+					else if(temps>90) 
+						this.joueur.saut(-1);
+					
+					else 
+						System.out.println("Accroupi");
+					temps++;							
+				})
+				);
+		gameLoop.getKeyFrames().add(kf);
 	}
 }

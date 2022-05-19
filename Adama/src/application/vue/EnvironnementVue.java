@@ -68,9 +68,4 @@ public class EnvironnementVue {
 		}
 		return img;
 	}
-	
-	
-	public boolean collision() {
-		return true;
-	}
 }
