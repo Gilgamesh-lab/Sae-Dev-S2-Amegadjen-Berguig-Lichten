@@ -1,4 +1,6 @@
 package application.modele;
+import java.io.IOException;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -109,14 +111,21 @@ public abstract class Personnage {
 		this.yProperty.setValue(this.getY() + val);
 	}
 	
-	public void descendre(int val) {
-		if(!this.pasSurUnSol()) {
+	public void descendre(int val) throws IOException {
+		if(!this.estSurDeLaTerre()) {
 			this.monter(-val);
 		}
 	}
 	
-	public boolean pasSurUnSol() {
-		return true; // à finir
+	public boolean estSurDeLaTerre() throws IOException {// bloc taille : 32 * 32
+		int[][] tab = Csv.csvToTab("exemple.csv", this.getEnvironnement().getCarte().getLargeur(),this.getEnvironnement().getCarte().getHauteur() );
+	    
+    	if(tab[this.getY() + 1][this.getX()] == 1) { //  fixer le +2
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
 	}
 	
 	public void sauter() {
