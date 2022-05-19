@@ -60,12 +60,4 @@ public class Environnement {
 	public Carte getCarte(){
 		return this.carte;
 	}
-	
-//	public 
-//
-//	public boolean collision() {
-//		this.carte
-//		return true;
-//	}
-
 }

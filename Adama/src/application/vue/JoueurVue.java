@@ -27,22 +27,21 @@ public class JoueurVue {
 
 	public void touchePresse(String touchePresse, Joueur perso) {
 		switch (touchePresse) {
-		case "q":
-			orrientationSpriteGauche();
-			perso.gauche(perso.Deplacement(0));
-			break;
-		case "d":
-			orrientationSpriteDroite();
-			perso.droite(perso.Deplacement(0));
-			break;
-		case "z":
-			this.initAnimationSaut();
-			gameLoop.play();
-			//				perso.saut(40);//car les image font 32 pixel de coté
-			break;
-		case "s":
-			break;
-
+			case "q":
+				orrientationSpriteGauche();
+				perso.gauche(perso.Deplacement(0));
+				break;
+			case "d":
+				orrientationSpriteDroite();
+				perso.droite(perso.Deplacement(0));
+				break;
+			case "z":
+				this.initAnimationSaut();
+				gameLoop.play();
+//				perso.saut(40);//car les image font 32 pixel de coté
+				break;
+			case "s":
+				break;
 		}
 	}
 
