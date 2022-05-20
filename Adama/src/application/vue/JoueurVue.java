@@ -23,8 +23,11 @@ public class JoueurVue {
 		return sprite;
 	}
 	
-	public void sautVue() {
-		
+	public void sautVue(int temps) {
+		if (temps<1) 
+			this.sprite.setImage(new Image("ressource/persoAccroupi.jpg"));
+		else if (temps==10) 
+			this.sprite.setImage(new Image("ressource/perso.png"));
 	}
 	
 	public void orrientationSpriteGauche() {

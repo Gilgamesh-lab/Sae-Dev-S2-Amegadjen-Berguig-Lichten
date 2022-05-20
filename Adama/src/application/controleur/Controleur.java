@@ -76,23 +76,9 @@ public class Controleur implements Initializable{
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017), 
 				(ev -> { 
 					if(temps==100)
-						gameLoop.stop();
+						System.out.println("ok");
 					else
 						perso.gravite();
-//					else if (temps<1) 
-//						this.sprite.setImage(new Image("ressource/persoAccroupi.jpg"));
-//					
-//					else if (temps==10) 
-//						this.sprite.setImage(new Image("ressource/perso.png"));
-//					
-//					else if (temps<55) 
-//						this.joueur.saut(1);
-//					
-//					else if(temps>90) 
-//						this.joueur.saut(-1);
-//					
-//					else 
-//						System.out.println("Accroupi");
 					temps++;							
 				})
 				);

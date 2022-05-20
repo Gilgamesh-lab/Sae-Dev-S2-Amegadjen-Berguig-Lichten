@@ -5,13 +5,6 @@ import java.util.Scanner;
 
 public class Csv {
 
-    public static void main(String[] args) throws FileNotFoundException {
-    	Scanner sc = ouvrir("exemple.csv");
-    	lecture(sc);
-
-
-    }
-
     public static Scanner ouvrir(String nom) throws FileNotFoundException {
     	try { // chemin relatif
     		File getCSVFiles = new File(nom);
@@ -36,4 +29,5 @@ public class Csv {
         }
         sc.close();
     }
+    
 }
