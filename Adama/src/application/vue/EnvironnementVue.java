@@ -1,8 +1,14 @@
 package application.vue;
 
+import java.io.IOException;
+
 import application.modele.Environnement;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
+import javafx.util.Duration;
 
 public class EnvironnementVue {
 	
@@ -15,30 +21,33 @@ public class EnvironnementVue {
 		this.env=env;
 	}
 	
-	public void creerEnvironnement() {
-//		carte.setPrefHeight(PIXEL);
-//		for(int[] tab : env.getCarte().getCarteTab())
-//			for (int val : tab)
-//				carte.getChildren().add(choixTuile(val));
+	public void creerEnvironnement() throws IOException {
 		int val;
-		int compteurColone=0;
-		int compteurLigne=0;
-		boolean quitter=false;
-		while(env.getCarte().getMap().hasNext() && !quitter) {
-			if (compteurColone<60) {
-				val=Integer.parseInt(env.getCarte().getMap().next());
-				carte.getChildren().add(choixTuile(val));	
-			}
-			else if(compteurLigne>=32) {
-				quitter = true;
-			}
-			else {
-				env.getCarte().getMap().nextLine();
-				compteurColone=-1;
-				compteurLigne++;
-			}
-			compteurColone++;
+//		int compteurColone=0;
+//		int compteurLigne=0;
+//		boolean quitter=false;
+		System.out.println(env);
+		String caractere = String.valueOf(env.getCarte().getMap().read());
+		
+		if (caractere!=",") {
+			val=Integer.parseInt(caractere);
+			carte.getChildren().add(choixTuile(val));	
 		}
+//		while(env.getCarte().getMap().hasNext() && !quitter) {
+//			if (compteurColone<60) {
+//				val=Integer.parseInt(env.getCarte().getMap().next());
+//				carte.getChildren().add(choixTuile(val));	
+//			}
+//			else if(compteurLigne>=32) {
+//				quitter = true;
+//			}
+//			else {
+//				env.getCarte().getMap().nextLine();
+//				compteurColone=-1;
+//				compteurLigne++;
+//			}
+//			compteurColone++;
+//		}
 	}
 	
 	private ImageView choixTuile(int val) {
@@ -63,7 +72,7 @@ public class EnvironnementVue {
 			img = new ImageView("ressource/Soleil.jpg");
 			break;
 		default:
-			System.out.println("La valeur" + val + "ne correpond à aucune tuiles !");
+			System.out.println("La valeur" + val + " ne correpond à aucune tuiles !");
 			break;
 		}
 		return img;

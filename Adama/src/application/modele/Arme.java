@@ -46,7 +46,4 @@ public abstract class Arme implements Item  {
 	public boolean estEnRecharge() {
 		return this.recharger;
 	}
-	
-	
-	
 }

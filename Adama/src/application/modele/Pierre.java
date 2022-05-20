@@ -1,12 +1,12 @@
 package application.modele;
 
-public class Pierre extends Ressources {
+public class Pierre extends Ressource {
 
 	
 
-	public Pierre(int nombre, boolean craftable, int x, int y) {
-		super(nombre, craftable, x, y);
-		// TODO Auto-generated constructor stub
+	public Pierre(int x, int y, boolean posable) {
+		super(10, x, y, posable);
+		
 	}
 
 	@Override

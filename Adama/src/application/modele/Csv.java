@@ -9,24 +9,10 @@ import java.util.Scanner;
 
 public class Csv {
 	
-    public static void main(String[] args) throws IOException {// faire méthode écriture
-    	
-    	
-    	/*Scanner sc = ouvrir("exemple.csv");
-    	// System.out.println(tableau(sc));
-    	lecture(sc);
-    	int[][] tab = test();
-    	lectureTab(tab);*/
-    	test();
-    	// csvToTab("exemple.csv", 32 , 60);
-    }
-    
     public static Scanner ouvrir2(String nom) throws FileNotFoundException {
     	FileReader text = new FileReader(nom);
     	Scanner sc = new Scanner(text);
     	return sc;
-    		
-   
     }
     
     public static String getChemin(String nom) {
@@ -64,8 +50,6 @@ public class Csv {
     	return tab; 
     }
     
-    
-    
     public static int[][] tableau(Scanner sc) {
 		int[][] tab = new int[28][60];
 		int y = 0;
@@ -96,27 +80,7 @@ public class Csv {
     		System.out.println("");
     	}
     }
-    	
-    
-     
-    	
-     
-         
-    /*public static Scanner ouvrir(String nom) throws FileNotFoundException {
-    	try { // chemin relatif
-    		InputStream ins = new FileInputStream(nom);
-    		Scanner obj = new Scanner(ins);
-    		return obj;
-    		
-    	}catch(FileNotFoundException e) { // chemin absolue
-    		File getCSVFiles = new File(""); 
-    		String chemin = getCSVFiles.getAbsolutePath();
-    		getCSVFiles = new File(chemin + "/src/application/modele/" + nom);
-            Scanner sc = new Scanner(getCSVFiles);
-            return sc;
-    	}
-    }*/
-    
+
      public static int[][] test () throws IOException{
     	 File file = new File(getChemin("exemple.csv"));
     	 
@@ -144,21 +108,6 @@ public class Csv {
          return br;
          
      }
- 	/*
- 	
- 	/*Environnement env = new Environnement();
- 	Joueur joueur = new Joueur(5,48,14,env); // 45 , 14
- 	System.out.println("ok");/*
- 	// System.out.println(joueur.estSurDeLaTerre()); 
- 	
-     
-     
- } */
-    
-    
-    
-    
-      
     
 	public static int[][] readCSV(String nomFichier, char c, Charset charset) throws IOException {
 		return Files.lines(Paths.get(getChemin(nomFichier)), charset)
@@ -175,27 +124,5 @@ public class Csv {
             System.out.print(sc.next() + " | "); 
         }
         sc.close();
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }   
 }
