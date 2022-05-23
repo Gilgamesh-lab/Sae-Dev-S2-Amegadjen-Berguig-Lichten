@@ -38,7 +38,7 @@ public class Carte {
 	}
 	
 	public Ressource emplacement(int x, int y, int[] taille) {
-		int indiceDansMap = (x/TAILLE_BLOCK)+(taille[0]/2) + ((y/TAILLE_BLOCK) * LARGEUR)+taille[1];
+		int indiceDansMap = (x/TAILLE_BLOCK) + ((y/TAILLE_BLOCK) * LARGEUR);
 		return this.blockMap.get(indiceDansMap);
 	}
 
