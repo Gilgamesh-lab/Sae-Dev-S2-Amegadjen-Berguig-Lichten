@@ -1,6 +1,7 @@
 package application.controleur;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -34,6 +35,7 @@ public class Controleur implements Initializable{
 	
 	private Joueur perso;
 	private JoueurVue persoVue;
+	private JoueurControleur persoControleur;
 	private Environnement env;
 	private EnvironnementVue envVue;
 	
@@ -41,28 +43,50 @@ public class Controleur implements Initializable{
 	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
-        //System.out.println(touchePresse);
-        persoVue.touchePresse(touchePresse, perso);
+        System.out.println(touchePresse);
+        persoControleur.touchePresse(touchePresse);
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
 			env =new Environnement();
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
 		perso  = new Joueur(500, 420, env);
-		persoVue = new JoueurVue(perso, gameLoop);
+		persoVue = new JoueurVue(perso);
+		persoControleur = new JoueurControleur(perso, persoVue);
 		plateau.getChildren().add(persoVue.getSprite());
-		envVue.creerEnvironnement();
+		try {
+			envVue.creerEnvironnement();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
 		persoVue.getSprite().setFitHeight(64);
 		persoVue.getSprite().setFitWidth(32);
+		
+		initAnimation();
+		gameLoop.play();
 	}
 
-	
+	private void initAnimation() {
+		gameLoop = new Timeline();
+		temps=0;
+		gameLoop.setCycleCount(Timeline.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.seconds(0.017), 
+				(ev -> { 
+					if(temps==100)
+						System.out.println("ok");
+					else
+						perso.gravite();
+					temps++;							
+				})
+				);
+		gameLoop.getKeyFrames().add(kf);
+	}	
 }

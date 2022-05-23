@@ -1,6 +1,8 @@
 package application.modele;
-import java.io.FileNotFoundException;
 
+import java.io.IOException;
+
+import application.modele.exception.TailleMapException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -17,16 +19,10 @@ public class Environnement {
 		this.items = FXCollections.observableArrayList();
 	}
 
-	public Environnement() throws FileNotFoundException {
+	public Environnement() throws TailleMapException, IOException {
 		this.carte = new Carte();
 		this.personnages = FXCollections.observableArrayList();
 	}
-
-	/*public Environnement() {
-		int tab[][] = new int[32][60];
-		this.carte = new Carte(tab);
-		this.personnages = FXCollections.observableArrayList();
-	}*/
 
 	public void getItems() {
 
