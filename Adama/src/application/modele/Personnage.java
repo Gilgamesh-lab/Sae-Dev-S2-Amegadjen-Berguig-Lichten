@@ -1,7 +1,7 @@
 package application.modele;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -109,25 +109,18 @@ public abstract class Personnage {
 	
 	
 	public void monter(int val) {
-		this.yProperty.setValue(this.getY() + val);
+		this.yProperty.setValue(this.getY() - val);
 	}
 	
 	public void descendre(int val) throws IOException {
-		if(!this.estSurDeLaTerre()) {
+		if(this.estEnLaire()) {
 			this.monter(-val);
 		}
 	}
 	
-	public boolean estSurDeLaTerre() throws IOException {// bloc taille : 32 * 32
-		Ressources [][] tab = Csv.csvToTab(this.environnement.getNomFichier(), this.getEnvironnement().getCarte().getHauteur(), this.getEnvironnement().getCarte().getLargeur());
-		return tab[this.getY() + 1][this.getX()] instanceof Terre;
-
-    }
-	
 	public boolean estEnLaire() throws IOException {
-		Ressources [][] tab = Csv.csvToTab(this.environnement.getNomFichier(), this.getEnvironnement().getCarte().getHauteur(), this.getEnvironnement().getCarte().getLargeur());
-		return tab[this.getY() + 1][this.getX()] == null;
-
+		int[] taille = {1,2};//provisoire
+		return this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null;
     }
 	
 	public void sauter() {
@@ -168,46 +161,13 @@ public abstract class Personnage {
 	
 	public void perdreRessources() { // Lorsque mort perd ses ressources
 		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
-			if(this.inventaire.getItem(i) instanceof Ressources) {
+			if(this.inventaire.getItem(i) instanceof Ressource) {
 				this.inventaire.supprimer(i);
 			}
 		}
-	} 
+	}
 	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
+	public void gravite() throws IOException {
+		this.descendre(5);
+	}
 }

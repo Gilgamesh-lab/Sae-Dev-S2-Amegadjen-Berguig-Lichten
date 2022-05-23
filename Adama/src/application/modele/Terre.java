@@ -1,23 +1,15 @@
 package application.modele;
 
-public class Terre extends Ressources {
+public class Terre extends Ressource {
 
-	public Terre(int nombre, int durabiliter, int x, int y, boolean posable) {
-		super(nombre, durabiliter,  posable, x, y);
-	}
-	
-	public Terre( int x, int y) {
-		super(1, 5,  true, x, y);
+	public Terre( int x, int y, boolean posable) {
+		super(3, x, y, posable);
 	}
 
 	@Override
 	public void utiliser() {
 		
 		
-	}
-	
-	public String toString() {
-		return "Terre";
 	}
 
 	
