@@ -1,5 +1,5 @@
 package application.modele;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 
 import application.modele.exception.TailleMapException;
@@ -23,12 +23,6 @@ public class Environnement {
 		this.carte = new Carte();
 		this.personnages = FXCollections.observableArrayList();
 	}
-
-	/*public Environnement() {
-		int tab[][] = new int[32][60];
-		this.carte = new Carte(tab);
-		this.personnages = FXCollections.observableArrayList();
-	}*/
 
 	public void getItems() {
 
@@ -60,7 +54,6 @@ public class Environnement {
 	}
 
 	public Carte getCarte(){
-		System.out.println(carte);
 		return this.carte;
 	}
 }

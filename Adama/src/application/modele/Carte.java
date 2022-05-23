@@ -26,11 +26,11 @@ public class Carte {
 	}
 
 	public int getHauteur() {
-		return this.HAUTEUR;
+		return HAUTEUR;
 	}
 
 	public int getLargeur() {
-		return this.LARGEUR;
+		return LARGEUR;
 	}
 
 	public ArrayList<Ressource> getBlockMap() {

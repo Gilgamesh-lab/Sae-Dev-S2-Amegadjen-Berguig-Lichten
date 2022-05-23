@@ -63,7 +63,6 @@ public class Controleur implements Initializable{
 		try {
 			envVue.creerEnvironnement();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
@@ -89,23 +88,5 @@ public class Controleur implements Initializable{
 				})
 				);
 		gameLoop.getKeyFrames().add(kf);
-	}
-	
-//	
-//	private void initAnimationGravite() {
-//		gameLoop = new Timeline();
-//		temps=0;
-//		gameLoop.setCycleCount(Timeline.INDEFINITE);
-//		KeyFrame kf = new KeyFrame(Duration.seconds(0.01), 
-//				(ev -> { //Il ne detecte pas le lambdas a debug
-//					if(temps==100)
-//						gameLoop.stop(); 
-//					else 
-//						env.gravite();
-//					temps++;							
-//				})
-//				);
-//		gameLoop.getKeyFrames().add(kf);
-//	}
-//	
+	}	
 }

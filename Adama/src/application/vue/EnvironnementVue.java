@@ -3,6 +3,9 @@ package application.vue;
 import java.io.IOException;
 
 import application.modele.Environnement;
+import application.modele.Pierre;
+import application.modele.Ressource;
+import application.modele.Terre;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.image.Image;
@@ -23,31 +26,21 @@ public class EnvironnementVue {
 	
 	public void creerEnvironnement() throws IOException {
 		int val;
-//		int compteurColone=0;
-//		int compteurLigne=0;
-//		boolean quitter=false;
-		System.out.println(env);
-		String caractere = String.valueOf(env.getCarte().getMap().read());
-		
-		if (caractere!=",") {
-			val=Integer.parseInt(caractere);
-			carte.getChildren().add(choixTuile(val));	
+		int tailleMap = (env.getCarte().getHauteur()-1) * (env.getCarte().getLargeur()-1);
+		int largeur = env.getCarte().getLargeur();
+		Ressource block;
+		for(int i=0; i<tailleMap; i++) {
+			block= env.getCarte().getBlockMap().get(i);
+			if (block==null)
+				val=0;
+			else if (block instanceof Terre && i>largeur && env.getCarte().getBlockMap().get(i-largeur)==null)
+				val=1;				
+			else if (block instanceof Pierre)
+				val=3;
+			else
+				val=2;
+			this.carte.getChildren().add(choixTuile(val));	
 		}
-//		while(env.getCarte().getMap().hasNext() && !quitter) {
-//			if (compteurColone<60) {
-//				val=Integer.parseInt(env.getCarte().getMap().next());
-//				carte.getChildren().add(choixTuile(val));	
-//			}
-//			else if(compteurLigne>=32) {
-//				quitter = true;
-//			}
-//			else {
-//				env.getCarte().getMap().nextLine();
-//				compteurColone=-1;
-//				compteurLigne++;
-//			}
-//			compteurColone++;
-//		}
 	}
 	
 	private ImageView choixTuile(int val) {
