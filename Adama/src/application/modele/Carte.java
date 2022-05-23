@@ -1,6 +1,5 @@
 package application.modele;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ public class Carte {
 
 	public Carte() throws TailleMapException, IOException {
 		this.map = Csv.ouvrir("exemple.csv");
-		//		this.map.useDelimiter(",");
 		this.blockMap = new ArrayList<Ressource>();
 		creerListeBlock();
 	}
@@ -73,6 +71,5 @@ public class Carte {
 		}
 		if(y!=HAUTEUR)
 			throw new TailleMapException("Problème de Hauteur : "+y+" a la place des "+HAUTEUR+" demandés.");
-		
 	}
 }
