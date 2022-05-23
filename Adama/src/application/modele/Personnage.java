@@ -1,4 +1,6 @@
 package application.modele;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -8,29 +10,29 @@ public abstract class Personnage {
 	private IntegerProperty pvProperty ;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
-	private int vitesseDeplacementBase;
+	private int vitesseDeplacement;
 	private Environnement environnement;
 	private Inventaire inventaire;
+	private IntegerProperty hauteurSautProperty;
 	
-	public Personnage(int pv, int x, int y, 
-	int vitesseDeplacement, Environnement environnement,
-	Inventaire inventaire){
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
-		this.vitesseDeplacementBase = vitesseDeplacement;
+		this.vitesseDeplacement = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = inventaire;
+		this.hauteurSautProperty = new SimpleIntegerProperty(hauteurSaut);
 	}
 	
-	public Personnage(int pv, int x, int y, 
-			int vitesseDeplacement, Environnement environnement){
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
-		this.vitesseDeplacementBase = vitesseDeplacement;
+		this.vitesseDeplacement = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
+		this.hauteurSautProperty = new SimpleIntegerProperty(1);
 	}
 	
 	public final int getPv() {
@@ -68,9 +70,25 @@ public abstract class Personnage {
 	public final IntegerProperty yProperty() {
 		return this.yProperty;
 	}
-		
+	
+	public final int getHauteurSaut() {
+		return this.hauteurSautProperty.getValue();
+	}
+	
+	public final void setHauteurSaut(int val) {
+		this.hauteurSautProperty.setValue(val);
+	}
+	
+	public final IntegerProperty hauteurSautProperty() {
+		return this.hauteurSautProperty;
+	}
+	
+	public void setVitesseDeplacement(int vitesseDeplacement) {
+		this.vitesseDeplacement = vitesseDeplacement;
+	}
+	
 	public int getVitesseDeplacement() {
-		return this.vitesseDeplacementBase;
+		return this.vitesseDeplacement;
 	}
 	
 	public Environnement getEnvironnement() {
@@ -81,37 +99,115 @@ public abstract class Personnage {
 		return this.inventaire;
 	}
 	
-	public void decremeterPv(int degat) {
-		this.pvProperty.setValue(this.pvProperty.getValue() - degat);
-	}
-	
 	public void incrementerPv(int soin) {
-		this.pvProperty.setValue(this.pvProperty.getValue() + soin);
+		this.setPv(pvProperty.getValue() + soin);
 	}
 	
-	public void grimper(int val) {
-		this.yProperty.setValue(this.yProperty.getValue() + val);
+	public void decremeterPv(int degat) {
+		this.incrementerPv(-degat);
 	}
 	
-	public void descendre(int val) {
-		this.yProperty.setValue(this.yProperty.getValue() - val);
+	
+	public void monter(int val) {
+		this.yProperty.setValue(this.getY() + val);
 	}
 	
-	public int Deplacement(int vitesseBonus) {
-		return this.vitesseDeplacementBase*(vitesseBonus/100)+this.vitesseDeplacementBase;
+	public void descendre(int val) throws IOException {
+		if(!this.estSurDeLaTerre()) {
+			this.monter(-val);
+		}
 	}
 	
-	public void reculer() {
-		this.xProperty.setValue(this.xProperty.getValue() - this.vitesseDeplacementBase);
+	public boolean estSurDeLaTerre() throws IOException {// bloc taille : 32 * 32
+		Ressources [][] tab = Csv.csvToTab(this.environnement.getNomFichier(), this.getEnvironnement().getCarte().getHauteur(), this.getEnvironnement().getCarte().getLargeur());
+		return tab[this.getY() + 1][this.getX()] instanceof Terre;
+
+    }
+	
+	public boolean estEnLaire() throws IOException {
+		Ressources [][] tab = Csv.csvToTab(this.environnement.getNomFichier(), this.getEnvironnement().getCarte().getHauteur(), this.getEnvironnement().getCarte().getLargeur());
+		return tab[this.getY() + 1][this.getX()] == null;
+
+    }
+	
+	public void sauter() {
+		this.monter(this.getHauteurSaut());
+	}
+	
+	public void droite(int val) {
+		this.xProperty.setValue(this.getX() + val);
+	}
+	
+	public void gauche(int val) { 
+		this.droite(-val);
+	}
+	
+	public void droite() { 
+		this.droite(this.vitesseDeplacement);
+	}
+	
+	public void gauche() {
+		this.gauche(this.vitesseDeplacement);
 	}
 	
 	public boolean estMort() {
-		return this.pvProperty.getValue() == 0;
+		return this.getPv() == 0;
 	}
 	
-	public Inventaire dropInventaire() {
-		Inventaire inventaire2 = this.inventaire;
-		this.inventaire = null;
-		return inventaire2;
+	public int Deplacement(int vitesseBonus) {
+		return this.vitesseDeplacement*(vitesseBonus/100)+this.vitesseDeplacement;
 	}
+	
+	public void reculer() {
+		this.xProperty.setValue(this.xProperty.getValue() - this.vitesseDeplacement);
+	}
+	
+	public void avancer() {
+		this.xProperty.setValue(this.xProperty.getValue() + this.vitesseDeplacement);
+	}
+	
+	public void perdreRessources() { // Lorsque mort perd ses ressources
+		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
+			if(this.inventaire.getItem(i) instanceof Ressources) {
+				this.inventaire.supprimer(i);
+			}
+		}
+	} 
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
