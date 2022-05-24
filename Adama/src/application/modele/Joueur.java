@@ -54,14 +54,6 @@ public class Joueur extends Personnage {
 		// Arme main =  new Poing();
 		// this.objetEquiper = main;
 	}
-
-	public void gauche(int vitesse) {
-		 
-	}
-
-	public void droite(int vitesse) {
-		this.gauche(-vitesse);
-	}
 	
 	public void saut(int hauteur) {
 		super.setY(super.getY()-hauteur);

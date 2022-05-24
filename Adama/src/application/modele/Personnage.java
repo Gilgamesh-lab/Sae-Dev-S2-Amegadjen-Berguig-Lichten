@@ -14,6 +14,7 @@ public abstract class Personnage {
 	private Environnement environnement;
 	private Inventaire inventaire;
 	private IntegerProperty hauteurSautProperty;
+	private int[] taille = new int[2];
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut){
 		this.pvProperty = new SimpleIntegerProperty(pv);
@@ -23,6 +24,7 @@ public abstract class Personnage {
 		this.environnement = environnement;
 		this.inventaire = inventaire;
 		this.hauteurSautProperty = new SimpleIntegerProperty(hauteurSaut);
+		this.taille[0]=1; this.taille[1]=2;
 	}
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement){
@@ -33,6 +35,7 @@ public abstract class Personnage {
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
 		this.hauteurSautProperty = new SimpleIntegerProperty(1);
+		this.taille[0]=1; this.taille[1]=2;
 	}
 	
 	public final int getPv() {
@@ -107,41 +110,53 @@ public abstract class Personnage {
 		this.incrementerPv(-degat);
 	}
 	
-	
-	public void monter(int val) {
+	public void translationY(int val) {
 		this.yProperty.setValue(this.getY() - val);
 	}
 	
+	public void monter(int val) throws IOException {
+		if(this.toucheY(true))
+			translationY(val);
+	}
+	
 	public void descendre(int val) throws IOException {
-		if(this.estEnLaire()) {
-			this.monter(-val);
+		if(this.toucheY(false)) {
+			translationY(-val);
 		}
 	}
 	
-	public boolean estEnLaire() throws IOException {
-		int[] taille = {1,2};//provisoire
-		return this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null;
+	public boolean toucheY(boolean auDessus) throws IOException {
+		if(auDessus)
+			return this.environnement.getCarte().emplacement(this.getX(), this.getY()-32, taille)==null;
+		else
+			return this.environnement.getCarte().emplacement(this.getX(), this.getY()+64, taille)==null;
     }
 	
-	public void sauter() {
+	public void sauter() throws IOException {
 		this.monter(this.getHauteurSaut());
 	}
 	
-	public void droite(int val) {
-		this.xProperty.setValue(this.getX() + val);
+	public void translationX(int val) {
+		this.xProperty.setValue(this.getX() - val);
 	}
 	
-	public void gauche(int val) { 
-		this.droite(-val);
-	}
-	
-	public void droite() { 
-		this.droite(this.vitesseDeplacement);
+	public void droite() {
+		if(toucheX(true))
+			this.translationX(-vitesseDeplacement);
 	}
 	
 	public void gauche() {
-		this.gauche(this.vitesseDeplacement);
+		if(toucheX(false))
+			this.translationX(vitesseDeplacement);
 	}
+	private boolean toucheX(boolean aDroite) {
+		if(aDroite)
+			return this.environnement.getCarte().emplacement(this.getX()+32, this.getY(), taille)==null || this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+32, taille)==null || this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+64, taille)==null;
+		else
+			return this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null || this.environnement.getCarte().emplacement(this.getX(), this.getY()+32, taille)==null || this.environnement.getCarte().emplacement(this.getX(), this.getY()+64, taille)==null;
+	}
+
+	
 	
 	public boolean estMort() {
 		return this.getPv() == 0;
