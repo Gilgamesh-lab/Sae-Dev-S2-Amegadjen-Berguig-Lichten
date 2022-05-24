@@ -55,7 +55,7 @@ public class Controleur implements Initializable{
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
-		perso  = new Joueur(0, 0, env);
+		perso  = new Joueur(320, 0, env);
 		persoVue = new JoueurVue(perso);
 		persoControleur = new JoueurControleur(perso, persoVue);
 		plateau.getChildren().add(persoVue.getSprite());

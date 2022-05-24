@@ -20,11 +20,6 @@ public class Carte {
 		creerListeBlock();
 	}
 
-	public BufferedReader getMap(){
-		System.out.println(map);
-		return this.map;
-	}
-
 	public int getHauteur() {
 		return HAUTEUR;
 	}
@@ -36,12 +31,28 @@ public class Carte {
 	public ArrayList<Ressource> getBlockMap() {
 		return blockMap;
 	}
+
+	public static int getTailleBlock() {
+		return TAILLE_BLOCK;
+	}
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param taille
+	 * @return
+	 */
 	public Ressource emplacement(int x, int y, int[] taille) {
 		int indiceDansMap = (x/TAILLE_BLOCK) + ((y/TAILLE_BLOCK) * LARGEUR);
 		return this.blockMap.get(indiceDansMap);
 	}
 
+	/**
+	 * 
+	 * @throws TailleMapException
+	 * @throws IOException
+	 */
 	public void creerListeBlock() throws TailleMapException, IOException{
 		String ligne;
 		char suivant;
@@ -79,6 +90,6 @@ public class Carte {
 		}
 		if(y!=HAUTEUR)
 			throw new TailleMapException("Problème de Hauteur : "+y+" a la place des "+HAUTEUR+" demandés.");
-		System.out.println(blockMap.size());
+//		System.out.println(blockMap.size());
 	}
 }
