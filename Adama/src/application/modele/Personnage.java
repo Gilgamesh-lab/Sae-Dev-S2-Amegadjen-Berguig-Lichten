@@ -15,7 +15,7 @@ public abstract class Personnage {
 	private int hauteurSaut;
 	private int[] taille = new int[2];
 	
-	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut){
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
@@ -23,10 +23,10 @@ public abstract class Personnage {
 		this.environnement = environnement;
 		this.inventaire = inventaire;
 		this.hauteurSaut = hauteurSaut;
-		this.taille[0]=1; this.taille[1]=2;
+		this.taille = taille;
 	}
 
-	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement){
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
@@ -34,7 +34,7 @@ public abstract class Personnage {
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
 		this.hauteurSaut = 1;
-		this.taille[0]=1; this.taille[1]=2;
+		this.taille = taille;
 	}
 	
 	public final int getPv() {
@@ -126,9 +126,9 @@ public abstract class Personnage {
 	
 	public boolean toucheY(boolean auDessus) throws IOException {
 		if(auDessus)
-			return this.environnement.getCarte().emplacement(this.getX(), this.getY()-32, taille)==null;
+			return this.environnement.getCarte().emplacement(this.getX(), this.getY()-32)==null;
 		else
-			return this.environnement.getCarte().emplacement(this.getX(), this.getY()+64, taille)==null;
+			return this.environnement.getCarte().emplacement(this.getX(), this.getY()+64)==null;
     }
 	
 	/**
@@ -163,13 +163,13 @@ public abstract class Personnage {
 		boolean teteCogne;
 		boolean corpCogne;
 		if(aDroite) {
-			teteCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY(), taille)==null;
-			corpCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+32, taille)==null;
+			teteCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY())==null;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+32)==null;
 
 		}
 		else {
-			teteCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null;
-			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+32, taille)==null;
+			teteCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY())==null;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null;
 		}
 		return !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
 	}
@@ -199,9 +199,5 @@ public abstract class Personnage {
 	
 	public void gravite() throws IOException {
 		this.descendre(5);
-	}
-	
-	public void gravite() {
-		this.setY(this.getY()+1);
 	}
 }
