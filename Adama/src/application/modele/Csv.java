@@ -17,7 +17,8 @@ public class Csv {
     
     public static String getChemin(String nom) {
      	File getCSVFiles = new File("");
-     	return getCSVFiles.getAbsolutePath() + "/src/application/modele/" + nom ;
+     	return getCSVFiles.getAbsolutePath() + "/src/ressource/" + nom ;
+
      }
 
     
@@ -80,28 +81,10 @@ public class Csv {
     		System.out.println("");
     	}
     }
-
-     public static int[][] test () throws IOException{
-    	 File file = new File(getChemin("exemple.csv"));
-    	 
-         Reader reader = new FileReader(file);
-         BufferedReader br = new BufferedReader(reader);
-         
-         String line;
-         int i = 0;
-         line = br.readLine();
-         while(line != null) {
-             System.out.print(line);
-             System.out.println( " | " + i);
-             i ++;
-         }
-         br.close();
-		return null;
-
- 	}
      
      public static  BufferedReader ouvrir (String nom) throws IOException{
-    	 File file = new File(getChemin("exemple.csv"));
+    	 File file = new File(getChemin(nom));
+
     	 
          Reader reader = new FileReader(file);
          BufferedReader br = new BufferedReader(reader);

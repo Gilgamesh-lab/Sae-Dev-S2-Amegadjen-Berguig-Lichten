@@ -1,11 +1,9 @@
 package application.controleur;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Joueur;
 import application.vue.EnvironnementVue;
@@ -14,12 +12,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelFormat;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 
@@ -43,8 +37,13 @@ public class Controleur implements Initializable{
 	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
-        System.out.println(touchePresse);
-        persoControleur.touchePresse(touchePresse);
+        /*
+         * TODO
+         * Mettre un switch pour gérer les action qui nécessite un wait (ex: pause avec echap)
+         * et en default persoControleur.touchePresse(touchePresse)
+         */
+		System.out.println(touchePresse);
+    persoControleur.touchePresse(touchePresse);
 	}
 	
 	@Override
@@ -56,7 +55,7 @@ public class Controleur implements Initializable{
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
-		perso  = new Joueur(500, 420, env);
+		perso  = new Joueur(320, 0, env);
 		persoVue = new JoueurVue(perso);
 		persoControleur = new JoueurControleur(perso, persoVue);
 		plateau.getChildren().add(persoVue.getSprite());
@@ -82,8 +81,13 @@ public class Controleur implements Initializable{
 				(ev -> { 
 					if(temps==100)
 						System.out.println("ok");
-					else
-						perso.gravite();
+					else if(temps%4==0)
+						try {
+							perso.gravite();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					temps++;							
 				})
 				);

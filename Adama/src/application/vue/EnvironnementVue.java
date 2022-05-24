@@ -26,7 +26,7 @@ public class EnvironnementVue {
 	
 	public void creerEnvironnement() throws IOException {
 		int val;
-		int tailleMap = (env.getCarte().getHauteur()-1) * (env.getCarte().getLargeur()-1);
+		int tailleMap = (env.getCarte().getHauteur()) * (env.getCarte().getLargeur());
 		int largeur = env.getCarte().getLargeur();
 		Ressource block;
 		for(int i=0; i<tailleMap; i++) {

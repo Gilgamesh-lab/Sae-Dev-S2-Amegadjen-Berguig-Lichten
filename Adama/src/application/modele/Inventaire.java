@@ -1,7 +1,5 @@
 package application.modele;
 
-import java.util.ArrayList;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -21,6 +19,10 @@ public class Inventaire {
 	
 	public ObservableList<Item> getItems() {
 		return this.items;
+	}
+	
+	public Item getItem(int indice) {
+		return this.items.get(indice);
 	}
 	
 	public final int getTailleMax() {
@@ -49,6 +51,10 @@ public class Inventaire {
 	
 	public void supprimer(Item item) {
 		this.items.remove(item);
+	}
+	
+	public void supprimer(int indice) {
+		this.items.remove(indice);
 	}
 	
 	public void remplacer(Item item, int indice) {

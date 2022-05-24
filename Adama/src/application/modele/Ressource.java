@@ -4,13 +4,12 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Ressource implements Item {
-  
+
 	private boolean posable;
 	private int durabiliter;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
 	
-
 	public Ressource(int x, int y, boolean posable) {
 		this.posable = posable;
 		this.durabiliter = -1;
@@ -54,12 +53,11 @@ public abstract class Ressource implements Item {
 	public boolean estPosable() {
 		return this.posable;
 	}
-		
-	public void prendreDegat(int degat) {
+
+  public void prendreDegat(int degat) {
 		this.durabiliter -= degat;
 	}
-	
-	
+
 	public boolean estCasser() {
 		return this.durabiliter <= 0;
 	}

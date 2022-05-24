@@ -14,7 +14,7 @@
 	<center>
 		<Pane fx:id="plateau">
 			<children>
-				<TilePane fx:id="carte" prefColumns="60" prefRows="32">
+				<TilePane fx:id="carte" prefColumns="60">
 				</TilePane>
 			</children>
 		</Pane>
