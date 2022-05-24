@@ -1,6 +1,5 @@
 package application.modele;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,6 +58,7 @@ public class Carte {
 		int x = 0;
 		int y = 0;
 		ligne = this.map.readLine();
+
 		//System.out.println(ligne.length());
 		while(ligne!=null) {
 			for (int indice=0; indice<ligne.length(); indice=indice+2) {
@@ -93,3 +93,4 @@ public class Carte {
 //		System.out.println(blockMap.size());
 	}
 }
+

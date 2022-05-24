@@ -200,4 +200,8 @@ public abstract class Personnage {
 	public void gravite() throws IOException {
 		this.descendre(5);
 	}
+	
+	public void gravite() {
+		this.setY(this.getY()+1);
+	}
 }

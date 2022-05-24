@@ -17,7 +17,7 @@ public class JoueurControleur {
 		switch (touchePresse) {
 		case "q":
 			persoVue.orrientationSpriteGauche();
-			perso.gauche();
+      perso.gauche();
 			break;
 		case "d":
 			persoVue.orrientationSpriteDroite();
