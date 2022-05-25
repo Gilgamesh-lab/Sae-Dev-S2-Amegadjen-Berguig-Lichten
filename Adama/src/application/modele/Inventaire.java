@@ -1,5 +1,8 @@
 package application.modele;
 
+
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.exception.ErreurObjetIntrouvable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -23,6 +26,10 @@ public class Inventaire {
 		return this.items.get(indice);
 	}
 
+	public void setItems(ObservableList<Item> items2) {
+		this.items = items2;
+	}
+
 	public final int getTailleMax() {
 		return this.tailleMaxProperty.getValue();
 	}
@@ -35,14 +42,48 @@ public class Inventaire {
 		return this.tailleMaxProperty;
 	}
 
+	public void augmenterTailleMax(int val) {
+		this.setTailleMax(this.getTailleMax() + val);
+	}
+
 	public int getTaille() {
 		return this.items.size();
 	}
 
 	public void ajouter(Item item) throws ErreurInventairePlein {
-		if(!estPleine()) {
+		if(!estPlein()) {
 			this.items.add(item);
 		}
+		else {
+			throw new ErreurInventairePlein();
+		}
+	}
+
+	public boolean estDansInventaire(Item item) {
+		for(int i = 0; i < this.getTaille() ; i++) {
+			if(this.items.get(i) == item) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int indiceDansInventaire(Item item) throws ErreurObjetIntrouvable {
+		for(int i = 0; i < this.getTaille() ; i++) {
+			if(this.items.get(i) == item) {
+				return i;
+			}
+		}
+		throw new ErreurObjetIntrouvable(); // pour éviter -1
+	}
+
+	public boolean estDansInventaire(Item item, int indice) {
+		for(int i = 0; i < this.getTaille() ; i++) {
+			if(this.items.get(i) == item && i == indice) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void supprimer(Item item) {
@@ -53,15 +94,42 @@ public class Inventaire {
 		this.items.remove(indice);
 	}
 
-	public void remplacer(Item item, int indice) {
+	public void remplacer(Item item, int indice) { // objet ramassé qui remplace un objet présent dans l'inventaire qui sera jeté
 		this.items.add(indice, item);
 	}
 
-	public void supprimerAvecIndice(int indice) {
-		this.items.remove(indice);
+	public Item setItem(Item item, int indice) {
+		return this.items.set(indice, item);
 	}
 
-	public boolean estPleine() {
-		return this.items.size() == this.getTaille();
+	public void echanger(Item item1, int indice1, Item item2, int indice2) {// échanger  deux objets déjà dans l'inventaire
+		this.remplacer(item1, indice2);
+		this.remplacer(item2, indice1);
 	}
+
+	public boolean estPlein() {
+		return this.getTaille() >= this.getTailleMax();
+	}
+
+	public void transferer(Item item, Inventaire inventaireSource) throws ErreurInventairePlein { // terminer inventaire, environnement(inventaire), ressources,faire boolean pause, saut
+		this.ajouter(item);
+		inventaireSource.supprimer(item); // indice plus précis mais je ne sais pas si je vais y avoir accès
+	}
+
+	public void ajouterInventaire(Inventaire inventaireSource) throws ErreurInventairePlein {
+		for (int i = 0 ; i < inventaireSource.getTaille() ; i++) {
+			this.transferer(inventaireSource.getItem(i), inventaireSource);
+			// this.ajouter(inventaireSource.getItem(i));
+			// inventaireSource.supprimer(i);
+		}
+	}
+
+
+
+
+
+
+
+
+
 }
