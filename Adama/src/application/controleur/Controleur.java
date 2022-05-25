@@ -26,12 +26,12 @@ public class Controleur implements Initializable{
 	
 	private Timeline gameLoop;
 	private int temps;
-	
+	private int tempsSaut = 0;
 	private Joueur perso;
 	private JoueurVue persoVue;
 	private JoueurControleur persoControleur;
 	private Environnement env;
-	private EnvironnementVue envVue;
+	private EnvironnementVue envVue;	
 	
 	
 	@FXML
@@ -81,7 +81,21 @@ public class Controleur implements Initializable{
 				(ev -> { 
 					if(temps==100)
 						System.out.println("ok");
-					else if(temps%4==0)
+					else if(persoControleur.isSaut()&&tempsSaut<=30) {
+						perso.saut(2);
+						tempsSaut++;
+					}
+					else if(persoControleur.isSaut()&&tempsSaut>30) {
+						persoControleur.setSaut(false);
+						tempsSaut=0;
+						try {
+							perso.gravite();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					else if(temps%3==0)
 						try {
 							perso.gravite();
 						} catch (IOException e) {
@@ -94,3 +108,4 @@ public class Controleur implements Initializable{
 		gameLoop.getKeyFrames().add(kf);
 	}	
 }
+
