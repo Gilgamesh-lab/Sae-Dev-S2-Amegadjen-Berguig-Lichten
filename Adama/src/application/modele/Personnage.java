@@ -125,10 +125,17 @@ public abstract class Personnage {
 	}
 	
 	public boolean toucheY(boolean auDessus) throws IOException {
-		if(auDessus)
-			return this.environnement.getCarte().emplacement(this.getX(), this.getY()-32)==null;
-		else
-			return this.environnement.getCarte().emplacement(this.getX(), this.getY()+64)==null;
+		boolean gauche;
+		boolean droite;
+		if(auDessus) {
+			gauche = this.environnement.getCarte().emplacement(this.getX(), this.getY()-32)==null;
+			droite = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()-32)==null;
+		}
+		else {
+			gauche = this.environnement.getCarte().emplacement(this.getX(), this.getY()+64)==null;
+			droite = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+64)==null;
+		}
+		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
     }
 	
 	/**
@@ -171,7 +178,7 @@ public abstract class Personnage {
 			teteCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY())==null;
 			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null;
 		}
-		return !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
+		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
 	}
 
 	

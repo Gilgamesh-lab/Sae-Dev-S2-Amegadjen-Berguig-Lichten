@@ -36,7 +36,6 @@ public class JoueurControleur {
 		case "PRIMARY":
 			perso.utiliserMain(emplacement);
 			break;
-
 		default:
 			break;
 		}

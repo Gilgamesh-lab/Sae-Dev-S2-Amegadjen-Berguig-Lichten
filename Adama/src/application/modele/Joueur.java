@@ -61,6 +61,7 @@ public class Joueur extends Personnage {
 	}
 	
 	public void utiliserMain(int emplacement) {
+		System.out.println("Yo");
 		this.objetEquiper.utiliser(emplacement);
 		
 	}

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Carte {
 
@@ -15,15 +17,16 @@ public class Carte {
 	private final static int HAUTEUR = 32;
 	private final static int LARGEUR = 60;
 	private final static int TAILLE_BLOCK = 32;
-	private ArrayList<Ressource> blockMap;
+	private ObservableList<Ressource> blockMap;
 	private Inventaire poubelle;
 	private ArrayList<Item> items;
 
 	public Carte() throws TailleMapException, IOException {
 		this.map = Csv.ouvrir("testMap.csv");
-		this.blockMap = new ArrayList<Ressource>();
+		this.blockMap = FXCollections.observableArrayList();
 		this.poubelle = new Inventaire(99);
 		creerListeBlock();
+		this.items = new ArrayList<Item>();
 	}
 
 	public int getHauteur() {
@@ -34,7 +37,7 @@ public class Carte {
 		return LARGEUR;
 	}
 
-	public ArrayList<Ressource> getBlockMap() {
+	public ObservableList<Ressource> getBlockMap() {
 		return blockMap;
 	}
 

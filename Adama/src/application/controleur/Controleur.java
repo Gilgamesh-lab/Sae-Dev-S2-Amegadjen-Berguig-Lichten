@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import application.modele.Environnement;
 import application.modele.Joueur;
+import application.modele.Pelle;
 import application.modele.Ressource;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
@@ -78,6 +79,7 @@ public class Controleur implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		perso.equiper(new Pelle(env));
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
 		persoVue.getSprite().setFitHeight(64);
