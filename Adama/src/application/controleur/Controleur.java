@@ -15,6 +15,15 @@ import application.vue.JoueurVue;
 import application.vue.RessourceView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,16 +39,38 @@ public class Controleur implements Initializable{
 	private Pane plateau;
 	@FXML
 	private TilePane carte;
+    @FXML
+    private Button boutonInventaire;
 
 	private Timeline gameLoop;
 	private int temps;
-
+	private InventaireControleur inv;
 	private Joueur perso;
 	private JoueurVue persoVue;
 	private JoueurControleur persoControleur;
 	private Environnement env;
 	private EnvironnementVue envVue;
+	@FXML
+	private HBox inventaire;
 
+
+
+    @FXML
+    void ouvrirInventaire(ActionEvent event) {
+    	ouvrirInventaire();
+    }
+
+    private void ouvrirInventaire() {
+    	System.out.println("Bonjour");
+    	if(!inventaire.isVisible()) {
+    		inventaire.setDisable(false);
+    		inventaire.setVisible(true);
+    	}
+    	else {
+    		inventaire.setDisable(true);
+    		inventaire.setVisible(false);
+    	}
+    }
 
 	@FXML
 	void sourisPresse(MouseEvent event) {
@@ -62,7 +93,14 @@ public class Controleur implements Initializable{
 		 */
 
 		System.out.println(touchePresse);
-		persoControleur.touchePresse(touchePresse);
+		switch (touchePresse) {
+		case "e":
+			ouvrirInventaire();
+			break;
+
+		default:
+			persoControleur.touchePresse(touchePresse);
+		}
 	}
 
 	@Override
@@ -100,7 +138,7 @@ public class Controleur implements Initializable{
 					}
 				}
 			}});
-		env.getCarte().getBlockMap().addListener(listen);		
+		env.getCarte().getBlockMap().addListener(listen);
 		perso  = new Joueur(320, 0, env);
 		persoVue = new JoueurVue();
 		persoControleur = new JoueurControleur(perso, persoVue);
@@ -110,9 +148,11 @@ public class Controleur implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		inv = new InventaireControleur(inventaire);
 		perso.equiper(new Pelle(env));
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
+		perso.getInventaire().getItems().addListener(inv);
 		persoVue.getSprite().setFitHeight(64);
 		persoVue.getSprite().setFitWidth(32);
 
@@ -124,8 +164,8 @@ public class Controleur implements Initializable{
 		gameLoop = new Timeline();
 		temps=0;
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
-		KeyFrame kf = new KeyFrame(Duration.seconds(0.017), 
-				(ev -> { 
+		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
+				(ev -> {
 					if(temps==100)
 						System.out.println("ok");
 					else if(temps%2==0)
@@ -143,9 +183,9 @@ public class Controleur implements Initializable{
 						System.out.println("Changement outils");
 						perso.equiper(new Hache(env));
 					}
-					temps++;							
+					temps++;
 				})
 				);
 		gameLoop.getKeyFrames().add(kf);
-	}	
+	}
 }
