@@ -2,10 +2,7 @@ package application.controleur;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import javax.xml.validation.Validator;
 
 import application.modele.Environnement;
 import application.modele.Joueur;
@@ -14,14 +11,12 @@ import application.modele.Pioche;
 import application.modele.Ressource;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
+import application.vue.RessourceView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -29,22 +24,22 @@ import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 
 public class Controleur implements Initializable{
-	
-    @FXML
-    private Pane plateau;
+
+	@FXML
+	private Pane plateau;
 	@FXML
 	private TilePane carte;
-	
+
 	private Timeline gameLoop;
 	private int temps;
-	
+
 	private Joueur perso;
 	private JoueurVue persoVue;
 	private JoueurControleur persoControleur;
 	private Environnement env;
 	private EnvironnementVue envVue;
-	
-	
+
+
 	@FXML
 	void sourisPresse(MouseEvent event) {
 		String click = event.getButton().name();
@@ -54,21 +49,21 @@ public class Controleur implements Initializable{
 		Ressource cible = env.getCarte().emplacement(x, y);
 		System.out.println(env.getCarte().getBlockMap().indexOf(cible));
 		persoControleur.sourisPresse(click, env.getCarte().getBlockMap().indexOf(cible));//a voir si problème avec click sur bouton
-		}
-	
+	}
+
 	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
-        /*
-         * TODO
-         * Mettre un switch pour gérer les action qui nécessite un wait (ex: pause avec echap)
-         * et en default persoControleur.touchePresse(touchePresse)
-         */
-		
+		/*
+		 * TODO
+		 * Mettre un switch pour gérer les action qui nécessite un wait (ex: pause avec echap)
+		 * et en default persoControleur.touchePresse(touchePresse)
+		 */
+
 		System.out.println(touchePresse);
-        persoControleur.touchePresse(touchePresse);
+		persoControleur.touchePresse(touchePresse);
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
@@ -78,19 +73,35 @@ public class Controleur implements Initializable{
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
-//		carte.getChildren()
-		ListChangeListener<Ressource> listen = (cs -> {	
+		ListChangeListener<Ressource> listen = (cs -> {
 			System.out.println("changement");
 			while(cs.next()) {
-				int largeur = env.getCarte().getLargeur();
-				int val;
-				int indiceBloc;
-				for(Ressource nouv : cs.getAddedSubList()) {
-					indiceBloc = env.getCarte().getBlockMap().indexOf(nouv);
-					val=envVue.blockPourVal(nouv, indiceBloc, largeur);
-					carte.getChildren().set(indiceBloc, envVue.choixTuile(val));
+				if (cs.wasRemoved()) {
+					int indiceBloc;
+					Ressource ancien;
+					for (int i=0; i<cs.getRemovedSize(); i++) {
+						ancien=cs.getRemoved().get(i);
+						System.out.println(ancien);
+						System.out.println(cs.getRemoved());
+						indiceBloc = ancien.getIndice();
+						System.out.println(indiceBloc+ " indice Bloc");
+						carte.getChildren().set(indiceBloc, new RessourceView(null, env));
+					}
 				}
-				System.out.println(cs.wasAdded());
+				else {
+					int indiceBloc;
+					Ressource nouveau;
+					for (int i=0; i<cs.getAddedSize(); i++) {
+						nouveau=cs.getAddedSubList().get(i);
+						if (nouveau != null) {
+							System.out.println(nouveau);
+							System.out.println(cs.getAddedSubList());
+							indiceBloc = nouveau.getIndice();
+							System.out.println(indiceBloc+ " indice Bloc");
+							carte.getChildren().set(indiceBloc, new RessourceView(nouveau, env));
+						}
+					}
+				}
 			}});
 		env.getCarte().getBlockMap().addListener(listen);		
 		perso  = new Joueur(320, 0, env);
@@ -107,7 +118,7 @@ public class Controleur implements Initializable{
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
 		persoVue.getSprite().setFitHeight(64);
 		persoVue.getSprite().setFitWidth(32);
-		
+
 		initAnimation();
 		gameLoop.play();
 	}
@@ -120,7 +131,7 @@ public class Controleur implements Initializable{
 				(ev -> { 
 					if(temps==100)
 						System.out.println("ok");
-					else if(temps%4==0)
+					else if(temps%2==0)
 						try {
 							perso.gravite();
 						} catch (IOException e) {

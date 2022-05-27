@@ -128,12 +128,12 @@ public abstract class Personnage {
 		boolean gauche;
 		boolean droite;
 		if(auDessus) {
-			gauche = this.environnement.getCarte().emplacement(this.getX(), this.getY()-32)==null;
-			droite = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()-32)==null;
+			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null;
+			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null;
 		}
 		else {
-			gauche = this.environnement.getCarte().emplacement(this.getX(), this.getY()+64)==null;
-			droite = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+64)==null;
+			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null;
+			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null;
 		}
 		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
     }

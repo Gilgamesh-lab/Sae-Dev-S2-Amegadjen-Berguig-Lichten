@@ -9,21 +9,24 @@ public abstract class Ressource implements Item {
 	private int durabiliter;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
+	private int indice;
 	
-	public Ressource(int x, int y, boolean posable) {
+	public Ressource(int x, int y, boolean posable, int indice) {
 		this.posable = posable;
 //		this.nombre = nombre;
 		this.durabiliter = -1;
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
+		this.indice = indice;
 	}
 	
-	public Ressource(int durabiliter, int x, int y, boolean posable) {
+	public Ressource(int durabiliter, int x, int y, boolean posable, int indice) {
 		this.posable = posable;
 //		this.nombre = nombre;
 		this.durabiliter = durabiliter;
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
+		this.indice = indice;
 	}
 	
 	public final int getX() {
@@ -62,5 +65,13 @@ public abstract class Ressource implements Item {
 	
 	public boolean estDetruit() {
 		return this.durabiliter <= 0;
+	}
+
+	public int getIndice() {
+		return indice;
+	}
+
+	public void setIndice(int indice) {
+		this.indice = indice;
 	}
 }

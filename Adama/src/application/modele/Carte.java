@@ -71,17 +71,17 @@ public class Carte {
 		ligne = this.map.readLine();
 		//System.out.println(ligne.length());
 		while(ligne!=null) {
-			for (int indice=0; indice<ligne.length(); indice=indice+2) {
+			for (int indice=0; indice<ligne.length(); indice+=2) {
 				suivant=ligne.charAt(indice);
 				switch (suivant) {
 					case '1':
-						blockMap.add(new Terre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false));
+						blockMap.add(new Terre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '2':
-						blockMap.add(new Terre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false));
+						blockMap.add(new Terre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '3':
-						blockMap.add(new Pierre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false));
+						blockMap.add(new Pierre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false, x+(y*((ligne.length()+1)/2))));
 						break;
 //					case ',':
 //						x++;
@@ -109,8 +109,8 @@ public class Carte {
 //	}
 
 	public void detruireBlock(int indice) {
-		this.items.add(this.blockMap.get(indice));
-		this.blockMap.set(indice, null);
+		this.items.add(this.blockMap.remove(indice));
+		this.blockMap.add(indice, null);
 	}
 	
 	public boolean enDehorsMap(Ressource ressource) {

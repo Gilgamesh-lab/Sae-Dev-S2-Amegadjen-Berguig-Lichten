@@ -4,8 +4,8 @@ public class Pierre extends Ressource {
 
 	
 
-	public Pierre(int x, int y, boolean posable) {
-		super(10, x, y, posable);
+	public Pierre(int x, int y, boolean posable, int indice) {
+		super(10, x, y, posable, indice);
 		
 	}
 
