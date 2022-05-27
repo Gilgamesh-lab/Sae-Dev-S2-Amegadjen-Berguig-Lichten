@@ -18,13 +18,11 @@ public class Carte {
 	private final static int LARGEUR = 60;
 	private final static int TAILLE_BLOCK = 32;
 	private ObservableList<Ressource> blockMap;
-	private Inventaire poubelle;
 	private ArrayList<Item> items;
 
 	public Carte() throws TailleMapException, IOException {
 		this.map = Csv.ouvrir("testMap.csv");
 		this.blockMap = FXCollections.observableArrayList();
-		this.poubelle = new Inventaire(99);
 		creerListeBlock();
 		this.items = new ArrayList<Item>();
 	}
@@ -111,8 +109,8 @@ public class Carte {
 //	}
 
 	public void detruireBlock(int indice) {
-		this.items.add(this.blockMap.remove(indice));
-		this.blockMap.add(indice, null);
+		this.items.add(this.blockMap.get(indice));
+		this.blockMap.set(indice, null);
 	}
 	
 	public boolean enDehorsMap(Ressource ressource) {

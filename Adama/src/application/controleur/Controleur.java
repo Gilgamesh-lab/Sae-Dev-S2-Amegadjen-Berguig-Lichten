@@ -2,18 +2,26 @@ package application.controleur;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import javax.xml.validation.Validator;
 
 import application.modele.Environnement;
 import application.modele.Joueur;
 import application.modele.Pelle;
+import application.modele.Pioche;
 import application.modele.Ressource;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -70,6 +78,21 @@ public class Controleur implements Initializable{
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
+//		carte.getChildren()
+		ListChangeListener<Ressource> listen = (cs -> {	
+			System.out.println("changement");
+			while(cs.next()) {
+				int largeur = env.getCarte().getLargeur();
+				int val;
+				int indiceBloc;
+				for(Ressource nouv : cs.getAddedSubList()) {
+					indiceBloc = env.getCarte().getBlockMap().indexOf(nouv);
+					val=envVue.blockPourVal(nouv, indiceBloc, largeur);
+					carte.getChildren().set(indiceBloc, envVue.choixTuile(val));
+				}
+				System.out.println(cs.wasAdded());
+			}});
+		env.getCarte().getBlockMap().addListener(listen);		
 		perso  = new Joueur(320, 0, env);
 		persoVue = new JoueurVue();
 		persoControleur = new JoueurControleur(perso, persoVue);
@@ -104,6 +127,10 @@ public class Controleur implements Initializable{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+					else if (temps>1500 && temps<1600) {
+						System.out.println("Changement d'outils");//teste de la pioche elle marche
+						perso.equiper(new Pioche(env));
+					}
 					temps++;							
 				})
 				);

@@ -2,16 +2,16 @@ package application.vue;
 
 import java.io.IOException;
 
+
 import application.modele.Environnement;
 import application.modele.Pierre;
 import application.modele.Ressource;
 import application.modele.Terre;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.scene.ImageCursor;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
-import javafx.util.Duration;
 
 public class EnvironnementVue {
 	
@@ -31,19 +31,27 @@ public class EnvironnementVue {
 		Ressource block;
 		for(int i=0; i<tailleMap; i++) {
 			block= env.getCarte().getBlockMap().get(i);
-			if (block==null)
-				val=0;
-			else if (block instanceof Terre && i>largeur && env.getCarte().getBlockMap().get(i-largeur)==null)
-				val=1;				
-			else if (block instanceof Pierre)
-				val=3;
-			else
-				val=2;
+			val=blockPourVal(block, i, largeur);
 			this.carte.getChildren().add(choixTuile(val));	
 		}
+		ImageView test = new ImageView();
+//		ImageCursor changer l'image de la souris
 	}
 	
-	private ImageView choixTuile(int val) {
+	public int blockPourVal(Ressource bloc, int indice, int largeur) {
+		int val;
+		if (bloc==null)
+			val=0;
+		else if (bloc instanceof Terre && indice>largeur && env.getCarte().getBlockMap().get(indice-largeur)==null)
+			val=1;				
+		else if (bloc instanceof Pierre)
+			val=3;
+		else
+			val=2;
+		return val;
+	}
+	
+	public ImageView choixTuile(int val) {
 		ImageView img = null;
 		switch(val){
 		case 0:
@@ -70,4 +78,11 @@ public class EnvironnementVue {
 		}
 		return img;
 	}
+	
+//	public ListChangeListener<ImageView> miseAJourMap(ObservableList<Ressource> obs, Ressource old, Ressource nouv){
+//		System.out.println("Changement");
+//		while ()
+//		int val = blockPourVal(nouv, obs.indexOf(nouv), env.getCarte().getLargeur());
+//		return null;
+//	}
 }
