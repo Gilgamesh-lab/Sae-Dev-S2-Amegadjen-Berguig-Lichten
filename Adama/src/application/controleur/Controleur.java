@@ -78,9 +78,7 @@ public class Controleur implements Initializable{
 			while(cs.next()) {
 				if (cs.wasRemoved()) {
 					int indiceBloc;
-					Ressource ancien;
-					for (int i=0; i<cs.getRemovedSize(); i++) {
-						ancien=cs.getRemoved().get(i);
+					for (Ressource ancien : cs.getRemoved()) {
 						System.out.println(ancien);
 						System.out.println(cs.getRemoved());
 						indiceBloc = ancien.getIndice();
@@ -90,9 +88,7 @@ public class Controleur implements Initializable{
 				}
 				else {
 					int indiceBloc;
-					Ressource nouveau;
-					for (int i=0; i<cs.getAddedSize(); i++) {
-						nouveau=cs.getAddedSubList().get(i);
+					for (Ressource nouveau : cs.getAddedSubList()) {
 						if (nouveau != null) {
 							System.out.println(nouveau);
 							System.out.println(cs.getAddedSubList());
