@@ -5,28 +5,31 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Ressource implements Item {
 	private boolean posable;
-//	private int nombre;
+	private int nombre;
 	private int durabiliter;
+	@SuppressWarnings("unused")
+	private boolean estUnMateriauDeConstruction;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
-	private int indice;
 	
-	public Ressource(int x, int y, boolean posable, int indice) {
+	public Ressource(boolean posable, int x, int y){
 		this.posable = posable;
-//		this.nombre = nombre;
-		this.durabiliter = -1;
+		this.nombre = 1;
+		this.durabiliter = 5;
+		this.estUnMateriauDeConstruction = !posable;
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
-		this.indice = indice;
+	
 	}
 	
-	public Ressource(int durabiliter, int x, int y, boolean posable, int indice) {
+	
+	public Ressource(boolean posableint nombre, int durabiliter, boolean estUnMateriauDeConstruction, int x, int y) {
 		this.posable = posable;
-//		this.nombre = nombre;
+		this.nombre = nombre;
 		this.durabiliter = durabiliter;
+		this.estUnMateriauDeConstruction = estUnMateriauDeConstruction;
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
-		this.indice = indice;
 	}
 	
 	public final int getX() {
@@ -53,25 +56,72 @@ public abstract class Ressource implements Item {
 		return this.yProperty;
 	}
 	
-	public abstract void utiliser();
+	public void setNombre(int val) {
+		this.nombre = val;
+	}
+	
+	public void augmenterNombre(int val) {
+		this.nombre += val;
+	}
+	
+	public void diminuerNombre(int val) {
+		augmenterNombre(-val);
+	}
+	
+	public void utiliser() {
+		
+	}
 	
 	public boolean estPosable() {
 		return this.posable;
 	}
-
-	public void prendreDegat(int degat) {
-		this.durabiliter -= degat;
+	
+	public int getNombre() {
+		return this.nombre;
 	}
 	
-	public boolean estDetruit() {
+	public boolean estUnMateriauDeConstruction(){
+		return this.estUnMateriauDeConstruction;
+	}
+	
+	public void prendreDegat() {
+		this.durabiliter -= 1;
+	}
+	
+	public void decremeterPv(int degat) {
+		for (int i = 0; this.getDurabiliter() < 0 && i < degat ; i++) {
+			this.prendreDegat();
+		}
+	}
+	
+	
+	public boolean estCasser() {
 		return this.durabiliter <= 0;
 	}
-
-	public int getIndice() {
-		return indice;
+	
+	
+	
+	public void casser() {
+		this.setX(-32);
+		this.setY(-32);
 	}
-
-	public void setIndice(int indice) {
-		this.indice = indice;
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

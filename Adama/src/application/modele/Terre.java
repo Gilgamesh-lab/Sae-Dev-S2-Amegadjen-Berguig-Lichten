@@ -2,19 +2,24 @@ package application.modele;
 
 public class Terre extends Ressource {
 
-	public Terre (int x, int y, boolean posable, int indice) {
-		super(3, x, y, posable, indice);
+	
+	public Terre(boolean posable, int x, int y) {
+		super(  posable, x, y);
+	}
+	
+	public Terre() {
+		super(true,5,5);
 	}
 
 	@Override
 	public void utiliser() {
 		
-	}
-
-	@Override
-	public void utiliser(int val) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	public String toString() {
+		return "Terre";
 	}
 
 	

@@ -1,24 +1,24 @@
+
 package application.modele;
 
 public class Pierre extends Ressource {
 
 	
 
-	public Pierre(int x, int y, boolean posable, int indice) {
-		super(10, x, y, posable, indice);
+	public Pierre(int x, int y, boolean posable) {
+		super(posable, x, y);
 		
 	}
-
-	@Override
-	public void utiliser(int val) {
-		// TODO Auto-generated method stub
-		
+	
+	
+	public Pierre() {
+		super(false, 5,5);
 	}
 
 	@Override
 	public void utiliser() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
