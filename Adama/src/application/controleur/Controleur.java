@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.modele.Environnement;
+import application.modele.Hache;
 import application.modele.Joueur;
 import application.modele.Pelle;
 import application.modele.Pioche;
@@ -137,6 +138,10 @@ public class Controleur implements Initializable{
 					else if (temps>1500 && temps<1600) {
 						System.out.println("Changement d'outils");//teste de la pioche elle marche
 						perso.equiper(new Pioche(env));
+					}
+					else if(temps>1600 && temps<1700) {
+						System.out.println("Changement outils");
+						perso.equiper(new Hache(env));
 					}
 					temps++;							
 				})

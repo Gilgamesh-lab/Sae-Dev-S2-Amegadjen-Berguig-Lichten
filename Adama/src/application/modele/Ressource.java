@@ -11,25 +11,28 @@ public abstract class Ressource implements Item {
 	private boolean estUnMateriauDeConstruction;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
+	private int indice;
 	
-	public Ressource(boolean posable, int x, int y){
+	public Ressource(boolean posable, int x, int y, int indice){
 		this.posable = posable;
 		this.nombre = 1;
 		this.durabiliter = 5;
 		this.estUnMateriauDeConstruction = !posable;
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
+		this.indice = indice;
 	
 	}
 	
 	
-	public Ressource(boolean posableint nombre, int durabiliter, boolean estUnMateriauDeConstruction, int x, int y) {
+	public Ressource(boolean posable, int nombre, int durabiliter, boolean estUnMateriauDeConstruction, int x, int y, int indice) {
 		this.posable = posable;
 		this.nombre = nombre;
 		this.durabiliter = durabiliter;
 		this.estUnMateriauDeConstruction = estUnMateriauDeConstruction;
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
+		this.indice = indice;
 	}
 	
 	public final int getX() {
@@ -84,17 +87,22 @@ public abstract class Ressource implements Item {
 		return this.estUnMateriauDeConstruction;
 	}
 	
-	public void prendreDegat() {
-		this.durabiliter -= 1;
+	public void prendreDegat(int val) {
+		this.durabiliter -= val;
 	}
 	
-	public void decremeterPv(int degat) {
-		for (int i = 0; this.getDurabiliter() < 0 && i < degat ; i++) {
-			this.prendreDegat();
-		}
+//	public void decremeterPv(int degat) {
+//		for (int i = 0; this.getDurabiliter() < 0 && i < degat ; i++) {
+//			this.prendreDegat();
+//		}
+//	}
+	
+	
+	public int getDurabiliter() {
+		return this.durabiliter;
 	}
-	
-	
+
+
 	public boolean estCasser() {
 		return this.durabiliter <= 0;
 	}
@@ -105,23 +113,20 @@ public abstract class Ressource implements Item {
 		this.setX(-32);
 		this.setY(-32);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+	public boolean estDetruit() {
+		return this.durabiliter <= 0;
+	}
+
+
+	public int getIndice() {
+		return indice;
+	}
+
+
+	public void setIndice(int indice) {
+		this.indice = indice;
+	}
 	
 }

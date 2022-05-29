@@ -21,7 +21,7 @@ public class Carte {
 	private ArrayList<Item> items;
 
 	public Carte() throws TailleMapException, IOException {
-		this.map = Csv.ouvrir("testMap.csv");
+		this.map = Csv.ouvrir("mapsTest.csv");
 		this.blockMap = FXCollections.observableArrayList();
 		creerListeBlock();
 		this.items = new ArrayList<Item>();
@@ -74,14 +74,17 @@ public class Carte {
 			for (int indice=0; indice<ligne.length(); indice+=2) {
 				suivant=ligne.charAt(indice);
 				switch (suivant) {
-					case '1':
-						blockMap.add(new Terre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false, x+(y*((ligne.length()+1)/2))));
-						break;
-					case '2':
-						blockMap.add(new Terre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false, x+(y*((ligne.length()+1)/2))));
-						break;
 					case '3':
-						blockMap.add(new Pierre(x*TAILLE_BLOCK, y*TAILLE_BLOCK, false, x+(y*((ligne.length()+1)/2))));
+						blockMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
+					case '4':
+						blockMap.add(new Terre(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
+					case '5':
+						blockMap.add(new Pierre(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
+					case '6':
+						blockMap.add(new Bois(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 //					case ',':
 //						x++;
@@ -118,11 +121,9 @@ public class Carte {
 	}
 
 	/**
-	 * Si on touve blocs dans liste de la map avec x et y endors de la map ils sont détruit.
-	 * @throws ErreurInventairePlein
-	 * @throws ErreurObjetIntrouvable
+	 * Si on trouve des blocs dans blockMap avec x et y en dehors de la map ils sont détruit.
 	 */
-	public void ressourceEnDehorsMap() throws ErreurInventairePlein, ErreurObjetIntrouvable {
+	public void ressourceEnDehorsMap() {
 		for(int i = 0 ; i < this.getBlockMap().size(); i++) {
 			if(this.enDehorsMap(this.getBlockMap().get(i))){
 				this.detruireBlock(i);

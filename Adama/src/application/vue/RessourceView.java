@@ -1,5 +1,6 @@
 package application.vue;
 
+import application.modele.Bois;
 import application.modele.Environnement;
 import application.modele.Pierre;
 import application.modele.Ressource;
@@ -26,6 +27,8 @@ public class RessourceView extends ImageView {
 			val=1;				
 		else if (resource instanceof Pierre)
 			val=3;
+		else if(resource instanceof Bois)
+			val = 4;
 		else
 			val=2;
 		return val;
@@ -46,13 +49,11 @@ public class RessourceView extends ImageView {
 			img = new Image("ressource/Granit.jpeg");
 			break;
 		case 4:
-			img = new Image("ressource/nuage.jpg");
-			break;
-		case 5:
-			img = new Image("ressource/Soleil.jpg");
+			img = new Image("ressource/blocBois.jpg");
 			break;
 		default:
 			System.out.println("La valeur" + val + " ne correpond à aucune tuiles !");
+//			img = new Image("ressource/bleu.jpeg");
 			break;
 		}
 		super.setImage(img);
