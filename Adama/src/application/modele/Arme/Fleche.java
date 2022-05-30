@@ -2,27 +2,29 @@ package application.modele.Arme;
 
 import javafx.beans.property.IntegerProperty;
 
+import javafx.beans.property.IntegerProperty;
+
 public class Fleche extends Arme{
-	
+
 	private int portee;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
 	private final static int VITESSE = 2;
-	
-	
+
+
 	public Fleche() {
 		super(1, 1, 2);
-		
+
 	}
 
 	public void utiliser() {
 		//TODO utiliser
 	}
-	
+
 	public final int getX() {
 		return this.xProperty.getValue();
 	}
-	
+
 	public final void setX(int val) {
 		this.xProperty.setValue(val);
 	}
@@ -42,23 +44,23 @@ public class Fleche extends Arme{
 	public final IntegerProperty yProperty() {
 		return this.yProperty;
 	}
-	
+
 	public void droite(int val) {
 		this.xProperty.setValue(this.getX() + val);
 	}
-	
-	public void gauche(int val) { 
+
+	public void gauche(int val) {
 		this.droite(-val);
 	}
-	
-	public void droite() { 
+
+	public void droite() {
 		this.droite(this.VITESSE);
 	}
-	
+
 	public void gauche() {
 		this.gauche(this.VITESSE);
 	}
-	
+
 	public void tirer(boolean direction) {
 		if(direction) {
 			this.droite();
@@ -67,7 +69,7 @@ public class Fleche extends Arme{
 			this.gauche();
 		}
 	}
-	
+
 	public void detruire() {
 		this.setX(-32);
 		this.setY(-32);
@@ -76,7 +78,7 @@ public class Fleche extends Arme{
 	@Override
 	public void utiliser(int val) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

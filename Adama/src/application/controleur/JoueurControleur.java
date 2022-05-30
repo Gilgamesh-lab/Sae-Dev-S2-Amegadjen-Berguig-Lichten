@@ -6,15 +6,15 @@ import application.modele.personnage.Joueur;
 import application.vue.JoueurVue;
 
 public class JoueurControleur {
-	
+
 	private Joueur perso;
 	private JoueurVue persoVue;
-	
+
 	public JoueurControleur(Joueur perso, JoueurVue persoVue) {
 		this.perso=perso;
 		this.persoVue=persoVue;
 	}
-	
+
 	public void touchePresse(String touchePresse) {
 		switch (touchePresse) {
 		case "q":
@@ -37,7 +37,7 @@ public class JoueurControleur {
 			break;
 		}
 	}
-	
+
 	public void sourisPresse(String click, int emplacement) {
 		switch (click) {
 		case "PRIMARY":
@@ -47,5 +47,5 @@ public class JoueurControleur {
 			break;
 		}
 	}
-	
+
 }
