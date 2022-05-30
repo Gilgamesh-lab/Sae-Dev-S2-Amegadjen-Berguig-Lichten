@@ -145,10 +145,13 @@ public class Joueur extends Personnage {
 
 
 	public Item craft (ArrayList<Item> items) { // à tester/ à finir
-		String pierre = new Pierre().getClass().getName();
-		String bois = new Bois().getClass().getName();
-		String plante = new Plante().getClass().getName();
-
+//		String pierre = new Pierre().getClass().getSimpleName();
+//		String bois = new Bois().getClass().getSimpleName();
+//		String plante = new Plante().getClass().getSimpleName();
+		String pierre = "Pierre";
+		String bois = "Bois";
+		String plante = "plante";
+				
 		Map<String, Integer> recette = new HashMap<String, Integer>();
 
 		recette.put(pierre, 0);
@@ -216,18 +219,4 @@ public class Joueur extends Personnage {
 		this.getInventaire().supprimer(ressource);
 		this.getEnvironnement().getCarte().getBlockMap().add(ressource);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

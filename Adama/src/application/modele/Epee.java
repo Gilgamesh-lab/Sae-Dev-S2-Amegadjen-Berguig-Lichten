@@ -10,14 +10,20 @@ public class Epee extends Arme{
 		
 	}
 
-	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) {
-		int largeur = environnement.getCarte().getLargeur();
-		if (environnement.getCarte().emplacement(lieu) instanceof Personnage)
-			environnement.attaquerPersonnages(lieu, this.getDegat());
-		if (environnement.getCarte().emplacement(lieu-largeur) instanceof Personnage)
-			environnement.attaquerPersonnages(lieu-largeur, this.getDegat());
-		if (environnement.getCarte().emplacement(lieu+largeur) instanceof Personnage)
-			environnement.attaquerPersonnages(lieu+largeur, this.getDegat());
+//	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) {
+//		int largeur = environnement.getCarte().getLargeur();
+//		if (environnement. instanceof Personnage)
+//			environnement.attaquerPersonnages(lieu, this.getDegat());
+//		if (environnement. instanceof Personnage)
+//			environnement.attaquerPersonnages(lieu-largeur, this.getDegat());
+//		if (environnement. instanceof Personnage)
+//			environnement.attaquerPersonnages(lieu+largeur, this.getDegat());
+//		
+//	}
+
+	@Override
+	public void utiliser(int val) {
+		// TODO Auto-generated method stub
 		
 	}
 	
