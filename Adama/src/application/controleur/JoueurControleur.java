@@ -21,7 +21,7 @@ public class JoueurControleur implements ListChangeListener<Item>{
 		switch (touchePresse) {
 		case "q":
 			persoVue.orrientationSpriteGauche();
-      perso.gauche();
+			perso.gauche();
 			break;
 		case "d":
 			persoVue.orrientationSpriteDroite();
@@ -51,5 +51,15 @@ public class JoueurControleur implements ListChangeListener<Item>{
 	}
 	
 	
+	
+	public void sourisPresse(String click, int emplacement) {
+		switch (click) {
+		case "PRIMARY":
+			perso.utiliserMain(emplacement);
+			break;
+		default:
+			break;
+		}
+	}
 	
 }

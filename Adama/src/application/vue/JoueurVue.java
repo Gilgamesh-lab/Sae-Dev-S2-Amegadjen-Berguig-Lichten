@@ -1,21 +1,15 @@
 package application.vue;
 
-import application.modele.Joueur;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.util.Duration;
 
 public class JoueurVue {
 
-	private Joueur joueur;
 	private ImageView sprite;
 
 
-	public JoueurVue(Joueur joueur) {
-		this.joueur = joueur;
+	public JoueurVue() {
 		this.sprite = new ImageView("ressource/perso.png");
 	}
 
