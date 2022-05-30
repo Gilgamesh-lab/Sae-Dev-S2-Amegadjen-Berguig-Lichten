@@ -128,12 +128,12 @@ public abstract class Personnage {
 		boolean gauche;
 		boolean droite;
 		if(auDessus) {
-			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null;
-			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null;
+			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) == null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Bois;
+			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) == null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois;
 		}
 		else {
-			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null;
-			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null;
+			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Bois;
+			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois;;
 		}
 		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
     }
@@ -170,13 +170,13 @@ public abstract class Personnage {
 		boolean teteCogne;
 		boolean corpCogne;
 		if(aDroite) {
-			teteCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY())==null;
-			corpCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+32)==null;
+			teteCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Bois;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+31)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+31) instanceof Bois;
 
 		}
 		else {
-			teteCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY())==null;
-			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null;
+			teteCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY())==null || this.environnement.getCarte().emplacement(this.getX(), this.getY()) instanceof Bois;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+31)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+31) instanceof Bois;
 		}
 		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
 	}
