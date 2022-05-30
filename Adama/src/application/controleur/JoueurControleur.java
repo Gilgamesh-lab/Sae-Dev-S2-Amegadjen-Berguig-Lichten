@@ -1,6 +1,8 @@
 package application.controleur;
 
-import application.modele.Joueur;
+import java.io.IOException;
+
+import application.modele.personnage.Joueur;
 import application.vue.JoueurVue;
 
 public class JoueurControleur {
@@ -24,7 +26,12 @@ public class JoueurControleur {
 			perso.droite();
 			break;
 		case "z":
-			perso.saut(15);
+			try {
+				perso.sauter();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		case "s":
 			break;

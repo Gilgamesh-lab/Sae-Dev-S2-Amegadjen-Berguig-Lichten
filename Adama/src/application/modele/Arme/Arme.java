@@ -1,5 +1,6 @@
-package application.modele;
+package application.modele.Arme;
 
+import application.modele.Item;
 
 public abstract class Arme implements Item  {
 	private int degat;

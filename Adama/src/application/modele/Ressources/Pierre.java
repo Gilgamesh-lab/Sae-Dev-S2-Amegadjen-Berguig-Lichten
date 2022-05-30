@@ -1,5 +1,5 @@
 
-package application.modele;
+package application.modele.Ressources;
 
 public class Pierre extends Ressource {
 
@@ -17,14 +17,12 @@ public class Pierre extends Ressource {
 
 	@Override
 	public void utiliser() {
-		// TODO Auto-generated method stub
 
 	}
 
 
 	@Override
 	public void utiliser(int val) {
-		// TODO Auto-generated method stub
 		
 	}
 

@@ -1,4 +1,4 @@
-package application.modele;
+package application.modele.Ressources;
 
 public class Bois extends Ressource {
 
@@ -15,7 +15,6 @@ public class Bois extends Ressource {
 
 	@Override
 	public void utiliser(int val) {
-		// TODO Auto-generated method stub
 		
 	}
 }

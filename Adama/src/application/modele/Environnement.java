@@ -3,6 +3,7 @@ package application.modele;
 import java.io.IOException;
 
 import application.modele.exception.TailleMapException;
+import application.modele.personnage.Personnage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

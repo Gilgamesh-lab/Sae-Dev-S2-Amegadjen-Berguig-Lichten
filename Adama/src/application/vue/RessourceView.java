@@ -1,10 +1,10 @@
 package application.vue;
 
-import application.modele.Bois;
 import application.modele.Environnement;
-import application.modele.Pierre;
-import application.modele.Ressource;
-import application.modele.Terre;
+import application.modele.Ressources.Bois;
+import application.modele.Ressources.Pierre;
+import application.modele.Ressources.Ressource;
+import application.modele.Ressources.Terre;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

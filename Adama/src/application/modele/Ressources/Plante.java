@@ -1,4 +1,4 @@
-package application.modele;
+package application.modele.Ressources;
 
 public abstract class Plante extends Ressource {
 

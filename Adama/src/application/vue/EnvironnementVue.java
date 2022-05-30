@@ -4,7 +4,7 @@ import java.io.IOException;
 
 
 import application.modele.Environnement;
-import application.modele.Ressource;
+import application.modele.Ressources.Ressource;
 import javafx.scene.layout.TilePane;
 
 public class EnvironnementVue {

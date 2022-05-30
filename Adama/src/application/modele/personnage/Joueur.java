@@ -1,9 +1,18 @@
-package application.modele;
+package application.modele.personnage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import application.modele.Checkpoint;
+import application.modele.Environnement;
+import application.modele.Inventaire;
+import application.modele.Item;
+import application.modele.Arme.Arc;
+import application.modele.Arme.Arme;
+import application.modele.Arme.Epee;
+import application.modele.Arme.Poing;
+import application.modele.Ressources.Ressource;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import javafx.beans.property.BooleanProperty;
@@ -31,7 +40,7 @@ public class Joueur extends Personnage {
 	public Joueur(int pv,int x, int y,
 	Environnement carte, int faim, Inventaire inventaire,
 	Item objetEquiper, Inventaire inventaireRaccourci, int saut) {
-		super(pv, x, y,5, carte,inventaire, saut);
+		super(pv, x, y,5, carte,inventaire, saut, TAILLE);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
 		this.inventaireRaccourci = inventaireRaccourci;
@@ -145,10 +154,13 @@ public class Joueur extends Personnage {
 
 
 	public Item craft (ArrayList<Item> items) { // à tester/ à finir
-		String pierre = new Pierre().getClass().getName();
-		String bois = new Bois().getClass().getName();
-		String plante = new Plante().getClass().getName();
-
+//		String pierre = new Pierre().getClass().getSimpleName();
+//		String bois = new Bois().getClass().getSimpleName();
+//		String plante = new Plante().getClass().getSimpleName();
+		String pierre = "Pierre";
+		String bois = "Bois";
+		String plante = "plante";
+				
 		Map<String, Integer> recette = new HashMap<String, Integer>();
 
 		recette.put(pierre, 0);
@@ -165,15 +177,15 @@ public class Joueur extends Personnage {
 		}
 
 		if(recette.get(bois) == 2 && recette.get(pierre) == 1) {
-			return Epee();
+			return new Epee();
 		}
 
 		else if(recette.get(bois) == 3 && recette.get(plante) == 1) {
-			return Arc(this.inventaire);
+			return new Arc();
 		}
 
 		else {
-			return Poing();
+			return new Poing();
 		}
 	}
 
@@ -216,18 +228,4 @@ public class Joueur extends Personnage {
 		this.getInventaire().supprimer(ressource);
 		this.getEnvironnement().getCarte().getBlockMap().add(ressource);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

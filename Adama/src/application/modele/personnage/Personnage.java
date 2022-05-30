@@ -1,6 +1,10 @@
-package application.modele;
+package application.modele.personnage;
 
 import java.io.IOException;
+
+import application.modele.Environnement;
+import application.modele.Inventaire;
+import application.modele.Ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 

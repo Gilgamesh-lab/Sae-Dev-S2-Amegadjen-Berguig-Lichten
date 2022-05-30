@@ -5,6 +5,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import application.modele.Ressources.Bois;
+import application.modele.Ressources.Pierre;
+import application.modele.Ressources.Ressource;
+import application.modele.Ressources.Terre;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
@@ -78,7 +82,7 @@ public class Carte {
 						blockMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '4':
-						blockMap.add(new Terre(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blockMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '5':
 						blockMap.add(new Pierre(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
@@ -136,5 +140,10 @@ public class Carte {
 		if (this.blockMap.get(indice).estDetruit())
 			detruireBlock(indice);			
 	}
+
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+	
 }
 

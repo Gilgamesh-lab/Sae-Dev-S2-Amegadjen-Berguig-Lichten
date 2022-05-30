@@ -1,10 +1,12 @@
-package application.modele;
+package application.modele.Arme;
+
+import javafx.beans.property.IntegerProperty;
 
 public class Fleche extends Arme{
 	
-	private int porte;
-	private int xProperty;
-	private int yProperty;
+	private int portee;
+	private IntegerProperty xProperty;
+	private IntegerProperty yProperty;
 	private final static int VITESSE = 2;
 	
 	
@@ -13,10 +15,8 @@ public class Fleche extends Arme{
 		
 	}
 
-	@Override
 	public void utiliser() {
-		
-		
+		//TODO utiliser
 	}
 	
 	public final int getX() {
@@ -72,23 +72,11 @@ public class Fleche extends Arme{
 		this.setX(-32);
 		this.setY(-32);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
+	@Override
+	public void utiliser(int val) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

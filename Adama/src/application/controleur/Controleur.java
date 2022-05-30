@@ -5,11 +5,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.modele.Environnement;
-import application.modele.Hache;
-import application.modele.Joueur;
-import application.modele.Pelle;
-import application.modele.Pioche;
-import application.modele.Ressource;
+import application.modele.Outils.Hache;
+import application.modele.Outils.Pelle;
+import application.modele.Outils.Pioche;
+import application.modele.Ressources.Ressource;
+import application.modele.personnage.Joueur;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
 import application.vue.RessourceView;
@@ -108,7 +108,6 @@ public class Controleur implements Initializable{
 		try {
 			env =new Environnement();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
@@ -172,7 +171,6 @@ public class Controleur implements Initializable{
 						try {
 							perso.gravite();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					else if (temps>1500 && temps<1600) {
