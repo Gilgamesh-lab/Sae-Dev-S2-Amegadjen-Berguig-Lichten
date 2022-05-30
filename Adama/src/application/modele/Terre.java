@@ -1,16 +1,30 @@
 package application.modele;
 
 public class Terre extends Ressource {
-	
-	private static final int durabiliter = 10; //quand on pose le bloc combien en combien de coup les ennemis le casse
 
-	public Terre( int x, int y, boolean posable) {
-		super(3, x, y, posable);
+	
+	public Terre(boolean posable, int x, int y, int indice) {
+		super( posable, x, y, indice);
+	}
+	
+	public Terre(int indice) {
+		super(true,5,5, indice);
 	}
 
 	@Override
 	public void utiliser() {
 		
+		
+	}
+	
+	
+	public String toString() {
+		return "Terre";
+	}
+
+	@Override
+	public void utiliser(int val) {
+		// TODO Auto-generated method stub
 		
 	}
 

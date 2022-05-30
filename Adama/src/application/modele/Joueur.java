@@ -10,13 +10,14 @@ public class Joueur extends Personnage {
 	private final static int MAX_FAIM = 7;
 	private Item objetEquiper;
 	private Inventaire inventaireRaccourci;
+	private final static int[] TAILLE = {1,2};
 
 
 
 	public Joueur(int pv,int x, int y,
 			Environnement carte, int faim, Inventaire inventaire,
 			Item objetEquiper, Inventaire inventaireRaccourci) {
-		super(pv, x, y,5, carte,inventaire);
+		super(pv, x, y,5, carte,inventaire, 5, TAILLE);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
 		this.inventaireRaccourci = inventaireRaccourci;
@@ -24,7 +25,7 @@ public class Joueur extends Personnage {
 
 	public Joueur(int x, int y,
 			Environnement carte) {
-		super(MAX_PV, x, y,5, carte);
+		super(MAX_PV, x, y,5, carte, TAILLE);
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
 		this.objetEquiper = null;
 		this.inventaireRaccourci = new Inventaire(10);
@@ -54,17 +55,14 @@ public class Joueur extends Personnage {
 		// Arme main =  new Poing();
 		// this.objetEquiper = main;
 	}
-
-	public void gauche(int vitesse) {
-		super.setX(super.getX()-vitesse);
-	}
-
-	public void droite(int vitesse) {
-		this.gauche(-vitesse);
-	}
 	
 	public void saut(int hauteur) {
 		super.setY(super.getY()-hauteur);
+	}
+	
+	public void utiliserMain(int emplacement) {
+		this.objetEquiper.utiliser(emplacement);
+		
 	}
 
 }

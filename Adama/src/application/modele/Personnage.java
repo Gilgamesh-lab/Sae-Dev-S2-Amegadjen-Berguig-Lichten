@@ -1,36 +1,40 @@
 package application.modele;
 
+import java.io.IOException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Personnage {
 	
-	private IntegerProperty pvProperty ;
+	private IntegerProperty pvProperty;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
-	private int vitesseDeplacementBase;
+	private int vitesseDeplacement;
 	private Environnement environnement;
 	private Inventaire inventaire;
+	private int hauteurSaut;
+	private int[] taille = new int[2];
 	
-	public Personnage(int pv, int x, int y, 
-	int vitesseDeplacement, Environnement environnement,
-	Inventaire inventaire){
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
-		this.vitesseDeplacementBase = vitesseDeplacement;
+		this.vitesseDeplacement = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = inventaire;
+		this.hauteurSaut = hauteurSaut;
+		this.taille = taille;
 	}
-	
-	public Personnage(int pv, int x, int y, 
-			int vitesseDeplacement, Environnement environnement){
+
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
-		this.vitesseDeplacementBase = vitesseDeplacement;
+		this.vitesseDeplacement = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
+		this.hauteurSaut = 1;
+		this.taille = taille;
 	}
 	
 	public final int getPv() {
@@ -68,9 +72,21 @@ public abstract class Personnage {
 	public final IntegerProperty yProperty() {
 		return this.yProperty;
 	}
-		
+	
+	public final int getHauteurSaut() {
+		return this.hauteurSaut;
+	}
+	
+	public final void setHauteurSaut(int val) {
+		this.hauteurSaut=val;
+	}
+	
+	public void setVitesseDeplacement(int vitesseDeplacement) {
+		this.vitesseDeplacement = vitesseDeplacement;
+	}
+	
 	public int getVitesseDeplacement() {
-		return this.vitesseDeplacementBase;
+		return this.vitesseDeplacement;
 	}
 	
 	public Environnement getEnvironnement() {
@@ -81,41 +97,114 @@ public abstract class Personnage {
 		return this.inventaire;
 	}
 	
-	public void decremeterPv(int degat) {
-		this.pvProperty.setValue(this.pvProperty.getValue() - degat);
-	}
-	
 	public void incrementerPv(int soin) {
-		this.pvProperty.setValue(this.pvProperty.getValue() + soin);
+		this.setPv(pvProperty.getValue() + soin);
 	}
 	
-	public void grimper(int val) {
-		this.yProperty.setValue(this.yProperty.getValue() + val);
+	public void decremeterPv(int degat) {
+		this.incrementerPv(-degat);
 	}
 	
-	public void descendre(int val) {
-		this.yProperty.setValue(this.yProperty.getValue() - val);
+	/**
+	 * Effectue un mouvement vers le haut
+	 * @param val si elle est négative le joueur descend
+	 */
+	public void translationY(int val) {
+		this.yProperty.setValue(this.getY() - val);
 	}
 	
-	public int Deplacement(int vitesseBonus) {
-		return this.vitesseDeplacementBase*(vitesseBonus/100)+this.vitesseDeplacementBase;
+	public void monter(int val) throws IOException {
+		if(this.toucheY(true))
+			translationY(val);
 	}
 	
-	public void reculer() {
-		this.xProperty.setValue(this.xProperty.getValue() - this.vitesseDeplacementBase);
+	public void descendre(int val) throws IOException {
+		if(this.toucheY(false)) {
+			translationY(-val);
+		}
 	}
+	
+	public boolean toucheY(boolean auDessus) throws IOException {
+		boolean gauche;
+		boolean droite;
+		if(auDessus) {
+			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) == null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Bois;
+			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) == null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois;
+		}
+		else {
+			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Bois;
+			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois;;
+		}
+		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
+    }
+	
+	/**
+	 * Sauter permet uniquement de sauter de la hauteur du saut du personnage.
+	 * Et est donc différent de monter car un perso pourrait être projeter par une attaque
+	 * a une valeur plus haute/basse que celle de son saut.
+	 * @throws IOException
+	 */
+	public void sauter() throws IOException {
+		this.monter(this.hauteurSaut);
+	}
+	
+	/**
+	 * 
+	 * @param val
+	 */
+	public void translationX(int val) {
+		this.xProperty.setValue(this.getX() - val);
+	}
+	
+	public void droite() {
+		if(toucheX(true))
+			this.translationX(-vitesseDeplacement);
+	}
+	
+	public void gauche() {
+		if(toucheX(false))
+			this.translationX(vitesseDeplacement);
+	}
+	
+	private boolean toucheX(boolean aDroite) {
+		boolean teteCogne;
+		boolean corpCogne;
+		if(aDroite) {
+			teteCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Bois;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+31)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+31) instanceof Bois;
+
+		}
+		else {
+			teteCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY())==null || this.environnement.getCarte().emplacement(this.getX(), this.getY()) instanceof Bois;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+31)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+31) instanceof Bois;
+		}
+		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
+	}
+
+	
 	
 	public boolean estMort() {
-		return this.pvProperty.getValue() == 0;
+		return this.getPv() == 0;
 	}
 	
-	public Inventaire dropInventaire() {
-		Inventaire inventaire2 = this.inventaire;
-		this.inventaire = null;
-		return inventaire2;
+	/**
+	 * Sera utile quand potion implementé
+	 * @param vitesseBonus
+	 * @return
+	 */
+	public int Deplacement(int vitesseBonus) {
+		return this.vitesseDeplacement*(vitesseBonus/100)+this.vitesseDeplacement;
 	}
 	
-	public void gravite() {
-		this.setY(this.getY()+1);
+	public void perdreRessources() { // Lorsque mort perd ses ressources
+		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
+			if(this.inventaire.getItem(i) instanceof Ressource) {
+				this.inventaire.supprimer(i);
+			}
+		}
+	}
+	
+	public void gravite() throws IOException {
+		this.descendre(5);
 	}
 }

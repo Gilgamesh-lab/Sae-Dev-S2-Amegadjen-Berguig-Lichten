@@ -17,18 +17,27 @@ public class JoueurControleur {
 		switch (touchePresse) {
 		case "q":
 			persoVue.orrientationSpriteGauche();
-			perso.gauche(perso.Deplacement(0));
+			perso.gauche();
 			break;
 		case "d":
 			persoVue.orrientationSpriteDroite();
-			perso.droite(perso.Deplacement(0));
+			perso.droite();
 			break;
 		case "z":
-			perso.saut(1);
+			perso.saut(15);
 			break;
 		case "s":
 			break;
-
+		}
+	}
+	
+	public void sourisPresse(String click, int emplacement) {
+		switch (click) {
+		case "PRIMARY":
+			perso.utiliserMain(emplacement);
+			break;
+		default:
+			break;
 		}
 	}
 	
