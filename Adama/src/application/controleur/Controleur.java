@@ -82,7 +82,7 @@ public class Controleur implements Initializable{
 		int y = (int) event.getSceneY();
 		Ressource cible = env.getCarte().emplacement(x, y);
 		if (cible==null) {
-			int indiceDansMap = (x/Carte.getTailleBlock()) + ((y/Carte.getTailleBlock()) * Carte.getLargeur());
+			int indiceDansMap = (x/Carte.TAILLE_BLOCK) + ((y/Carte.TAILLE_BLOCK) * Carte.LARGEUR);
 			persoControleur.sourisPresse(click, indiceDansMap);
 		}
 		else {

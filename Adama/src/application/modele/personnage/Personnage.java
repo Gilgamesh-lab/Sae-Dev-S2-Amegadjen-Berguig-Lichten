@@ -8,6 +8,14 @@ import application.modele.Ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+/**
+ * Classe abstraite qui est au-dessus de Joueur et de PNJ
+ * Elle a trois attributs qui sont ecoutables : pvProperty, xProperty, yProperty
+ * Elle a une vitesse de déplacement, une hauteur de saut, un environement, une taille(tab[0]=tailleEnX, tab[1]=tailleEnY)
+ * Et un inventaire(les pnj en ont également un qui aura les drops que l'on récupérera en les tuant)
+ * @author jberguig
+ *
+ */
 public abstract class Personnage {
 	
 	private IntegerProperty pvProperty;
@@ -17,7 +25,7 @@ public abstract class Personnage {
 	private Environnement environnement;
 	private Inventaire inventaire;
 	private int hauteurSaut;
-	private int[] taille = new int[2];
+	private int[] taille;
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
@@ -41,93 +49,57 @@ public abstract class Personnage {
 		this.taille = taille;
 	}
 	
-	public final int getPv() {
-		return this.pvProperty.getValue();
-	}
-	
-	public final void setPv(int val) {
-		this.pvProperty.setValue(val);
-	}
-	
-	public final IntegerProperty pvProperty() {
-		return this.pvProperty;
-	}
-	
-	public final int getX() {
-		return this.xProperty.getValue();
-	}
-	
-	public final void setX(int val) {
-		this.xProperty.setValue(val);
-	}
-	
-	public final IntegerProperty xProperty() {
-		return this.xProperty;
-	}
-	
-	public final int getY() {
-		return this.yProperty.getValue();
-	}
-	
-	public final void setY(int val) {
-		this.yProperty.setValue(val);
-	}
-	
-	public final IntegerProperty yProperty() {
-		return this.yProperty;
-	}
-	
-	public final int getHauteurSaut() {
-		return this.hauteurSaut;
-	}
-	
-	public final void setHauteurSaut(int val) {
-		this.hauteurSaut=val;
-	}
-	
-	public void setVitesseDeplacement(int vitesseDeplacement) {
-		this.vitesseDeplacement = vitesseDeplacement;
-	}
-	
-	public int getVitesseDeplacement() {
-		return this.vitesseDeplacement;
-	}
-	
-	public Environnement getEnvironnement() {
-		return this.environnement;
-	}
-	
-	public Inventaire getInventaire() {
-		return this.inventaire;
-	}
-	
+	/**
+	 * Augmente les PV
+	 * @param soin nombre de pv récupéré
+	 */
 	public void incrementerPv(int soin) {
 		this.setPv(pvProperty.getValue() + soin);
 	}
 	
+	/**
+	 * Diminue les PV
+	 * @param degat nombre de pv perdue
+	 */
 	public void decremeterPv(int degat) {
 		this.incrementerPv(-degat);
 	}
 	
 	/**
-	 * Effectue un mouvement vers le haut
-	 * @param val si elle est négative le joueur descend
+	 * Effectue un mouvement vers le haut si le param est négative le joueur descend
+	 * @param val nombre dont l'on monte ou descend
 	 */
 	public void translationY(int val) {
 		this.yProperty.setValue(this.getY() - val);
 	}
 	
+	/**
+	 * Permet d'effectuer une translationY de val si toucheY est true
+	 * @param val
+	 * @throws IOException failed or interrupted I/O operation
+	 */
 	public void monter(int val) throws IOException {
 		if(this.toucheY(true))
 			translationY(val);
 	}
 	
+	/**
+	 * Permet d'effectuer une translationY de -val si toucheY est true
+	 * @param val
+	 * @throws IOException failed or interrupted I/O operation
+	 */
 	public void descendre(int val) throws IOException {
 		if(this.toucheY(false)) {
 			translationY(-val);
 		}
 	}
 	
+	/**
+	 * Permet de savoir si on ne touche rien au niveau des y au dessus du perso si auDessus est true est en dessous sinon  
+	 * @param auDessus
+	 * @return
+	 * @throws IOException
+	 */
 	public boolean toucheY(boolean auDessus) throws IOException {
 		boolean gauche;
 		boolean droite;
@@ -210,5 +182,69 @@ public abstract class Personnage {
 	
 	public void gravite() throws IOException {
 		this.descendre(5);
+	}
+	
+	public final int getPv() {
+		return this.pvProperty.getValue();
+	}
+	
+	public final void setPv(int val) {
+		this.pvProperty.setValue(val);
+	}
+	
+	public final IntegerProperty pvProperty() {
+		return this.pvProperty;
+	}
+	
+	public final int getX() {
+		return this.xProperty.getValue();
+	}
+	
+	public final void setX(int val) {
+		this.xProperty.setValue(val);
+	}
+	
+	public final IntegerProperty xProperty() {
+		return this.xProperty;
+	}
+	
+	public final int getY() {
+		return this.yProperty.getValue();
+	}
+	
+	public final void setY(int val) {
+		this.yProperty.setValue(val);
+	}
+	
+	public final IntegerProperty yProperty() {
+		return this.yProperty;
+	}
+	
+	public final int getHauteurSaut() {
+		return this.hauteurSaut;
+	}
+	
+	public final void setHauteurSaut(int val) {
+		this.hauteurSaut=val;
+	}
+	
+	public void setVitesseDeplacement(int vitesseDeplacement) {
+		this.vitesseDeplacement = vitesseDeplacement;
+	}
+	
+	public int getVitesseDeplacement() {
+		return this.vitesseDeplacement;
+	}
+	
+	public Environnement getEnvironnement() {
+		return this.environnement;
+	}
+	
+	public Inventaire getInventaire() {
+		return this.inventaire;
+	}
+	
+	public int[] getTaille() {
+		return taille;
 	}
 }

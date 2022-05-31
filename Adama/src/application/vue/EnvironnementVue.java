@@ -2,7 +2,7 @@ package application.vue;
 
 import java.io.IOException;
 
-
+import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Ressources.Ressource;
 import javafx.scene.layout.TilePane;
@@ -18,7 +18,7 @@ public class EnvironnementVue {
 	}
 	
 	public void creerEnvironnement() throws IOException {
-		int tailleMap = (env.getCarte().getHauteur()) * (env.getCarte().getLargeur());
+		int tailleMap = (Carte.HAUTEUR) * (Carte.LARGEUR);
 		Ressource bloc;
 		for(int i=0; i<tailleMap; i++) {
 			bloc= env.getCarte().getBlockMap().get(i);

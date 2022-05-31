@@ -1,5 +1,6 @@
 package application.vue;
 
+import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Ressources.Bois;
 import application.modele.Ressources.Pierre;
@@ -16,7 +17,7 @@ public class RessourceView extends ImageView {
 	public RessourceView(Ressource res, Environnement env) {
 		this.resource=res;
 		this.env=env;
-		choixTuile(blockPourVal(this.env.getCarte().getBlockMap().indexOf(resource), this.env.getCarte().getLargeur()));
+		choixTuile(blockPourVal(this.env.getCarte().getBlockMap().indexOf(resource), Carte.LARGEUR));
 	}
 	
 	public int blockPourVal(int indice, int largeur) {

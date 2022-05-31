@@ -1,6 +1,5 @@
 package application.modele;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,55 +14,54 @@ import application.modele.exception.TailleMapException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Cette classe contient 3 constante qui sont la hauteur et la largeur de la map en nombre de blocs et la taille de chaque bloc.
+ * Elle peut lancer deux exception : TailleMapException, IOException
+ * Elle possède un constructeur
+ * 
+ * @author jberguig
+ *
+ */
 public class Carte {
 
 	private BufferedReader map;
-	private final static int HAUTEUR = 32;
-	private final static int LARGEUR = 60;
-	private final static int TAILLE_BLOCK = 32;
-	private ObservableList<Ressource> blockMap;
+	public final static int HAUTEUR = 32;
+	public final static int LARGEUR = 60;
+	public final static int TAILLE_BLOCK = 32;
+	private ObservableList<Ressource> blocMap;
 	private ArrayList<Item> items;
 
 	public Carte() throws TailleMapException, IOException {
 		this.map = Csv.ouvrir("mapsTest.csv");
-		this.blockMap = FXCollections.observableArrayList();
+		this.blocMap = FXCollections.observableArrayList();
 		creerListeBlock();
 		this.items = new ArrayList<Item>();
 	}
-
-	public static int getHauteur() {
-		return HAUTEUR;
-	}
-
-	public static int getLargeur() {
-		return LARGEUR;
-	}
-
-	public ObservableList<Ressource> getBlockMap() {
-		return blockMap;
-	}
-
-	public static int getTailleBlock() {
-		return TAILLE_BLOCK;
-	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * Calcule un indice dans la map en divisant les x et les y par la taille du bloc et en multipliant
+	 * les y par la Largeur de la Carte puisque la structure de données est linéaire. 
+	 * Et enfin de faire la somme des deux pour retourner le bloc a cette indice
+	 * @param x position sur l'axe des x
+	 * @param y position sur l'axe des y
+	 * @return le bloc à indiceMap
 	 */
 	public Ressource emplacement(int x, int y) {
 		int indiceDansMap = (x/TAILLE_BLOCK) + ((y/TAILLE_BLOCK) * LARGEUR);
-		return this.blockMap.get(indiceDansMap);
+		return this.blocMap.get(indiceDansMap);
 	}
 	
+	/**
+	 * 
+	 * @param indice emplacement du bloc dans la liste
+	 * @return le bloc visée
+	 */
 	public Ressource emplacement(int indice) {
-		return this.blockMap.get(indice);
+		return this.blocMap.get(indice);
 	}
 
 	/**
-	 * 
+	 * Permet de créer a partir d'un fichier CSV la liste de tos les blocks de la maps le ciel est null
 	 * @throws TailleMapException
 	 * @throws IOException
 	 */
@@ -79,22 +77,19 @@ public class Carte {
 				suivant=ligne.charAt(indice);
 				switch (suivant) {
 					case '3':
-						blockMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blocMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '4':
-						blockMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blocMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '5':
-						blockMap.add(new Pierre(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blocMap.add(new Pierre(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '6':
-						blockMap.add(new Bois(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blocMap.add(new Bois(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
-//					case ',':
-//						x++;
-//						break;
 					default://tous las chiffres de tuile avec lesquelles on ne peut intéragir (ciel, nuage,...)
-						blockMap.add(null);
+						blocMap.add(null);
 						break;
 				}	
 				x++;
@@ -110,22 +105,25 @@ public class Carte {
 //		System.out.println(blockMap.size());
 	}
 	
-//	public void detruireBlock(int indice) throws ErreurInventairePlein, ErreurObjetIntrouvable {
-//		this.poubelle.ajouter(this.blockMap.remove(indice));
-//		this.blockMap.add(indice, null);
-//	}
-
+	/**
+	 * detruit le bloc qui se trouve a indice et la remplace par null
+	 * @param indice
+	 */
 	public void detruireBlock(int indice) {
-		this.items.add(this.blockMap.remove(indice));
-		this.blockMap.add(indice, null);
+		this.items.add(this.blocMap.remove(indice));
+		this.blocMap.add(indice, null);
 	}
-	
+	/**
+	 * @param ressource la ressource testé
+	 * @return si la ressource est en dehors de la map
+	 */
 	public boolean enDehorsMap(Ressource ressource) {
 		return ressource.getX() < 0 || ressource.getY() > 0;
 	}
 
 	/**
 	 * Si on trouve des blocs dans blockMap avec x et y en dehors de la map ils sont détruit.
+	 * 
 	 */
 	public void ressourceEnDehorsMap() {
 		for(int i = 0 ; i < this.getBlockMap().size(); i++) {
@@ -135,12 +133,29 @@ public class Carte {
 		}
 	}
 
-	public void attaquerBlock(int indice, int val) {
-		this.blockMap.get(indice).prendreDegat(val);
-		if (this.blockMap.get(indice).estDetruit())
+	/**
+	 * Permet de faire des degats à des blocs
+	 * @param indice l'endroit où se trouve le bloc dans la liste 
+	 * @param val de combien il est attaquée
+	 */
+	public void attaquerBloc(int indice, int val) {
+		this.blocMap.get(indice).prendreDegat(val);
+		if (this.blocMap.get(indice).estDetruit())
 			detruireBlock(indice);			
 	}
 
+	/**
+	 * 
+	 * @return la blocMap
+	 */
+	public ObservableList<Ressource> getBlockMap() {
+		return blocMap;
+	}
+	
+	/**
+	 * 
+	 * @return la liste d'items de la map
+	 */
 	public ArrayList<Item> getItems() {
 		return items;
 	}
