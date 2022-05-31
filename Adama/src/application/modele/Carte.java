@@ -4,13 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import application.modele.Ressources.Bois;
-import application.modele.Ressources.Pierre;
-import application.modele.Ressources.Ressource;
-import application.modele.Ressources.Terre;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
+import application.modele.ressources.Bois;
+import application.modele.ressources.Pierre;
+import application.modele.ressources.Ressource;
+import application.modele.ressources.Terre;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

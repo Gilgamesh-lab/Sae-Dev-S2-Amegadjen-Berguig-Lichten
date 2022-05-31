@@ -1,4 +1,4 @@
-package application.modele.Arme;
+package application.modele.armes;
 
 import javafx.beans.property.IntegerProperty;
 

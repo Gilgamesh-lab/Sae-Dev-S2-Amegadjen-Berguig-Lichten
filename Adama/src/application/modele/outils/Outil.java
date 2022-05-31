@@ -1,4 +1,4 @@
-package application.modele.Outils;
+package application.modele.outils;
 
 import application.modele.Environnement;
 import application.modele.Item;

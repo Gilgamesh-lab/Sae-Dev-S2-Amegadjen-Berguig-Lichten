@@ -2,10 +2,10 @@ package application.vue;
 
 import application.modele.Carte;
 import application.modele.Environnement;
-import application.modele.Ressources.Bois;
-import application.modele.Ressources.Pierre;
-import application.modele.Ressources.Ressource;
-import application.modele.Ressources.Terre;
+import application.modele.ressources.Bois;
+import application.modele.ressources.Pierre;
+import application.modele.ressources.Ressource;
+import application.modele.ressources.Terre;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

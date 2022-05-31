@@ -1,5 +1,5 @@
 
-package application.modele.Ressources;
+package application.modele.ressources;
 
 public class Pierre extends Ressource {
 

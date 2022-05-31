@@ -1,4 +1,4 @@
-package application.modele.personnage;
+package application.modele.personnages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,14 +9,14 @@ import application.modele.Checkpoint;
 import application.modele.Environnement;
 import application.modele.Inventaire;
 import application.modele.Item;
-import application.modele.Arme.Arc;
-import application.modele.Arme.Arme;
-import application.modele.Arme.Epee;
-import application.modele.Arme.Poing;
-import application.modele.Ressources.Ressource;
-import application.modele.Ressources.Terre;
+import application.modele.armes.Arc;
+import application.modele.armes.Arme;
+import application.modele.armes.Epee;
+import application.modele.armes.Poing;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
+import application.modele.ressources.Ressource;
+import application.modele.ressources.Terre;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;

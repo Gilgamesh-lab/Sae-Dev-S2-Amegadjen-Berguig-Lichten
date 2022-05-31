@@ -2,8 +2,8 @@ package application.controleur;
 
 import java.io.IOException;
 
-import application.modele.Ressources.Terre;
-import application.modele.personnage.Joueur;
+import application.modele.personnages.Joueur;
+import application.modele.ressources.Terre;
 import application.vue.JoueurVue;
 import javafx.scene.input.MouseEvent;
 

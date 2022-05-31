@@ -6,12 +6,12 @@ import java.util.ResourceBundle;
 
 import application.modele.Carte;
 import application.modele.Environnement;
-import application.modele.Outils.Hache;
-import application.modele.Outils.Pelle;
-import application.modele.Outils.Pioche;
-import application.modele.Ressources.Ressource;
-import application.modele.Ressources.Terre;
-import application.modele.personnage.Joueur;
+import application.modele.outils.Hache;
+import application.modele.outils.Pelle;
+import application.modele.outils.Pioche;
+import application.modele.personnages.Joueur;
+import application.modele.ressources.Ressource;
+import application.modele.ressources.Terre;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
 import application.vue.RessourceView;

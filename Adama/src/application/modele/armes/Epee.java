@@ -1,4 +1,4 @@
-package application.modele.Arme;
+package application.modele.armes;
 
 public class Epee extends Arme{
 	public Epee() {

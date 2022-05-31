@@ -1,7 +1,7 @@
-package application.modele.Outils;
+package application.modele.outils;
 
 import application.modele.Environnement;
-import application.modele.Ressources.Pierre;
+import application.modele.ressources.Pierre;
 
 public class Pioche extends Outil {
 

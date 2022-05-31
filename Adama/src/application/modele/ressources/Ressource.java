@@ -1,4 +1,4 @@
-package application.modele.Ressources;
+package application.modele.ressources;
 
 import application.modele.Item;
 import javafx.beans.property.IntegerProperty;

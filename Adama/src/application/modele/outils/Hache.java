@@ -1,7 +1,7 @@
-package application.modele.Outils;
+package application.modele.outils;
 
 import application.modele.Environnement;
-import application.modele.Ressources.Bois;
+import application.modele.ressources.Bois;
 
 public class Hache extends Outil {
 

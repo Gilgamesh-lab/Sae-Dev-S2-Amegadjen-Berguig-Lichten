@@ -1,7 +1,7 @@
-package application.modele.Outils;
+package application.modele.outils;
 
 import application.modele.Environnement;
-import application.modele.Ressources.Terre;
+import application.modele.ressources.Terre;
 
 public class Pelle extends Outil {
 
