@@ -15,9 +15,9 @@ public class Joueur extends Personnage {
 
 
 	public Joueur(int pv,int x, int y,
-			Environnement carte, int faim, Inventaire inventaire,
+			Environnement environement, int faim, Inventaire inventaire,
 			Item objetEquiper, Inventaire inventaireRaccourci) {
-		super(pv, x, y,5, carte,inventaire, 5, TAILLE);
+		super(pv, x, y,5, environement,inventaire, 5, TAILLE);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
 		this.inventaireRaccourci = inventaireRaccourci;

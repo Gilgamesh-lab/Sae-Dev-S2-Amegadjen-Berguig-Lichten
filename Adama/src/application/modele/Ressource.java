@@ -5,19 +5,17 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class Ressource implements Item {
 	private boolean posable;
-	private int nombre;
 	private int durabiliter;
-	@SuppressWarnings("unused")
-	private boolean estUnMateriauDeConstruction;
+	
+//	private boolean estUnMateriauDeConstruction;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
 	private int indice;
 	
 	public Ressource(boolean posable, int x, int y, int indice){
 		this.posable = posable;
-		this.nombre = 1;
 		this.durabiliter = 5;
-		this.estUnMateriauDeConstruction = !posable;
+//		this.estUnMateriauDeConstruction = !posable;
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
 		this.indice = indice;
@@ -27,9 +25,8 @@ public abstract class Ressource implements Item {
 	
 	public Ressource(boolean posable, int nombre, int durabiliter, boolean estUnMateriauDeConstruction, int x, int y, int indice) {
 		this.posable = posable;
-		this.nombre = nombre;
 		this.durabiliter = durabiliter;
-		this.estUnMateriauDeConstruction = estUnMateriauDeConstruction;
+//		this.estUnMateriauDeConstruction = estUnMateriauDeConstruction;
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
 		this.indice = indice;
@@ -59,38 +56,20 @@ public abstract class Ressource implements Item {
 		return this.yProperty;
 	}
 	
-	public void setNombre(int val) {
-		this.nombre = val;
-	}
-	
-	public void augmenterNombre(int val) {
-		this.nombre += val;
-	}
-	
-	public void diminuerNombre(int val) {
-		augmenterNombre(-val);
-	}
-	
-	public void utiliser() {
-		
-	}
+	public abstract void utiliser();
 	
 	public boolean estPosable() {
 		return this.posable;
 	}
-	
-	public int getNombre() {
-		return this.nombre;
+
+  public void prendreDegat(int degat) {
+		this.durabiliter -= degat;
 	}
 	
-	public boolean estUnMateriauDeConstruction(){
-		return this.estUnMateriauDeConstruction;
-	}
-	
-	public void prendreDegat(int val) {
-		this.durabiliter -= val;
-	}
-	
+//	public boolean estUnMateriauDeConstruction(){
+//		return this.estUnMateriauDeConstruction;
+//	}
+
 //	public void decremeterPv(int degat) {
 //		for (int i = 0; this.getDurabiliter() < 0 && i < degat ; i++) {
 //			this.prendreDegat();
@@ -101,7 +80,6 @@ public abstract class Ressource implements Item {
 	public int getDurabiliter() {
 		return this.durabiliter;
 	}
-
 
 	public boolean estCasser() {
 		return this.durabiliter <= 0;

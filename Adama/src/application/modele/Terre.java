@@ -27,7 +27,4 @@ public class Terre extends Ressource {
 		// TODO Auto-generated method stub
 		
 	}
-
-	
-
 }

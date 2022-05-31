@@ -1,5 +1,6 @@
 package application.modele;
 
+import application.modele.exception.ErreurInventairePlein;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -39,10 +40,12 @@ public class Inventaire {
 		return this.items.size();
 	}
 	
-	public void ajouter(Item item) {// erreur à coder
+	public void ajouter(Item item) throws ErreurInventairePlein {// erreur à coder
 		if(!estPleine()) {
 			this.items.add(item);
 		}
+		else
+			throw new ErreurInventairePlein();
 	}
 	
 	public void supprimer(Item item) {
