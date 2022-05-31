@@ -4,7 +4,7 @@ public class Checkpoint {
 	private int x;
 	private int y;
 	private Carte environnement;
-	
+
 	public Checkpoint(int x, int y, Carte environnement) {
 		this.x = x;
 		this.y = y;

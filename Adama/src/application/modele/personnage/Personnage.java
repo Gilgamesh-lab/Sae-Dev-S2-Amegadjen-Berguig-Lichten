@@ -17,7 +17,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  *
  */
 public abstract class Personnage {
-	
+
 	private IntegerProperty pvProperty;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
@@ -64,7 +64,7 @@ public abstract class Personnage {
 	public void decremeterPv(int degat) {
 		this.incrementerPv(-degat);
 	}
-	
+
 	/**
 	 * Effectue un mouvement vers le haut si le param est négative le joueur descend
 	 * @param val nombre dont l'on monte ou descend
@@ -101,19 +101,12 @@ public abstract class Personnage {
 	 * @throws IOException
 	 */
 	public boolean toucheY(boolean auDessus) throws IOException {
-		boolean gauche;
-		boolean droite;
-		if(auDessus) {
-			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null;
-			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null;
-		}
-		else {
-			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null;
-			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null;
-		}
-		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
-    }
-	
+		if(auDessus)
+			return this.environnement.getCarte().emplacement(this.getX(), this.getY()-32)==null;
+		else
+			return this.environnement.getCarte().emplacement(this.getX(), this.getY()+64)==null;
+	}
+
 	/**
 	 * Sauter permet uniquement de sauter de la hauteur du saut du personnage.
 	 * Et est donc différent de monter car un perso pourrait être projeter par une attaque
@@ -123,7 +116,7 @@ public abstract class Personnage {
 	public void sauter() throws IOException {
 		this.monter(this.hauteurSaut);
 	}
-	
+
 	/**
 	 * 
 	 * @param val
@@ -131,38 +124,37 @@ public abstract class Personnage {
 	public void translationX(int val) {
 		this.xProperty.setValue(this.getX() - val);
 	}
-	
+
 	public void droite() {
 		if(toucheX(true))
 			this.translationX(-vitesseDeplacement);
 	}
-	
+
 	public void gauche() {
 		if(toucheX(false))
 			this.translationX(vitesseDeplacement);
 	}
-	
+
 	private boolean toucheX(boolean aDroite) {
 		boolean teteCogne;
 		boolean corpCogne;
 		if(aDroite) {
 			teteCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY())==null;
 			corpCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+32)==null;
-
 		}
 		else {
 			teteCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY())==null;
 			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null;
 		}
-		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
+		return !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
 	}
 
-	
-	
+
+
 	public boolean estMort() {
 		return this.getPv() == 0;
 	}
-	
+
 	/**
 	 * Sera utile quand potion implementé
 	 * @param vitesseBonus
@@ -171,7 +163,7 @@ public abstract class Personnage {
 	public int Deplacement(int vitesseBonus) {
 		return this.vitesseDeplacement*(vitesseBonus/100)+this.vitesseDeplacement;
 	}
-	
+
 	public void perdreRessources() { // Lorsque mort perd ses ressources
 		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
 			if(this.inventaire.getItem(i) instanceof Ressource) {
@@ -179,7 +171,7 @@ public abstract class Personnage {
 			}
 		}
 	}
-	
+
 	public void gravite() throws IOException {
 		this.descendre(5);
 	}

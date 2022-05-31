@@ -24,9 +24,6 @@ public class EnvironnementVue {
 			bloc= env.getCarte().getBlockMap().get(i);
 			this.carte.getChildren().add(new RessourceView(bloc, env));
 		}
-//		ImageCursor changer l'image de la souris
+//		TODO ImageCursor changer l'image de la souris notaament pour placer bloc
 	}
-	
-
-
 }

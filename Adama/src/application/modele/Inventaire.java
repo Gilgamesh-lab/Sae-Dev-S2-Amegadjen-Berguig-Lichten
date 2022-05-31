@@ -1,6 +1,5 @@
 package application.modele;
 
-
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
 import javafx.beans.property.IntegerProperty;
