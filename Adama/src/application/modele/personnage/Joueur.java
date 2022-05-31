@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import application.modele.Carte;
 import application.modele.Checkpoint;
 import application.modele.Environnement;
 import application.modele.Inventaire;
@@ -13,6 +14,7 @@ import application.modele.Arme.Arme;
 import application.modele.Arme.Epee;
 import application.modele.Arme.Poing;
 import application.modele.Ressources.Ressource;
+import application.modele.Ressources.Terre;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import javafx.beans.property.BooleanProperty;
@@ -38,8 +40,8 @@ public class Joueur extends Personnage {
 
 
 	public Joueur(int pv,int x, int y,
-	Environnement carte, int faim, Inventaire inventaire,
-	Item objetEquiper, Inventaire inventaireRaccourci, int saut) {
+			Environnement carte, int faim, Inventaire inventaire,
+			Item objetEquiper, Inventaire inventaireRaccourci, int saut) {
 		super(pv, x, y,5, carte,inventaire, saut, TAILLE);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
@@ -133,8 +135,14 @@ public class Joueur extends Personnage {
 
 	public void utiliserMain(int emplacement) {
 		this.objetEquiper.utiliser(emplacement);
-
+		if (objetEquiper instanceof Terre) {
+			Carte carte = this.getEnvironnement().getCarte();
+			carte.getBlockMap().remove(emplacement);
+			carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
+//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
+		}
 	}
+
 	public void accroupie() {
 		super.setVitesseDeplacement(VITESSE_ACCROUPIE);
 	}
@@ -154,13 +162,13 @@ public class Joueur extends Personnage {
 
 
 	public Item craft (ArrayList<Item> items) { // à tester/ à finir
-//		String pierre = new Pierre().getClass().getSimpleName();
-//		String bois = new Bois().getClass().getSimpleName();
-//		String plante = new Plante().getClass().getSimpleName();
+		//		String pierre = new Pierre().getClass().getSimpleName();
+		//		String bois = new Bois().getClass().getSimpleName();
+		//		String plante = new Plante().getClass().getSimpleName();
 		String pierre = "Pierre";
 		String bois = "Bois";
 		String plante = "plante";
-				
+
 		Map<String, Integer> recette = new HashMap<String, Integer>();
 
 		recette.put(pierre, 0);

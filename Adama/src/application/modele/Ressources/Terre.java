@@ -11,12 +11,6 @@ public class Terre extends Ressource {
 		super(true,5,5, indice);
 	}
 
-	@Override
-	public void utiliser() {
-		
-		
-	}
-	
 	
 	public String toString() {
 		return "Terre";
@@ -24,9 +18,19 @@ public class Terre extends Ressource {
 
 	@Override
 	public void utiliser(int val) {
+		this.setIndice(val);
+		
+//		if(direction) {
+//			ressource.setX(this.getX() + 32);
+//			ressource.setY(this.getY());
+//		}
+//		else {
+//			ressource.setX(this.getX() - 32);
+//			ressource.setY(this.getY());
+//		}
+//		this.getInventaire().supprimer(ressource);
+//		this.getEnvironnement().getCarte().getBlockMap().add(ressource);
 		
 	}
-
-	
 
 }

@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Outils.Hache;
 import application.modele.Outils.Pelle;
 import application.modele.Outils.Pioche;
 import application.modele.Ressources.Ressource;
+import application.modele.Ressources.Terre;
 import application.modele.personnage.Joueur;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
@@ -39,8 +41,8 @@ public class Controleur implements Initializable{
 	private Pane plateau;
 	@FXML
 	private TilePane carte;
-    @FXML
-    private Button boutonInventaire;
+	@FXML
+	private Button boutonInventaire;
 
 	private Timeline gameLoop;
 	private int temps;
@@ -55,22 +57,22 @@ public class Controleur implements Initializable{
 
 
 
-    @FXML
-    void ouvrirInventaire(ActionEvent event) {
-    	ouvrirInventaire();
-    }
+	@FXML
+	void ouvrirInventaire(ActionEvent event) {
+		ouvrirInventaire();
+	}
 
-    private void ouvrirInventaire() {
-    	System.out.println("Bonjour");
-    	if(!inventaire.isVisible()) {
-    		inventaire.setDisable(false);
-    		inventaire.setVisible(true);
-    	}
-    	else {
-    		inventaire.setDisable(true);
-    		inventaire.setVisible(false);
-    	}
-    }
+	private void ouvrirInventaire() {
+		System.out.println("Bonjour");
+		if(!inventaire.isVisible()) {
+			inventaire.setDisable(false);
+			inventaire.setVisible(true);
+		}
+		else {
+			inventaire.setDisable(true);
+			inventaire.setVisible(false);
+		}
+	}
 
 	@FXML
 	void sourisPresse(MouseEvent event) {
@@ -79,8 +81,14 @@ public class Controleur implements Initializable{
 		int x = (int) event.getSceneX();
 		int y = (int) event.getSceneY();
 		Ressource cible = env.getCarte().emplacement(x, y);
-		System.out.println(env.getCarte().getBlockMap().indexOf(cible));
-		persoControleur.sourisPresse(click, env.getCarte().getBlockMap().indexOf(cible));//a voir si problème avec click sur bouton
+		if (cible==null) {
+			int indiceDansMap = (x/Carte.getTailleBlock()) + ((y/Carte.getTailleBlock()) * Carte.getLargeur());
+			persoControleur.sourisPresse(click, indiceDansMap);
+		}
+		else {
+			System.out.println(env.getCarte().getBlockMap().indexOf(cible));
+			persoControleur.sourisPresse(click, env.getCarte().getBlockMap().indexOf(cible));//a voir si problème avec click sur bouton
+		}
 	}
 
 	@FXML
@@ -117,11 +125,13 @@ public class Controleur implements Initializable{
 				if (cs.wasRemoved()) {
 					int indiceBloc;
 					for (Ressource ancien : cs.getRemoved()) {
-						System.out.println(ancien);
-						System.out.println(cs.getRemoved());
-						indiceBloc = ancien.getIndice();
-						System.out.println(indiceBloc+ " indice Bloc");
-						carte.getChildren().set(indiceBloc, new RessourceView(null, env));
+						if (ancien!=null) {
+							System.out.println(ancien);
+							System.out.println(cs.getRemoved());
+							indiceBloc = ancien.getIndice();
+							System.out.println(indiceBloc+ " indice Bloc");
+							carte.getChildren().set(indiceBloc, new RessourceView(null, env));
+						}
 					}
 				}
 				else {
@@ -173,14 +183,18 @@ public class Controleur implements Initializable{
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-					else if (temps>1500 && temps<1600) {
-						System.out.println("Changement d'outils");//teste de la pioche elle marche
-						perso.equiper(new Pioche(env));
-					}
-					else if(temps>1600 && temps<1700) {
-						System.out.println("Changement outils");
-						perso.equiper(new Hache(env));
-					}
+					else if(temps==251)
+						System.out.println("Toto");
+					else if(temps>300)
+						perso.equiper(new Terre(0));
+					//					else if (temps>1500 && temps<1600) {
+					//						System.out.println("Changement d'outils");//teste de la pioche elle marche
+					//						perso.equiper(new Pioche(env));
+					//					}
+					//					else if(temps>1600 && temps<1700) {
+					//						System.out.println("Changement outils");
+					//						perso.equiper(new Hache(env));
+					//					}
 					temps++;
 				})
 				);

@@ -31,11 +31,11 @@ public class Carte {
 		this.items = new ArrayList<Item>();
 	}
 
-	public int getHauteur() {
+	public static int getHauteur() {
 		return HAUTEUR;
 	}
 
-	public int getLargeur() {
+	public static int getLargeur() {
 		return LARGEUR;
 	}
 
