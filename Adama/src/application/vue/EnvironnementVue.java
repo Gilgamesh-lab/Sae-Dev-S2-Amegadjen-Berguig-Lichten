@@ -1,7 +1,5 @@
 package application.vue;
 
-import java.io.IOException;
-
 import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.ressources.Ressource;
@@ -17,7 +15,7 @@ public class EnvironnementVue {
 		this.env=env;
 	}
 	
-	public void creerEnvironnement() throws IOException {
+	public void creerEnvironnement() {
 		int tailleMap = (Carte.HAUTEUR) * (Carte.LARGEUR);
 		Ressource bloc;
 		for(int i=0; i<tailleMap; i++) {
