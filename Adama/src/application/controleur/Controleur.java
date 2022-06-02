@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.collections.ListChangeListener;
@@ -35,6 +36,10 @@ public class Controleur implements Initializable{
 	private TilePane carte;
 	@FXML
 	private Button boutonInventaire;
+    @FXML
+    private Label nbPVResant;
+    @FXML
+	private HBox inventaire;
 
 	private Timeline gameLoop;
 	private int temps;
@@ -44,8 +49,7 @@ public class Controleur implements Initializable{
 	private JoueurControleur persoControleur;
 	private Environnement env;
 	private EnvironnementVue envVue;
-	@FXML
-	private HBox inventaire;
+	
 
 
 
@@ -142,6 +146,7 @@ public class Controleur implements Initializable{
 		env.getCarte().getBlockMap().addListener(listen);
 		perso  = new Joueur(320, 0, env);
 		perso.setHauteurSaut(4);
+		nbPVResant.textProperty().bind(perso.pvProperty().asString());
 		persoVue = new JoueurVue();
 		persoControleur = new JoueurControleur(perso, persoVue);
 		plateau.getChildren().add(persoVue.getSprite());
