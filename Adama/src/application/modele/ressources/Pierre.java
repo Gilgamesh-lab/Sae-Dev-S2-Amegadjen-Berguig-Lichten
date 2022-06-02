@@ -22,7 +22,8 @@ public class Pierre extends Ressource {
 
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		
 	}
 

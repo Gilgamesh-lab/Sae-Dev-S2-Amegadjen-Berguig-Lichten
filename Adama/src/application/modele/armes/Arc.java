@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
+import application.modele.ressources.Ressource;
 
 public class Arc extends Arme {
 	private Fleche fleche;
@@ -57,7 +58,8 @@ public class Arc extends Arme {
 
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}

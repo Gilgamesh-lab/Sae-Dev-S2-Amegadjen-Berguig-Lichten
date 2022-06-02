@@ -134,13 +134,20 @@ public class Joueur extends Personnage {
 	}
 
 	public void utiliserMain(int emplacement) {
-		this.objetEquiper.utiliser(emplacement);
+		Ressource bloc =this.objetEquiper.utiliser(emplacement);
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
 			carte.getBlockMap().remove(emplacement);
 			carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
 //			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
 		}
+		if (bloc!=null)
+			try {
+				this.getInventaire().ajouter(bloc);
+			} catch (ErreurInventairePlein e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	public void accroupie() {
@@ -203,10 +210,9 @@ public class Joueur extends Personnage {
 		}
 	}
 
-	public void jeter(Item item) throws ErreurInventairePlein, ErreurArmeEtOutilPasJetable {
+	public void jeter(Item item) throws ErreurArmeEtOutilPasJetable {
 		if(!this.estUneArmeOuUnOutil(item)) {
-			this.getInventaire().supprimer(item);
-			this.getEnvironnement().getCarte().getItems().add(item);
+			this.getInventaire().supprimer(item);;
 		}
 		else {
 			throw new ErreurArmeEtOutilPasJetable();

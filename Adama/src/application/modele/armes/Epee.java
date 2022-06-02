@@ -1,5 +1,7 @@
 package application.modele.armes;
 
+import application.modele.ressources.Ressource;
+
 public class Epee extends Arme{
 	public Epee() {
 		super(1, 1, 2);
@@ -22,34 +24,9 @@ public class Epee extends Arme{
 //	}
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

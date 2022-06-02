@@ -6,10 +6,10 @@ import java.util.ResourceBundle;
 
 import application.modele.Carte;
 import application.modele.Environnement;
-import application.modele.outils.Hache;
+import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Pelle;
-import application.modele.outils.Pioche;
 import application.modele.personnages.Joueur;
+import application.modele.ressources.Pierre;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import application.vue.EnvironnementVue;
@@ -21,15 +21,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelFormat;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.collections.ListChangeListener;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -43,7 +37,9 @@ public class Controleur implements Initializable{
 	private TilePane carte;
 	@FXML
 	private Button boutonInventaire;
-
+	@FXML
+	private HBox inventaire;
+	
 	private Timeline gameLoop;
 	private int temps;
 	private InventaireControleur inv;
@@ -52,26 +48,11 @@ public class Controleur implements Initializable{
 	private JoueurControleur persoControleur;
 	private Environnement env;
 	private EnvironnementVue envVue;
-	@FXML
-	private HBox inventaire;
-
-
+	
 
 	@FXML
 	void ouvrirInventaire(ActionEvent event) {
 		ouvrirInventaire();
-	}
-
-	private void ouvrirInventaire() {
-		System.out.println("Bonjour");
-		if(!inventaire.isVisible()) {
-			inventaire.setDisable(false);
-			inventaire.setVisible(true);
-		}
-		else {
-			inventaire.setDisable(true);
-			inventaire.setVisible(false);
-		}
 	}
 
 	@FXML
@@ -111,6 +92,18 @@ public class Controleur implements Initializable{
 		}
 	}
 
+	private void ouvrirInventaire() {
+		System.out.println("Bonjour");
+		if(!inventaire.isVisible()) {
+			inventaire.setDisable(false);
+			inventaire.setVisible(true);
+		}
+		else {
+			inventaire.setDisable(true);
+			inventaire.setVisible(false);
+		}
+	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
@@ -187,6 +180,20 @@ public class Controleur implements Initializable{
 						System.out.println("Toto");
 					else if(temps>300)
 						perso.equiper(new Terre(0));
+					else if (temps<10)
+						try {
+							perso.getInventaire().ajouter(new Pierre(temps));
+						} catch (ErreurInventairePlein e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					else if (temps<20)
+						try {
+							perso.getInventaire().ajouter(new Terre(temps));
+						} catch (ErreurInventairePlein e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					//					else if (temps>1500 && temps<1600) {
 					//						System.out.println("Changement d'outils");//teste de la pioche elle marche
 					//						perso.equiper(new Pioche(env));

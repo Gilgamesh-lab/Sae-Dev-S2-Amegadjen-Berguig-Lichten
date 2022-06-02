@@ -1,5 +1,6 @@
 package application.modele.armes;
 
+import application.modele.ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
 
 import javafx.beans.property.IntegerProperty;
@@ -76,7 +77,8 @@ public class Fleche extends Arme{
 	}
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		// TODO Auto-generated method stub
 
 	}
