@@ -1,20 +1,20 @@
 package application.controleur;
 
-import java.io.IOException;
-
 import application.modele.personnages.Joueur;
-import application.modele.ressources.Terre;
 import application.vue.JoueurVue;
-import javafx.scene.input.MouseEvent;
 
 public class JoueurControleur {
 
 	private Joueur perso;
 	private JoueurVue persoVue;
+	private boolean saut;
+	private int tempsSaut;
 
 	public JoueurControleur(Joueur perso, JoueurVue persoVue) {
 		this.perso=perso;
 		this.persoVue=persoVue;
+		saut = false;
+		tempsSaut = 0;
 	}
 
 	public void touchePresse(String touchePresse) {
@@ -28,12 +28,8 @@ public class JoueurControleur {
 			perso.droite();
 			break;
 		case "z":
-			try {
-				perso.sauter();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			if(!perso.toucheY(false))
+				saut = true;
 			break;
 		case "s":
 			break;
@@ -48,6 +44,26 @@ public class JoueurControleur {
 		default:
 			break;
 		}
+	}
+
+	public boolean isSaut() {
+		return saut;
+	}
+
+	public void setSaut(boolean saut) {
+		this.saut = saut;
+	}
+
+	public int getTempsSaut() {
+		return tempsSaut;
+	}
+	
+	public void incremterTempsSaut() {
+		this.tempsSaut+=1;
+	}
+	
+	public void reinisialiseTempsSaut() {
+		this.tempsSaut = 0;
 	}
 
 }

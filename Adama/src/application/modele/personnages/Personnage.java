@@ -92,9 +92,9 @@ public abstract class Personnage {
 	/**
 	 * Permet d'effectuer une translationY de val si toucheY est true
 	 * @param val
-	 * @throws IOException failed or interrupted I/O operation
+	 * @ failed or interrupted I/O operation
 	 */
-	public void monter(int val) throws IOException {
+	public void monter(int val) {
 		if(this.toucheY(true))
 			translationY(val);
 	}
@@ -102,21 +102,21 @@ public abstract class Personnage {
 	/**
 	 * Permet d'effectuer une translationY de -val si toucheY est true
 	 * @param val
-	 * @throws IOException failed or interrupted I/O operation
+	 * @ failed or interrupted I/O operation
 	 */
-	public void descendre(int val) throws IOException {
+	public void descendre(int val) {
 		if(this.toucheY(false)) {
 			translationY(-val);
 		}
 	}
 	
 	/**
-	 * Permet de savoir si on ne touche rien au niveau des y au dessus du perso si auDessus est true est en dessous sinon  
+	 * Permet de savoir si on ne touche rien au niveau des y au dessus du perso si auDessus est true est en dessous sinon 
 	 * @param auDessus
 	 * @return
-	 * @throws IOException
+	 * @
 	 */
-	public boolean toucheY(boolean auDessus) throws IOException {
+	public boolean toucheY(boolean auDessus) {
 		boolean gauche;
 		boolean droite;
 		if(auDessus) {
@@ -134,9 +134,9 @@ public abstract class Personnage {
 	 * Sauter permet uniquement de sauter de la hauteur du saut du personnage.
 	 * Et est donc différent de monter car un perso pourrait être projeter par une attaque
 	 * a une valeur plus haute/basse que celle de son saut.
-	 * @throws IOException
+	 * @
 	 */
-	public void sauter() throws IOException {
+	public void sauter() {
 		this.monter(this.hauteurSaut);
 	}
 	
@@ -182,11 +182,11 @@ public abstract class Personnage {
 		boolean teteCogne;
 		boolean corpCogne;
 		if(aDroite) {
-			teteCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+32, this.getY()) instanceof Bois;
-			corpCogne = this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+32)==null || this.environnement.getCarte().emplacement(this.getX()+32, this.getY()+32) instanceof Bois;
+			teteCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Bois;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Bois;
 		}
 		else {
-			teteCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY())==null || this.environnement.getCarte().emplacement(this.getX(), this.getY()) instanceof Bois;
+			teteCogne = this.environnement.getCarte().emplacement(this.getX()+1, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Bois;
 			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null || this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Bois;
 		}
 		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
@@ -215,7 +215,7 @@ public abstract class Personnage {
 		}
 	}
 
-	public void gravite() throws IOException {
+	public void gravite() {
 		this.descendre(5);
 	}
 	

@@ -1,14 +1,12 @@
 package application.controleur;
 
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.modele.Carte;
 import application.modele.Environnement;
-import application.modele.outils.Hache;
 import application.modele.outils.Pelle;
-import application.modele.outils.Pioche;
 import application.modele.personnages.Joueur;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
@@ -21,15 +19,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelFormat;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.collections.ListChangeListener;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -43,6 +36,10 @@ public class Controleur implements Initializable{
 	private TilePane carte;
 	@FXML
 	private Button boutonInventaire;
+    @FXML
+    private Label nbPVResant;
+    @FXML
+	private HBox inventaire;
 
 	private Timeline gameLoop;
 	private int temps;
@@ -52,8 +49,7 @@ public class Controleur implements Initializable{
 	private JoueurControleur persoControleur;
 	private Environnement env;
 	private EnvironnementVue envVue;
-	@FXML
-	private HBox inventaire;
+	
 
 
 
@@ -149,14 +145,12 @@ public class Controleur implements Initializable{
 			}});
 		env.getCarte().getBlockMap().addListener(listen);
 		perso  = new Joueur(320, 0, env);
+		perso.setHauteurSaut(4);
+		nbPVResant.textProperty().bind(perso.pvProperty().asString());
 		persoVue = new JoueurVue();
 		persoControleur = new JoueurControleur(perso, persoVue);
 		plateau.getChildren().add(persoVue.getSprite());
-		try {
-			envVue.creerEnvironnement();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		envVue.creerEnvironnement();
 		inv = new InventaireControleur(inventaire);
 		perso.equiper(new Pelle(env));
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
@@ -177,16 +171,22 @@ public class Controleur implements Initializable{
 				(ev -> {
 					if(temps==100)
 						System.out.println("ok");
-					else if(temps%2==0)
-						try {
-							perso.gravite();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+					
 					else if(temps==251)
 						System.out.println("Toto");
 					else if(temps>300)
 						perso.equiper(new Terre(0));
+					if(persoControleur.getTempsSaut()<30&&persoControleur.isSaut()) {
+//						perso.monter(4);
+						perso.sauter();
+						persoControleur.incremterTempsSaut();
+					}	
+					else if(persoControleur.getTempsSaut()==30&&persoControleur.isSaut()) {
+						persoControleur.setSaut(false);
+						persoControleur.reinisialiseTempsSaut();
+					}
+					if(temps%2==0)
+						perso.gravite();
 					//					else if (temps>1500 && temps<1600) {
 					//						System.out.println("Changement d'outils");//teste de la pioche elle marche
 					//						perso.equiper(new Pioche(env));
