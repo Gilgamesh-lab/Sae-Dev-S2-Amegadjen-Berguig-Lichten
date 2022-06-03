@@ -8,20 +8,7 @@ import java.nio.file.Paths;
 
 public class Csv {
 	
-    public static void main(String[] args) throws IOException {// faire méthode écriture
-
-    	File repertoire = new File(getChemin(""));
-        String liste[] = repertoire.list();      
- 
-        if (liste != null) {         
-            for (int i = 0; i < liste.length; i++) {
-                System.out.println(liste[i]);
-            }
-        } else {
-            System.err.println("Nom de repertoire invalide");
-        } 
- 
-    }
+    
     
     
      /**
