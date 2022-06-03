@@ -1,17 +1,18 @@
 package application.modele.outils;
 
 import application.modele.Environnement;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import application.modele.ressources.Eau;
 
 public class Seau extends Outil {
 	
-	private BooleanProperty estRempliProperty;
+	private boolean estRempli;
 	private final static int TEMPS_REMPLISSAGE = 200;
+	private Eau eau;
 
 	public Seau(Environnement env) {
 		super(env, TEMPS_REMPLISSAGE);
-		this.estRempliProperty = new SimpleBooleanProperty(false);
+		this.estRempli = false;
+		eau = null;
 	}
 
 	@Override
@@ -19,21 +20,30 @@ public class Seau extends Outil {
 		// TODO Auto-generated method stub
 
 	}
-
-	public BooleanProperty EstRempliProperty() {
-		return estRempliProperty;
+	
+	public void remplir() {
+		eau = new Eau(0);
+		estRempli = true;
 	}
 	
-	public boolean getEstEstRempli() {
-		return estRempliProperty.get();
+	public void vider() {
+		eau = null;
+		estRempli = false;
 	}
-	public void setEstRempli(boolean estRempli) {
-		this.estRempliProperty.setValue(estRempli);
+	
+	public boolean EstRempli() {
+		return estRempli;
 	}
 
 	public static int getTempsRemplissage() {
 		return TEMPS_REMPLISSAGE;
 	}
+
+	public Eau getEau() {
+		return eau;
+	}
+	
+	
 	
 	
 }

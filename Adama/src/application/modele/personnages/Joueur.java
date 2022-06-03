@@ -15,6 +15,7 @@ import application.modele.armes.Epee;
 import application.modele.armes.Poing;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
+import application.modele.outils.Seau;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.beans.property.BooleanProperty;
@@ -191,6 +192,9 @@ public class Joueur extends Personnage {
 		else if(recette.get(bois) == 3 && recette.get(plante) == 1) {
 			return new Arc();
 		}
+		
+		else if(recette.get(bois) == 5)
+			return new Seau(getEnvironnement());
 
 		else {
 			return new Poing();
