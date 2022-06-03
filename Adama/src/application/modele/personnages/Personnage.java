@@ -1,7 +1,5 @@
 package application.modele.personnages;
 
-import java.io.IOException;
-
 import application.modele.Environnement;
 import application.modele.Inventaire;
 import application.modele.ressources.Bois;
