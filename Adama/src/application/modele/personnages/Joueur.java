@@ -45,8 +45,8 @@ public class Joueur extends Personnage {
 	
 	public Joueur(int pv,int x, int y,
 	Environnement environnement, int faim, Inventaire inventaire,
-	Item objetEquiper, Inventaire inventaireRaccourci, int saut) { 
-		super(pv, x, y,5, environnement,inventaire, saut);
+	Item objetEquiper, Inventaire inventaireRaccourci, int hauteurSaut, int longueurSaut, Checkpoint checkpoint) { 
+		super(pv, x, y,5, environnement,inventaire, hauteurSaut, TAILLE, longueurSaut, checkpoint);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
 		this.inventaireRaccourci = inventaireRaccourci;
@@ -54,7 +54,7 @@ public class Joueur extends Personnage {
 	}
 	
 	public Joueur(int x, int y, Environnement environnement) {
-		super(MAX_PV, x, y, 5, environnement );
+		super(MAX_PV, x, y, 5, environnement, TAILLE );
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
 		this.objetEquiper = this.POING;
 		this.inventaireRaccourci = new Inventaire(10);
@@ -146,7 +146,7 @@ public class Joueur extends Personnage {
 		this.setEstAccroupi(true);
 	}
 	
-	public void setModeDeplacement() { // trouver un meilleure nom 
+	public void setModeDeplacement() { // TODO trouver un meilleure nom 
 		if(this.getVitesseDeplacement() != VITESSE_COURRIR) {
 			this.setVitesseDeplacement(VITESSE_COURRIR);
 		}
@@ -204,21 +204,20 @@ public class Joueur extends Personnage {
 			for(k = 0 ; k < items.size() ; k ++) { 
 				recette.put(items.get(k).getClass().getSimpleName(), recette.get(items.get(k).getClass().getSimpleName()) + 1);
 			}
-		}
-		catch (java.lang.NullPointerException e) {
+		}catch (java.lang.NullPointerException e) { 
 			throw new ErreurObjetInvalide(items.get(k));
 		}
 		
-		if(recette.get(bois) == 3 && recette.get(plante) == 1) { 
-			item = new Arc(this.getInventaire());
+		if(recette.get(bois) == 3 && recette.get(plante) == 1) {  // 3 bois et 1 plante crée un arc
+			item = new Arc(this.getInventaire()); // TODO revoir recette pour l'arc (remplacer la plante part de la ficelle)
 		}
 		
-		else if(recette.get(bois) == 2 && recette.get(pierre) == 1) {
+		else if(recette.get(bois) == 2 && recette.get(pierre) == 1) { // 2 bois et 1 pierre crée une épée
 			item = new Epee();
 		}
 		
 		
-		else if(recette.get(bois) == 1 && recette.get(pierre) == 1) {
+		else if(recette.get(bois) == 1 && recette.get(pierre) == 1) { // 1 de bois et 1 pierre crée une flèche
 			item = new Fleche();
 		}
 		
@@ -238,7 +237,7 @@ public class Joueur extends Personnage {
 	public void jeter(Item item) throws ErreurInventairePlein, ErreurArmeEtOutilPasJetable {
 		if(!this.estUneArmeOuUnOutil(item)) {
 			this.getInventaire().supprimer(item);
-			this.getEnvironnement().getCarte().getItems().add(item);
+			this.getEnvironnement().getCarte().getItems().ajouter(item);
 		}
 		else {
 			throw new ErreurArmeEtOutilPasJetable();
@@ -256,7 +255,7 @@ public class Joueur extends Personnage {
 		}
 	}
 	
-	public void poser(boolean direction) {
+	public void poser(boolean direction) throws ErreurInventairePlein {
 		if(direction) {
 			((Ressource) this.objetEquiper).setX(this.getX() + 32);
 			((Ressource) this.objetEquiper).setY(this.getY()); 
@@ -266,7 +265,7 @@ public class Joueur extends Personnage {
 			((Ressource) this.objetEquiper).setY(this.getY());
 		}
 		this.getInventaire().supprimer(this.objetEquiper);
-		this.getEnvironnement().getCarte().getItems().add(this.objetEquiper);
+		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
 		this.desequiper();
 	}
 	
