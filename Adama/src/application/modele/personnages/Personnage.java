@@ -8,6 +8,7 @@ import application.modele.Inventaire;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.ressources.Bois;
+import application.modele.ressources.Plante;
 import application.modele.ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -120,12 +121,22 @@ public abstract class Personnage {
 		boolean gauche;
 		boolean droite;
 		if(auDessus) {
-			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Bois;
-			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois;
+			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null 
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Plante);
+			
+			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Plante);
 		}
 		else {
-			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Bois;
-			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois;
+			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Plante);
+			
+			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Plante);
 		}
 		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
 	}
@@ -182,12 +193,22 @@ public abstract class Personnage {
 		boolean teteCogne;
 		boolean corpCogne;
 		if(aDroite) {
-			teteCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Bois;
-			corpCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Bois;
+			teteCogne = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY())==null
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Plante);
+			
+			corpCogne = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32)==null
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Plante);
 		}
 		else {
-			teteCogne = this.environnement.getCarte().emplacement(this.getX()+1, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Bois;
-			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null || this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Bois;
+			teteCogne = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY())==null 
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Plante);
+			
+			corpCogne = (this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null 
+			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Plante);
 		}
 		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
 	}

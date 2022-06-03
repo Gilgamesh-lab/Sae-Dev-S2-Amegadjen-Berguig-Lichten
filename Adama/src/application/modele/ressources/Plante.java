@@ -2,9 +2,11 @@ package application.modele.ressources;
 
 public abstract class Plante extends Ressource {
 
-	public Plante(boolean posable,int x, int y, int indice) {
-		super(posable, x, y, indice);
-		
+	private int tempsRepousse;
+	
+	public Plante(int x, int y, int indice) {
+		super(false, x, y, indice);
+		this.tempsRepousse = 0;
 	}
 	
 	
@@ -15,7 +17,21 @@ public abstract class Plante extends Ressource {
 	@Override
 	public void utiliser() {
 		
-		
 	}
-
+	
+	public int getTempsRepousse() {
+		return tempsRepousse;
+	}
+	
+	public void setTempsRepousse(int tempsRepousse) {
+		this.tempsRepousse = tempsRepousse;
+	}
+	
+	public void incrementerTempsRepousse() {
+		tempsRepousse+=1;
+	}
+	
+	public void reinisialiséTempsRepousse() {
+		tempsRepousse = 0;
+	}
 }
