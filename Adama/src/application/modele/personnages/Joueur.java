@@ -222,8 +222,8 @@ public class Joueur extends Personnage {
 		this.setPv(this.getPv() + 1);
 	}
 
-	public void incrementerPv(int nourriture) {
-		for (int i = 0; this.getPv() < Joueur.MAX_PV && i < nourriture ; i++) {
+	public void incrementerPv(int nombrePvRestaurer) {
+		for (int i = 0; this.getPv() < Joueur.MAX_PV && i < nombrePvRestaurer ; i++) {
 			this.soin();
 		}
 	}
@@ -240,4 +240,10 @@ public class Joueur extends Personnage {
 		this.getInventaire().supprimer(ressource);
 		this.getEnvironnement().getCarte().getBlockMap().add(ressource);
 	}
+
+	public static int getMaxPv() {
+		return MAX_PV;
+	}
+	
+	
 }
