@@ -9,6 +9,9 @@ import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
+import application.modele.ressources.PlanteDeNike;
+import application.modele.ressources.PlanteHercule;
+import application.modele.ressources.PlanteMédicinale;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.collections.FXCollections;
@@ -76,17 +79,23 @@ public class Carte {
 			for (int indice=0; indice<ligne.length(); indice+=2) {
 				suivant=ligne.charAt(indice);
 				switch (suivant) {
-					case '3':
+					case '2':
 						blocMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
+					case '3':
+						blocMap.add(new Bois(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '4':
-						blocMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
-						break;
-					case '5':
 						blocMap.add(new Pierre(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
+					case '5':
+						blocMap.add(new PlanteDeNike(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
 					case '6':
-						blocMap.add(new Bois(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blocMap.add(new PlanteHercule(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
+					case '7':
+						blocMap.add(new PlanteMédicinale(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					default://tous las chiffres de tuile avec lesquelles on ne peut intéragir (ciel, nuage,...)
 						blocMap.add(null);
@@ -95,7 +104,7 @@ public class Carte {
 				x++;
 			}
 			if (x!=LARGEUR)
-				throw new TailleMapException("Problème de Largeur : "+x+" a la place des "+LARGEUR+" demandés.");
+				throw new TailleMapException("Problème de Largeur a la hauteur " + y + " : "+x+" a la place des "+LARGEUR+" demandés.");
 			x=0;
 			y++;
 			ligne = this.map.readLine();

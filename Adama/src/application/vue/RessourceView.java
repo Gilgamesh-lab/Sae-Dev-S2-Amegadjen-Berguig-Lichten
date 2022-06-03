@@ -4,6 +4,9 @@ import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
+import application.modele.ressources.PlanteDeNike;
+import application.modele.ressources.PlanteHercule;
+import application.modele.ressources.PlanteMédicinale;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.scene.image.Image;
@@ -30,6 +33,12 @@ public class RessourceView extends ImageView {
 			val=3;
 		else if(resource instanceof Bois)
 			val = 4;
+		else if (resource instanceof PlanteDeNike)
+			val = 5;
+		else if(resource instanceof PlanteHercule)
+			val = 6;
+		else if (resource instanceof PlanteMédicinale)
+			val = 7;
 		else
 			val=2;
 		return val;
@@ -51,6 +60,15 @@ public class RessourceView extends ImageView {
 			break;
 		case 4:
 			img = new Image("ressource/blocBois.jpg");
+			break;
+		case 5:
+			img = new Image("ressource/plante de Niké.png");
+			break;
+		case 6:
+			img = new Image("ressource/plante d'Hercule.jpg");
+			break;
+		case 7:
+			img = new Image("ressource/plante médicinale.jpg");
 			break;
 		default:
 			System.out.println("La valeur" + val + " ne correpond à aucune tuiles !");
