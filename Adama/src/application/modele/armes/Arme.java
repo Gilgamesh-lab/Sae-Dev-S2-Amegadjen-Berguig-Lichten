@@ -27,6 +27,14 @@ public abstract class Arme implements Item  {
 		}
 	}
 	
+	public int getPorter() {
+		return this.porter;
+	}
+	
+	public int getDegat() {
+		return this.degat;
+	}
+	
 	public void enRecharge() {
 		this.recharger = true;
 	}

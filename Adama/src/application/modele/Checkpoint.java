@@ -3,9 +3,9 @@ package application.modele;
 public class Checkpoint {
 	private int x;
 	private int y;
-	private Carte environnement;
+	private Environnement environnement;
 
-	public Checkpoint(int x, int y, Carte environnement) {
+	public Checkpoint(int x, int y, Environnement environnement) {
 		this.x = x;
 		this.y = y;
 		this.environnement = environnement;
@@ -27,7 +27,7 @@ public class Checkpoint {
 		this.y = y;
 	}
 	
-	public Carte getEnvironnement(){
+	public Environnement getEnvironnement(){
 		return this.environnement;
 	}
 }

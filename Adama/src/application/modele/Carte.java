@@ -32,13 +32,13 @@ public class Carte {
 	public final static int LARGEUR = 60;
 	public final static int TAILLE_BLOCK = 32;
 	private ObservableList<Ressource> blocMap;
-	private ArrayList<Item> items;
+	private Inventaire items;
 
 	public Carte() throws TailleMapException, IOException {
 		this.map = Csv.ouvrir("mapsTest.csv");
 		this.blocMap = FXCollections.observableArrayList();
 		creerListeBlock();
-		this.items = new ArrayList<Item>();
+		this.items = new Inventaire(99);
 	}
 	
 	/**
@@ -49,8 +49,29 @@ public class Carte {
 	 * @param y position sur l'axe des y
 	 * @return le bloc à indiceMap
 	 */
+	
+	public BufferedReader getMap(){
+		System.out.println(map);
+		return this.map;
+	}
+	
+	
+
+	public int getHauteur() {
+		return HAUTEUR;
+	}
+
+	public int getLargeur() {
+		return LARGEUR;
+	}
+	
 	public Ressource emplacement(int x, int y) {
 		int indiceDansMap = (x/TAILLE_BLOCK) + ((y/TAILLE_BLOCK) * LARGEUR);
+		return this.blocMap.get(indiceDansMap);
+	}
+	
+	public Ressource emplacement(int x, int y, int[] taille) {
+		int indiceDansMap = (x/TAILLE_BLOCK)+(taille[0]/2) + ((y/TAILLE_BLOCK) * LARGEUR)+taille[1];
 		return this.blocMap.get(indiceDansMap);
 	}
 	
@@ -117,9 +138,10 @@ public class Carte {
 	/**
 	 * detruit le bloc qui se trouve a indice et la remplace par null
 	 * @param indice
+	 * @throws ErreurInventairePlein 
 	 */
-	public void detruireBlock(int indice) {
-		this.items.add(this.blocMap.remove(indice));
+	public void detruireBlock(int indice) throws ErreurInventairePlein {
+		this.items.ajouter(this.blocMap.remove(indice));
 		this.blocMap.add(indice, null);
 	}
 	/**
@@ -132,9 +154,10 @@ public class Carte {
 
 	/**
 	 * Si on trouve des blocs dans blockMap avec x et y en dehors de la map ils sont détruit.
+	 * @throws ErreurInventairePlein 
 	 * 
 	 */
-	public void ressourceEnDehorsMap() {
+	public void ressourceEnDehorsMap() throws ErreurInventairePlein {
 		for(int i = 0 ; i < this.getBlockMap().size(); i++) {
 			if(this.enDehorsMap(this.getBlockMap().get(i))){
 				this.detruireBlock(i);
@@ -146,8 +169,9 @@ public class Carte {
 	 * Permet de faire des degats à des blocs
 	 * @param indice l'endroit où se trouve le bloc dans la liste 
 	 * @param val de combien il est attaquée
+	 * @throws ErreurInventairePlein 
 	 */
-	public void attaquerBloc(int indice, int val) {
+	public void attaquerBloc(int indice, int val) throws ErreurInventairePlein {
 		this.blocMap.get(indice).prendreDegat(val);
 		if (this.blocMap.get(indice).estDetruit())
 			detruireBlock(indice);			
@@ -165,7 +189,7 @@ public class Carte {
 	 * 
 	 * @return la liste d'items de la map
 	 */
-	public ArrayList<Item> getItems() {
+	public Inventaire getItems() {
 		return items;
 	}
 	

@@ -52,6 +52,10 @@ public class Fleche extends Arme{
 	public void gauche(int val) {
 		this.droite(-val);
 	}
+	
+	public int getVitesse() {
+		return VITESSE;
+	}
 
 	public void droite() {
 		this.droite(this.VITESSE);
@@ -73,6 +77,10 @@ public class Fleche extends Arme{
 	public void detruire() {
 		this.setX(-32);
 		this.setY(-32);
+	}
+	
+	public String toString() {
+		return "Fleche";
 	}
 
 	@Override
