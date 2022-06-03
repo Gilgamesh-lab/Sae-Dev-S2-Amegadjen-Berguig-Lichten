@@ -2,8 +2,11 @@ package application.modele.personnages;
 
 import java.io.IOException;
 
+import application.modele.Checkpoint;
 import application.modele.Environnement;
 import application.modele.Inventaire;
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
@@ -26,9 +29,11 @@ public abstract class Personnage {
 	private Environnement environnement;
 	private Inventaire inventaire;
 	private int hauteurSaut;
+	private int longueurSaut;
 	private int[] taille;
+	private Checkpoint checkpoint;
 	
-	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille){
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
@@ -37,6 +42,9 @@ public abstract class Personnage {
 		this.inventaire = inventaire;
 		this.hauteurSaut = hauteurSaut;
 		this.taille = taille;
+		this.longueurSaut = longueurSaut;
+		this.environnement.ajouter(this);
+		this.checkpoint = checkpoint;
 	}
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
@@ -47,23 +55,30 @@ public abstract class Personnage {
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
 		this.hauteurSaut = 1;
+		this.longueurSaut = 5;
 		this.taille = taille;
+		this.environnement.ajouter(this);
+		this.checkpoint = new Checkpoint(x,y,environnement);
 	}
 	
-	/**
-	 * Augmente les PV
-	 * @param soin nombre de pv récupéré
-	 */
-	public void incrementerPv(int soin) {
-		this.setPv(pvProperty.getValue() + soin);
-	}
+	
 	
 	/**
 	 * Diminue les PV
 	 * @param degat nombre de pv perdue
 	 */
-	public void decremeterPv(int degat) {
-		this.incrementerPv(-degat);
+	public void degat() {
+		this.setPv(this.getPv() + 1);
+	}
+	
+	public void decrementerPv(int degat) {
+		for (int i = 0; this.getPv() > 0 && i < degat ; i++) {
+			this.degat();
+		}
+	}
+	
+	public Checkpoint getCheckpoint() {
+		return this.checkpoint;
 	}
 
 	/**
@@ -124,11 +139,31 @@ public abstract class Personnage {
 	public void sauter() throws IOException {
 		this.monter(this.hauteurSaut);
 	}
-
+	
 	/**
-	 * 
-	 * @param val
+	 * Permet de faire un saut en fonction du paramètre d'entrée direction
+	 * @param direction : true pour droite, false pour gauche
+	 * @throws IOException
 	 */
+	public void sauter(boolean direction) throws IOException { // a finir
+		this.monter(hauteurSaut);
+		int i = 0;
+		if(direction) {
+			while(i < this.longueurSaut) {
+				this.translationX(-1); // TODO sleep
+				i++;
+			}
+		}
+		else {
+			while(i < this.longueurSaut) {
+				this.translationX(1);
+				i++;
+			}
+		}
+		this.descendre(hauteurSaut);
+	}
+
+	
 	public void translationX(int val) {
 		this.xProperty.setValue(this.getX() - val);
 	}
@@ -172,10 +207,10 @@ public abstract class Personnage {
 		return this.vitesseDeplacement*(vitesseBonus/100)+this.vitesseDeplacement;
 	}
 
-	public void perdreRessources() { // Lorsque mort perd ses ressources
+	public void perdreRessources() throws ErreurInventairePlein { // Lorsque mort perd ses ressources
 		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
 			if(this.inventaire.getItem(i) instanceof Ressource) {
-				this.inventaire.supprimer(i);
+				this.getEnvironnement().getCarte().getItems().transferer(this.inventaire.getItem(i), this.inventaire);
 			}
 		}
 	}
@@ -225,8 +260,22 @@ public abstract class Personnage {
 	}
 	
 	public final void setHauteurSaut(int val) {
-		this.hauteurSaut=val;
+		this.hauteurSaut = val;
 	}
+	
+	public final int getLongueurSaut() {
+		return this.longueurSaut;
+	}
+	
+	public final void setLongueurSaut(int val) {
+		this.longueurSaut = val;
+	}
+	
+	
+	public boolean estEnLaire() throws IOException {
+		int[] taille = {1,2};//provisoire
+		return this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null;
+    }
 	
 	public void setVitesseDeplacement(int vitesseDeplacement) {
 		this.vitesseDeplacement = vitesseDeplacement;
@@ -247,4 +296,75 @@ public abstract class Personnage {
 	public int[] getTaille() {
 		return taille;
 	}
+	
+	public void meurt() {
+		this.setX(-32);
+		this.setY(-32);
+	}
+	
+	
+	/**
+	 * Vérifie si le joueur se trouve à droite ou à gauche du personnage
+	 * @return Retourne true si le joueur se trouve à la droite du personnage false sinon
+	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans Environnement.personnages
+	 */
+	public boolean ouSeTrouveLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		return this.getEnvironnement().getJoueur().getX() > this.getX();
+	}
+	
+	/**
+	 * Vérifie si le joueur se trouve dans un rayon correspondant à la taille du saut en  blocs autour du personnage  
+	 * @return Retourne true si le joueur est à porter du personnage , false sinon
+	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans la carte 
+	 */
+	public boolean estAporterDuJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		Joueur joueur = this.getEnvironnement().getJoueur();
+		return this.getX() - this.getLongueurSaut() <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + this.getLongueurSaut() >= joueur.getX()  && this.getX() <= joueur.getX();
+	}
+	
+	/**
+	 * Vérifie si le joueur se trouve dans un rayon de val blocs autour du personnage, val étant la varaiable passé en paramètre
+	 * @param val : valeur correspondant au rayon du cercle qui définit si le joueur est à portee
+	 * @return Retourne true si le joueur est près du personnage , false sinon
+	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans la carte
+	 */
+	public boolean estPrèsDuJoueur(int val) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		Joueur joueur = this.getEnvironnement().getJoueur();
+		return this.getX() - val <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + val >= joueur.getX()  && this.getX() <= joueur.getX();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
