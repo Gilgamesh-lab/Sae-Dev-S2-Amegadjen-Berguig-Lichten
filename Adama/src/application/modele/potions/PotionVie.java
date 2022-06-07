@@ -18,5 +18,8 @@ public class PotionVie implements Potion {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	public static int getNombrePvRestaurer() {
+		return NOMBRE_PV_RESTAURER;
+	}
 }

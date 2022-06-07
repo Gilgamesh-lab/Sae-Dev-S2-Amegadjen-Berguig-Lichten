@@ -2,11 +2,15 @@ package application.modele.personnages;
 
 import application.modele.Environnement;
 import application.modele.Inventaire;
+import application.modele.effet.Effet;
+import application.modele.effet.Ralentir;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Plante;
 import application.modele.ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Classe abstraite qui est au-dessus de Joueur et de PNJ
@@ -26,6 +30,7 @@ public abstract class Personnage {
 	private Inventaire inventaire;
 	private int hauteurSaut;
 	private int[] taille;
+	private ObservableList<Effet> effets;
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
@@ -36,6 +41,8 @@ public abstract class Personnage {
 		this.inventaire = inventaire;
 		this.hauteurSaut = hauteurSaut;
 		this.taille = taille;
+		this.effets = FXCollections.observableArrayList();
+		effets.addAll(null, null, null, null); //Chaque valeur correspond à un effet different
 	}
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
@@ -47,6 +54,8 @@ public abstract class Personnage {
 		this.inventaire = new Inventaire(20);
 		this.hauteurSaut = 1;
 		this.taille = taille;
+		this.effets = FXCollections.observableArrayList();
+		effets.addAll(null, null, null, null);
 	}
 	
 	/**
@@ -175,8 +184,42 @@ public abstract class Personnage {
 		}
 		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
 	}
-
-
+	
+	/**
+	 * Ajoute un effet à la liste effets en fonction de quelle type d'effet il s'agit
+	 * Si effet est Empoisonner 1er position 
+	 * Si effet est Ralentir 2eme position 
+	 * Si effet est Renfoncer 3eme position 
+	 * Si effet est Accelerer 4eme position 
+	 * @param effet
+	 */
+	public void ajouterEffet(Effet effet) {
+		String quelleEffet = effet.getClass().getSimpleName();
+		switch (quelleEffet) {
+		case "Empoisoner":
+			effets.add(0, effet);
+			break;
+		case "Ralentir":
+			effets.add(1, effet);
+		case "Renforcer":
+			effets.add(2, effet);
+			break;
+		case "Accelerer":
+			effets.add(3, effet);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	/**
+	 * Remplace l'effet a l'indice indice par null
+	 * @param indice
+	 */
+	public void SupprimerEffet(int indice) {
+		effets.set(indice, null);
+	}
+	
 
 	public boolean estMort() {
 		return this.getPv() == 0;
@@ -187,8 +230,10 @@ public abstract class Personnage {
 	 * @param vitesseBonus
 	 * @return
 	 */
-	public int Deplacement(int vitesseBonus) {
-		return this.vitesseDeplacement*(vitesseBonus/100)+this.vitesseDeplacement;
+	public int Deplacement(int vitesseBonus, boolean accelerer) {
+		if(accelerer)
+			return this.vitesseDeplacement*(1 + (vitesseBonus/100));
+		return this.vitesseDeplacement*(1 - (vitesseBonus/100));
 	}
 
 	public void perdreRessources() { // Lorsque mort perd ses ressources

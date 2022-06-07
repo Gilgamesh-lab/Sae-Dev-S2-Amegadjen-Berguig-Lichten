@@ -12,8 +12,9 @@ public class Accelerer extends Effet {
 	}
 	
 	@Override
-	public void appliquerEffet() {
-		// TODO Auto-generated method stub
+	public int appliquerEffet() {
+		int p = POURCENTAGE_ACCELERATION;
+		return p;
 		
 	}
 	public static int getPourcentageAcceleration() {

@@ -6,7 +6,7 @@ import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
 import application.modele.ressources.PlanteDeNike;
 import application.modele.ressources.PlanteHercule;
-import application.modele.ressources.PlanteMédicinale;
+import application.modele.ressources.PlanteMedicinale;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.scene.image.Image;
@@ -37,7 +37,7 @@ public class RessourceView extends ImageView {
 			val = 5;
 		else if(resource instanceof PlanteHercule)
 			val = 6;
-		else if (resource instanceof PlanteMédicinale)
+		else if (resource instanceof PlanteMedicinale)
 			val = 7;
 		else
 			val=2;

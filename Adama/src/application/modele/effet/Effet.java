@@ -13,7 +13,7 @@ public abstract class Effet {
 	}
 	
 	
-	public abstract void appliquerEffet();
+	public abstract int appliquerEffet();
 
 	public int getDurée() {
 		return durée;

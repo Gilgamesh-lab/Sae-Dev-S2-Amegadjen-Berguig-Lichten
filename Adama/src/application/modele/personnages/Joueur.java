@@ -13,19 +13,26 @@ import application.modele.armes.Arc;
 import application.modele.armes.Arme;
 import application.modele.armes.Epee;
 import application.modele.armes.Poing;
+import application.modele.effet.Effet;
+import application.modele.effet.Ralentir;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Seau;
+import application.modele.potions.Potion;
+import application.modele.potions.PotionDegat;
+import application.modele.potions.PotionVie;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Joueur extends Personnage {
 
-	private final static  int MAX_PV = 7;
+	private final static IntegerProperty MAX_PV_PROPERTY = new SimpleIntegerProperty(7);
 	private IntegerProperty faimProperty;
 	private final  int MAX_FAIM = 7;
 	private Item objetEquiper;
@@ -37,6 +44,7 @@ public class Joueur extends Personnage {
 	private final static int VITESSE_ACCROUPIE = 5;
 	private BooleanProperty estAccroupiProperty;
 	private final static int[] TAILLE = {1,2};
+
 
 
 
@@ -52,7 +60,7 @@ public class Joueur extends Personnage {
 
 	public Joueur(int x, int y,
 			Environnement carte) {
-		super(MAX_PV, x, y,5, carte, TAILLE);
+		super(Joueur.getMaxPv(), x, y,5, carte, TAILLE);
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
 		this.objetEquiper = this.POING;
 		this.inventaireRaccourci = new Inventaire(10);
@@ -142,8 +150,23 @@ public class Joueur extends Personnage {
 			carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
 //			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
 		}
+		else if (objetEquiper instanceof Potion) {
+			String potion = objetEquiper.getClass().getSimpleName();
+			switch (potion) {
+			case "PotionVie":
+				incrementerPv(PotionVie.getNombrePvRestaurer());
+				break;
+			case "PotionVitesse":
+//				super.Deplacement(objetEquiper.getDuree());
+				break;
+//			case "
+			default:
+				break;
+			}
+		}
 	}
-
+	
+	
 	public void accroupie() {
 		super.setVitesseDeplacement(VITESSE_ACCROUPIE);
 	}
@@ -168,13 +191,23 @@ public class Joueur extends Personnage {
 		//		String plante = new Plante().getClass().getSimpleName();
 		String pierre = "Pierre";
 		String bois = "Bois";
-		String plante = "plante";
+		String planteDeNike = "PlanteDeNike";
+		String planteHercule = "¨PlanteHercule";
+		String planteMedicinale = "PlanteMedicinale";
+		String fils = "Fils";
+		Seau PossedeSeau = null;
+		String seau = null;
+		int indiceSaut = items.indexOf(PossedeSeau);
+		if(indiceSaut != -1);
+			PossedeSeau = (application.modele.outils.Seau) super.getInventaire().getItems().get(indiceSaut);
+			if(PossedeSeau.EstRempli())
+				seau = "Seau";
 
 		Map<String, Integer> recette = new HashMap<String, Integer>();
 
 		recette.put(pierre, 0);
 		recette.put(bois, 0);
-		recette.put(plante, 0);
+		recette.put(planteDeNike, 0);
 
 
 		for(int k = 0 ; k < items.size() ; k ++) {
@@ -189,13 +222,18 @@ public class Joueur extends Personnage {
 			return new Epee();
 		}
 
-		else if(recette.get(bois) == 3 && recette.get(plante) == 1) {
+		else if(recette.get(bois) == 3 && recette.get(fils) == 1) {
 			return new Arc();
 		}
 		
 		else if(recette.get(bois) == 5)
 			return new Seau(getEnvironnement());
-
+		
+		else if (seau != null && recette.get(planteHercule) == 2)
+			return new PotionDegat();
+		
+		else if (seau != null && recette.get(planteMedicinale) == 3)
+			return new PotionVie();
 		else {
 			return new Poing();
 		}
@@ -223,7 +261,7 @@ public class Joueur extends Personnage {
 	}
 
 	public void incrementerPv(int nombrePvRestaurer) {
-		for (int i = 0; this.getPv() < Joueur.MAX_PV && i < nombrePvRestaurer ; i++) {
+		for (int i = 0; this.getPv() < Joueur.getMaxPv() && i < nombrePvRestaurer ; i++) {
 			this.soin();
 		}
 	}
@@ -242,8 +280,10 @@ public class Joueur extends Personnage {
 	}
 
 	public static int getMaxPv() {
-		return MAX_PV;
+		return MAX_PV_PROPERTY.getValue();
 	}
 	
-	
+	public static IntegerProperty MAX_PV_PROPERTY() {
+		return MAX_PV_PROPERTY;
+	}
 }

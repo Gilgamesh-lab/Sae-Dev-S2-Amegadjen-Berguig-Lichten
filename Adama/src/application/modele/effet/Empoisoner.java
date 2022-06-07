@@ -8,12 +8,12 @@ public class Empoisoner extends Effet {
 	}
 
 	public Empoisoner() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
 	public void appliquerEffet() {
-		// TODO Auto-generated method stub
+		
 
 	}
 
