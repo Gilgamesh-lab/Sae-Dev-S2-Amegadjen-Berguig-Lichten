@@ -8,6 +8,7 @@ import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.outils.Pelle;
 import application.modele.personnages.Joueur;
+import application.modele.personnages.Personnage;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import application.vue.EnvironnementVue;
@@ -49,6 +50,8 @@ public class Controleur implements Initializable{
 	private JoueurControleur persoControleur;
 	private Environnement env;
 	private EnvironnementVue envVue;
+	private ListChangeListener<Ressource> listResssourceListener;
+	private ListChangeListener<Personnage> listPersonnageListener;
 	
 
 
@@ -115,50 +118,69 @@ public class Controleur implements Initializable{
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
-		ListChangeListener<Ressource> listen = (cs -> {
-			System.out.println("changement");
+		persoVue = new JoueurVue();
+		
+		listResssourceListener = (cs -> {
+			System.out.println("changement bloc");
 			while(cs.next()) {
-				if (cs.wasRemoved()) {
-					int indiceBloc;
-					for (Ressource ancien : cs.getRemoved()) {
-						if (ancien!=null) {
-							System.out.println(ancien);
-							System.out.println(cs.getRemoved());
-							indiceBloc = ancien.getIndice();
-							System.out.println(indiceBloc+ " indice Bloc");
-							carte.getChildren().set(indiceBloc, new RessourceView(null, env));
-						}
+				int indiceBloc;
+				for (Ressource ancien : cs.getRemoved()) {
+					if (ancien!=null) {
+						System.out.println(ancien);
+						System.out.println(cs.getRemoved());
+						indiceBloc = ancien.getIndice();
+						System.out.println(indiceBloc+ " indice Bloc");
+						carte.getChildren().set(indiceBloc, new RessourceView(null, env));
 					}
 				}
-				else {
-					int indiceBloc;
-					for (Ressource nouveau : cs.getAddedSubList()) {
-						if (nouveau != null) {
-							System.out.println(nouveau);
-							System.out.println(cs.getAddedSubList());
-							indiceBloc = nouveau.getIndice();
-							System.out.println(indiceBloc+ " indice Bloc");
-							carte.getChildren().set(indiceBloc, new RessourceView(nouveau, env));
-						}
+				for (Ressource nouveau : cs.getAddedSubList()) {
+					if (nouveau != null) {
+						System.out.println(nouveau);
+						System.out.println(cs.getAddedSubList());
+						indiceBloc = nouveau.getIndice();
+						System.out.println(indiceBloc+ " indice Bloc");
+						carte.getChildren().set(indiceBloc, new RessourceView(nouveau, env));
 					}
 				}
 			}});
-		env.getCarte().getBlockMap().addListener(listen);
+		
+		listPersonnageListener = (pc -> {
+			System.out.println("changement peronnage");
+			while(pc.next()) {
+				for (Personnage mort : pc.getRemoved()) {
+					this.plateau.getChildren().remove(mort);
+				}
+				for (Personnage nouveau : pc.getAddedSubList()) {
+					System.out.println(nouveau.getClass());
+					this.plateau.getChildren().add(new JoueurVue().getSprite());
+					if (nouveau instanceof Joueur) {
+						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue);
+						persoVue.getSprite().xProperty().bind(nouveau.xProperty());
+						persoVue.getSprite().yProperty().bind(nouveau.yProperty());
+						persoVue.getSprite().setFitHeight(64);
+						persoVue.getSprite().setFitWidth(32);
+						nbPVResant.textProperty().bind(nouveau.pvProperty().asString());
+					}
+				}
+			}});
+		
+		
+		env.getCarte().getBlockMap().addListener(listResssourceListener);
+		env.getPersonnages().addListener(listPersonnageListener);
 		perso  = new Joueur(320, 0, env);
 		perso.setHauteurSaut(4);
-		nbPVResant.textProperty().bind(perso.pvProperty().asString());
-		persoVue = new JoueurVue();
-		persoControleur = new JoueurControleur(perso, persoVue);
+//		nbPVResant.textProperty().bind(perso.pvProperty().asString());
+		
+//		persoControleur = new JoueurControleur(perso, persoVue);
 		plateau.getChildren().add(persoVue.getSprite());
 		envVue.creerEnvironnement();
 		inv = new InventaireControleur(inventaire);
 		perso.equiper(new Pelle(env));
-		persoVue.getSprite().xProperty().bind(perso.xProperty());
-		persoVue.getSprite().yProperty().bind(perso.yProperty());
+//		persoVue.getSprite().xProperty().bind(perso.xProperty());
+//		persoVue.getSprite().yProperty().bind(perso.yProperty());
 		perso.getInventaire().getItems().addListener(inv);
-		persoVue.getSprite().setFitHeight(64);
-		persoVue.getSprite().setFitWidth(32);
-
+//		persoVue.getSprite().setFitHeight(64);
+//		persoVue.getSprite().setFitWidth(32);
 		initAnimation();
 		gameLoop.play();
 	}

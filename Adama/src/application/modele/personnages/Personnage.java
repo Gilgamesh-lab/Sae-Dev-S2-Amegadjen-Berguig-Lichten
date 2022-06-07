@@ -23,10 +23,12 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public abstract class Personnage {
 
+	private static int compteur = 0;
 	private IntegerProperty pvProperty;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
 	private int vitesseDeplacement;
+	private int id;
 	private Environnement environnement;
 	private Inventaire inventaire;
 	private int hauteurSaut;
@@ -46,6 +48,8 @@ public abstract class Personnage {
 		this.longueurSaut = longueurSaut;
 		this.environnement.ajouter(this);
 		this.checkpoint = checkpoint;
+		this.id=compteur;
+		compteur++;
 	}
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
@@ -352,6 +356,10 @@ public abstract class Personnage {
 	public boolean estPrèsDuJoueur(int val) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
 		Joueur joueur = this.getEnvironnement().getJoueur();
 		return this.getX() - val <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + val >= joueur.getX()  && this.getX() <= joueur.getX();
+	}
+
+	public int getId() {
+		return id;
 	}
 	
 	
