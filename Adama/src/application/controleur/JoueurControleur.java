@@ -29,7 +29,7 @@ public class JoueurControleur {
 			break;
 		case "z":
 			if(!perso.toucheY(false))
-				saut = true;
+				perso.sauter();
 			break;
 		case "s":
 			break;

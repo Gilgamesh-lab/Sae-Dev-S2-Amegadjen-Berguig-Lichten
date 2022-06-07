@@ -198,15 +198,15 @@ public class Controleur implements Initializable{
 						System.out.println("Toto");
 					else if(temps>300)
 						perso.equiper(new Terre(0));
-					if(persoControleur.getTempsSaut()<30&&persoControleur.isSaut()) {
-//						perso.monter(4);
-						perso.sauter();
-						persoControleur.incremterTempsSaut();
-					}	
-					else if(persoControleur.getTempsSaut()==30&&persoControleur.isSaut()) {
-						persoControleur.setSaut(false);
-						persoControleur.reinisialiseTempsSaut();
-					}
+//					if(persoControleur.getTempsSaut()<30 && persoControleur.isSaut()) {
+////						perso.monter(4);
+//						perso.sauter();
+//						persoControleur.incremterTempsSaut();
+//					}	
+//					else if(persoControleur.getTempsSaut()==30 && persoControleur.isSaut()) {
+//						persoControleur.setSaut(false);
+//						persoControleur.reinisialiseTempsSaut();
+//					}
 					if(temps%2==0)
 						perso.gravite();
 					//					else if (temps>1500 && temps<1600) {

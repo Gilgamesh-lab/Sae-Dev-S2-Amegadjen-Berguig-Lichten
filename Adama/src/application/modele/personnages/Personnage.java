@@ -32,9 +32,10 @@ public abstract class Personnage {
 	private Environnement environnement;
 	private Inventaire inventaire;
 	private int hauteurSaut;
-	private int longueurSaut;
+	private int hauteurMaxSaut;
 	private int[] taille;
 	private Checkpoint checkpoint;
+	private boolean saut;
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
 		this.pvProperty = new SimpleIntegerProperty(pv);
@@ -45,7 +46,7 @@ public abstract class Personnage {
 		this.inventaire = inventaire;
 		this.hauteurSaut = hauteurSaut;
 		this.taille = taille;
-		this.longueurSaut = longueurSaut;
+		this.hauteurMaxSaut = this.hauteurSaut;
 		this.environnement.ajouter(this);
 		this.checkpoint = checkpoint;
 		this.id=compteur;
@@ -59,8 +60,8 @@ public abstract class Personnage {
 		this.vitesseDeplacement = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
-		this.hauteurSaut = 1;
-		this.longueurSaut = 5;
+		this.hauteurSaut = 24;
+		this.hauteurMaxSaut = this.hauteurSaut;
 		this.taille = taille;
 		this.environnement.ajouter(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
@@ -110,9 +111,10 @@ public abstract class Personnage {
 	 * @ failed or interrupted I/O operation
 	 */
 	public void descendre(int val) {
-		if(this.toucheY(false)) {
-			translationY(-val);
-		}
+		for (int i=0; i<val; i++)
+			if(this.toucheY(false)) 
+				translationY(-1);
+
 	}
 	
 	/**
@@ -125,34 +127,39 @@ public abstract class Personnage {
 		boolean gauche;
 		boolean droite;
 		if(auDessus) {
-			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null 
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Plante);
+			gauche = (this.environnement.getCarte().emplacement(this.getX(), this.getY()-32)==null 
+			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()-32) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()-32) instanceof Plante);
 			
 			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Plante);
 		}
 		else {
-			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Plante);
+			gauche = (this.environnement.getCarte().emplacement(this.getX(), this.getY()+64)==null
+			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+64) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+64) instanceof Plante);
 			
 			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Plante);
 		}
-		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
+		return (gauche && droite);
 	}
 
 	/**
 	 * Sauter permet uniquement de sauter de la hauteur du saut du personnage.
 	 * Et est donc différent de monter car un perso pourrait être projeter par une attaque
 	 * a une valeur plus haute/basse que celle de son saut.
-	 * @
 	 */
 	public void sauter() {
+		saut = true;
 		this.monter(this.hauteurSaut);
+		hauteurSaut/=2;
+		if (hauteurSaut==0) {
+			this.saut = false;
+			hauteurSaut = hauteurMaxSaut;
+		}
 	}
 	
 	/**
@@ -164,13 +171,13 @@ public abstract class Personnage {
 		this.monter(hauteurSaut);
 		int i = 0;
 		if(direction) {
-			while(i < this.longueurSaut) {
+			while(i < this.hauteurMaxSaut) {
 				this.translationX(-1); // TODO sleep
 				i++;
 			}
 		}
 		else {
-			while(i < this.longueurSaut) {
+			while(i < this.hauteurMaxSaut) {
 				this.translationX(1);
 				i++;
 			}
@@ -196,25 +203,25 @@ public abstract class Personnage {
 	private boolean toucheX(boolean aDroite) {
 		boolean teteCogne;
 		boolean corpCogne;
+		boolean piedCogne;
+		Ressource blocAEmplacement;
 		if(aDroite) {
-			teteCogne = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY())==null
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Plante);
-			
-			corpCogne = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32)==null
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Plante);
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+31, this.getY());
+			teteCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32);
+			corpCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+63);
+			piedCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
 		else {
-			teteCogne = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY())==null 
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Plante);
-			
-			corpCogne = (this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null 
-			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Plante);
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+1, this.getY());
+			teteCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+32);
+			corpCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+63);
+			piedCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
-		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
+		return (teteCogne && corpCogne && piedCogne);
 	}
 
 
@@ -289,11 +296,11 @@ public abstract class Personnage {
 	}
 	
 	public final int getLongueurSaut() {
-		return this.longueurSaut;
+		return this.hauteurMaxSaut;
 	}
 	
 	public final void setLongueurSaut(int val) {
-		this.longueurSaut = val;
+		this.hauteurMaxSaut = val;
 	}
 	
 	
@@ -361,39 +368,4 @@ public abstract class Personnage {
 	public int getId() {
 		return id;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
