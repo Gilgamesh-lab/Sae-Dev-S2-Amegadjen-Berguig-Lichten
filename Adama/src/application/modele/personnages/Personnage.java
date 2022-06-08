@@ -119,32 +119,36 @@ public abstract class Personnage {
 	
 	/**
 	 * Permet de savoir si on ne touche rien au niveau des y au dessus du perso si auDessus est true est en dessous sinon 
-	 * @param auDessus
-	 * @return
-	 * @
+	 * 
+	 * 
+	 * @param auDessus si il est vrai on vérifie les collision audessus du Sprite sinon en dessous
+	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
+	 * 			false si il ne peut pas passer (si il touche un autre bloc)
 	 */
 	public boolean toucheY(boolean auDessus) {
-		boolean gauche;
-		boolean droite;
+		boolean gaucheTuile=true;
+		boolean droiteSprite;
+		Ressource blocAEmplacement;
+		int i=0;
 		if(auDessus) {
-			gauche = (this.environnement.getCarte().emplacement(this.getX(), this.getY()-32)==null 
-			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()-32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()-32) instanceof Plante);
-			
-			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Plante);
+			while (i<taille[0] && gaucheTuile) {
+				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*i, this.getY()-32);
+				gaucheTuile = ( blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+				i++;
+			}
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*taille[0]-1, this.getY()-32);
+			droiteSprite = (blocAEmplacement ==null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
 		else {
-			gauche = (this.environnement.getCarte().emplacement(this.getX(), this.getY()+64)==null
-			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+64) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+64) instanceof Plante);
-			
-			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Plante);
+			while (i<taille[0] && gaucheTuile) {
+				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*i, this.getY()+64);
+				gaucheTuile = ( blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+				i++;
+			}
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*taille[0]-1, this.getY()+64);
+			droiteSprite = (blocAEmplacement ==null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
-		return (gauche && droite);
+		return (gaucheTuile && droiteSprite);
 	}
 
 	/**
@@ -165,9 +169,8 @@ public abstract class Personnage {
 	/**
 	 * Permet de faire un saut en fonction du paramètre d'entrée direction
 	 * @param direction : true pour droite, false pour gauche
-	 * @throws IOException
 	 */
-	public void sauter(boolean direction) throws IOException { // a finir
+	public void sauter(boolean direction) { // a finir
 		this.monter(hauteurSaut);
 		int i = 0;
 		if(direction) {
@@ -199,29 +202,38 @@ public abstract class Personnage {
 		if(toucheX(false))
 			this.translationX(vitesseDeplacement);
 	}
-
+	
+	/**
+	 * Permet de savoir si on ne touche rien au niveau des x à droite du perso si aDroite est true est à gauche sinon 
+	 * 
+	 * @param aDroite si il est vrai on vérifie les collision à droite du Sprite sinon à gauche
+	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
+	 * 			false si il ne peut pas passer (si il touche un autre bloc)
+	 */
 	private boolean toucheX(boolean aDroite) {
-		boolean teteCogne;
-		boolean corpCogne;
-		boolean piedCogne;
+		boolean hautTuileTouchePas = true;
+		boolean basTuileTouchePas;
 		Ressource blocAEmplacement;
+		int i = 0;
 		if(aDroite) {
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+31, this.getY());
-			teteCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32);
-			corpCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+63);
-			piedCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+			while (i<taille[1] && hautTuileTouchePas) {
+				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32*i);
+				hautTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
+				i++;
+			}
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32*taille[1]-1);
+			basTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
 		else {
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+1, this.getY());
-			teteCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+32);
-			corpCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+63);
-			piedCogne = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+			while (i<taille[1] && hautTuileTouchePas) {
+				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+32*i);
+				hautTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
+				i++;
+			}
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+32*taille[1]-1);
+			basTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
-		return (teteCogne && corpCogne && piedCogne);
+		return (hautTuileTouchePas && basTuileTouchePas);
 	}
 
 
