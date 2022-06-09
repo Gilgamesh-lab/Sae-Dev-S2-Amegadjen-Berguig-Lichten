@@ -21,7 +21,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.collections.ListChangeListener;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;

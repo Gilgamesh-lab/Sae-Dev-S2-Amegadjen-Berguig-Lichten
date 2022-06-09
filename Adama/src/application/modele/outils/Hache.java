@@ -26,15 +26,14 @@ public class Hache extends Outil {
 	 */
 	public Ressource utiliser(int lieu) {
 		int largeur=Carte.LARGEUR;
-		if (super.getEnvironnement().getCarte().emplacement(lieu) instanceof Bois)
-			return super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
 		try {
 			if (super.getEnvironnement().getCarte().emplacement(lieu-largeur) instanceof Bois)
-				this.utiliser(lieu-largeur);
+				return this.utiliser(lieu-largeur);
 		} catch(IndexOutOfBoundsException e) {
 			System.err.println("Pas du bois");
-			//TODO améliorer message
-		}
+		}//TODO faire en sorte que l'on récupère plus que un bois si récursivité arrive
+		if (super.getEnvironnement().getCarte().emplacement(lieu) instanceof Bois)
+			return super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
 		return null;
 	}
 }
