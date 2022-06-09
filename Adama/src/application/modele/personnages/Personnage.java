@@ -44,10 +44,25 @@ public abstract class Personnage {
 		this.hauteurSaut = hauteurSaut;
 		this.taille = taille;
 		this.longueurSaut = longueurSaut;
-		this.environnement.ajouter(this);
+		this.environnement.ajouterPersonnage(this);
 		this.checkpoint = checkpoint;
 	}
 
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement){
+		this.pvProperty = new SimpleIntegerProperty(pv);
+		this.xProperty = new SimpleIntegerProperty(x);
+		this.yProperty = new SimpleIntegerProperty(y);
+		this.vitesseDeplacement = vitesseDeplacement;
+		this.environnement = environnement;
+		this.inventaire = new Inventaire(20);
+		this.hauteurSaut = 64;
+		this.longueurSaut = 5;
+		//this.taille[0] = 1;
+		//this.taille[1] = 1;
+		this.environnement.ajouterPersonnage(this);
+		this.checkpoint = new Checkpoint(x,y,environnement);
+	}
+	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
@@ -58,7 +73,7 @@ public abstract class Personnage {
 		this.hauteurSaut = 1;
 		this.longueurSaut = 5;
 		this.taille = taille;
-		this.environnement.ajouter(this);
+		this.environnement.ajouterPersonnage(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
 	}
 	
@@ -81,6 +96,7 @@ public abstract class Personnage {
 	public Checkpoint getCheckpoint() {
 		return this.checkpoint;
 	}
+
 
 	/**
 	 * Effectue un mouvement vers le haut si le param est négative le joueur descend
@@ -132,7 +148,7 @@ public abstract class Personnage {
 		else {
 			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null
 			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Plante);
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Plante); // faire varier  64 , 32 en fonction taille
 			
 			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois
@@ -151,32 +167,31 @@ public abstract class Personnage {
 		this.monter(this.hauteurSaut);
 	}
 	
+	public void descendre() {
+		this.monter(-this.hauteurSaut);
+	}
+	
 	/**
 	 * Permet de faire un saut en fonction du paramètre d'entrée direction
 	 * @param direction : true pour droite, false pour gauche
 	 * @throws IOException
 	 */
 	public void sauter(boolean direction) throws IOException { // a finir
-		this.monter(hauteurSaut);
+		this.monter(this.hauteurSaut);
 		int i = 0;
-		if(direction) {
-			while(i < this.longueurSaut) {
-				this.translationX(-1); // TODO sleep
-				i++;
-			}
+		while(i < this.hauteurSaut) {
+			this.translationY(1); // TODO sleep
+			i++;
 		}
-		else {
-			while(i < this.longueurSaut) {
-				this.translationX(1);
-				i++;
-			}
-		}
-		this.descendre(hauteurSaut);
+	
+
 	}
 
 	
 	public void translationX(int val) {
-		this.xProperty.setValue(this.getX() - val);
+		if(toucheX(true)) {
+			this.xProperty.setValue(this.getX() - val);
+		}
 	}
 
 	public void droite() {
@@ -189,7 +204,7 @@ public abstract class Personnage {
 			this.translationX(vitesseDeplacement);
 	}
 
-	private boolean toucheX(boolean aDroite) {
+	public boolean toucheX(boolean aDroite) {
 		boolean teteCogne;
 		boolean corpCogne;
 		if(aDroite) {
@@ -292,6 +307,10 @@ public abstract class Personnage {
 		this.longueurSaut = val;
 	}
 	
+	public boolean estEnDehorsMap() {
+		return this.getX() < 0 || this.getY() > 0;
+	}
+	
 	
 	public boolean estEnLaire() throws IOException {
 		int[] taille = {1,2};//provisoire
@@ -319,8 +338,12 @@ public abstract class Personnage {
 	}
 	
 	public void meurt() {
-		this.setX(-32);
-		this.setY(-32);
+		this.setX(-320);
+		this.setY(-320);
+		if(!this.estMort()) {
+			this.setPv(0);
+		}
+		
 	}
 	
 	
@@ -350,10 +373,19 @@ public abstract class Personnage {
 	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans la carte
 	 */
 	public boolean estPrèsDuJoueur(int val) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-		Joueur joueur = this.getEnvironnement().getJoueur();
+		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
 		return this.getX() - val <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + val >= joueur.getX()  && this.getX() <= joueur.getX();
 	}
 	
+	
+	public boolean estSurLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		return this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY()  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() - 16 == this.getX() && this.getEnvironnement().getJoueur().getY()  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY() + 16 == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY() -16  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY() + 16 == this.getY() ||
+				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY() -16  == this.getY();
+	}
 	
 	
 	
