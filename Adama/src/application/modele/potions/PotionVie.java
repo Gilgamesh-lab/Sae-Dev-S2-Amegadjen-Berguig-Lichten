@@ -6,16 +6,19 @@ public class PotionVie implements Potion {
 	
 	private static final int NOMBRE_PV_RESTAURER = 3;
 	
+	public PotionVie() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	@Override
-	public void utiliser(Joueur joueur) {
-		joueur.incrementerPv(NOMBRE_PV_RESTAURER);
+	public void utiliser() {
+		
 	}
 
 
 	@Override
 	public void utiliser(int val) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

@@ -21,6 +21,7 @@ import application.modele.outils.Seau;
 import application.modele.potions.Potion;
 import application.modele.potions.PotionDegat;
 import application.modele.potions.PotionVie;
+import application.modele.potions.PotionVitesse;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.beans.property.BooleanProperty;
@@ -143,14 +144,7 @@ public class Joueur extends Personnage {
 	}
 
 	public void utiliserMain(int emplacement) {
-		this.objetEquiper.utiliser(emplacement);
-		if (objetEquiper instanceof Terre) {
-			Carte carte = this.getEnvironnement().getCarte();
-			carte.getBlockMap().remove(emplacement);
-			carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
-//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
-		}
-		else if (objetEquiper instanceof Potion) {
+		if (objetEquiper instanceof Potion) {
 			String potion = objetEquiper.getClass().getSimpleName();
 			switch (potion) {
 			case "PotionVie":
@@ -159,11 +153,20 @@ public class Joueur extends Personnage {
 			case "PotionVitesse":
 //				super.Deplacement(objetEquiper.getDuree());
 				break;
-//			case "
+			case "AntiPoison":
+				super.SupprimerEffet(0);
 			default:
 				break;
 			}
 		}
+		this.objetEquiper.utiliser(emplacement);
+		if (objetEquiper instanceof Terre) {
+			Carte carte = this.getEnvironnement().getCarte();
+			carte.getBlockMap().remove(emplacement);
+			carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
+//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
+		}
+		 
 	}
 	
 	
@@ -195,6 +198,7 @@ public class Joueur extends Personnage {
 		String planteHercule = "¨PlanteHercule";
 		String planteMedicinale = "PlanteMedicinale";
 		String fils = "Fils";
+		String antiPoison = "AntiPoison";
 		Seau PossedeSeau = null;
 		String seau = null;
 		int indiceSaut = items.indexOf(PossedeSeau);
@@ -208,7 +212,9 @@ public class Joueur extends Personnage {
 		recette.put(pierre, 0);
 		recette.put(bois, 0);
 		recette.put(planteDeNike, 0);
-
+		recette.put(planteMedicinale, 0);
+		recette.put(planteHercule, 0);
+		recette.put(antiPoison, 0);
 
 		for(int k = 0 ; k < items.size() ; k ++) {
 			for (String ressource : recette.keySet()) {
@@ -229,11 +235,15 @@ public class Joueur extends Personnage {
 		else if(recette.get(bois) == 5)
 			return new Seau(getEnvironnement());
 		
+		else if (seau != null && recette.get(planteDeNike) == 2)
+			return new PotionVitesse();
 		else if (seau != null && recette.get(planteHercule) == 2)
 			return new PotionDegat();
 		
 		else if (seau != null && recette.get(planteMedicinale) == 3)
 			return new PotionVie();
+		else if (seau != null && recette.get(planteMedicinale) == 2 && recette.get(antiPoison) == 1)
+			return new AntiPoison();
 		else {
 			return new Poing();
 		}
