@@ -1,6 +1,5 @@
 package application.modele.personnages;
 
-import java.io.IOException;
 
 import application.modele.Environnement;
 import application.modele.exception.ErreurObjetIntrouvable;
@@ -32,7 +31,7 @@ public abstract class Ennemis extends Personnage{
 	
 	
 	
-	public void sauterSurJoueur() throws ErreurObjetIntrouvable, IOException {
+	public void sauterSurJoueur() throws ErreurObjetIntrouvable {
 		this.sauter(this.ouSeTrouveLeJoueur());
 	}
 	
