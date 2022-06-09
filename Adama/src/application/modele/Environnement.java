@@ -1,6 +1,7 @@
 package application.modele;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
@@ -26,7 +27,23 @@ public class Environnement {
 		this.personnages = FXCollections.observableArrayList();
 	}
 
+<<<<<<< HEAD
+	public ObservableList<Item> getItems() {
+		return this.items;
+	}
+
+	public void ajouter(Item item) {
+		this.items.add(item);
+	}
+	
+	
+	
+	
+
+	public void ajouterPersonnage(Personnage personnage) {
+=======
 	public void ajouter(Personnage personnage) {
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		this.personnages.add(personnage);
 	}
 	

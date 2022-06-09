@@ -14,6 +14,7 @@ import application.modele.Item;
 import application.modele.Environnement;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
+import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.ErreurObjetInvalide;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -68,7 +69,12 @@ public class Joueur extends Personnage {
 	public void setCheckpoint(Checkpoint checkpoint) {
 		this.checkpoint = checkpoint;
 	}
+<<<<<<< HEAD
+	
+	
+=======
 
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 	public final int getFaim() {
 		return this.faimProperty.getValue();
 	}
@@ -270,6 +276,33 @@ public class Joueur extends Personnage {
 		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
 		this.desequiper();
 	}
+<<<<<<< HEAD
+	
+	public void teleporterToCheckpoint() {
+		this.setX(this.getCheckpoint().getX());
+		this.setY(this.getCheckpoint().getY());
+	}
+	
+	public  void agir() throws ErreurObjetIntrouvable{
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+=======
 
 
 
@@ -283,5 +316,6 @@ public class Joueur extends Personnage {
 
 
 
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 
 }
