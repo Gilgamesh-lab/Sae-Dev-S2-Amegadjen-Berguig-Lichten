@@ -2,19 +2,22 @@ package application.modele.personnages;
 
 import application.modele.ressources.Ressource;
 
-public class Fils extends Ressource {
+public class AntiVenin extends Ressource {
 
-	public Fils(int indice) {
-		super(false, 0, -1, -1, -1, indice);
+	public AntiVenin(int indice) {
+		super(false, -1, -1, indice);
 	}
+
 
 	@Override
 	public void utiliser(int val) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void utiliser() {
+		// TODO Auto-generated method stub
 
 	}
 
