@@ -4,20 +4,21 @@ import application.modele.Item;
 import javafx.collections.ListChangeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.TilePane;
 
 public class InventaireControleur implements ListChangeListener<Item> {
 
-	private HBox inv;
 	private static int compteurColonne=0;
 	private static int compteurLigne=0;
-	
-	public InventaireControleur(HBox inventaire) {
+	private TilePane inv;
+
+	public InventaireControleur(TilePane inventaire) {
 		inv = inventaire;
 		System.out.println(inv.getChildren().get(0).getClass());
 	}
-	
+
 	@Override
 	public void onChanged(Change<? extends Item> c) {
 		ImageView image = new ImageView();
@@ -35,7 +36,7 @@ public class InventaireControleur implements ListChangeListener<Item> {
 					image.setImage(new Image("ressource/pierreIcone.png"));
 					break;
 				case "Terre":
-					image.setImage(new Image("ressource/terreIcone.jpeg"));
+					image.setImage(new Image("ressource/terreIcone.png"));
 					break;
 				case "Bois":
 					image.setImage(new Image("ressource/boisIcone.png"));
@@ -43,19 +44,20 @@ public class InventaireControleur implements ListChangeListener<Item> {
 				default:
 					break;
 				}
-				VBox colonne = (VBox) inv.getChildren().get(compteurColonne);
+				compteurColonne++;
+				Pane colonne = (Pane) inv.getChildren().get(compteurColonne);
 				colonne.getChildren().set(compteurLigne, image);
-				compteurColonne++;	
+
 			}
-			
+
 			for(Item suppression : c.getRemoved()) {
 				//TODO
 			}
-		
+
 		}
-		
+
 	}
-	
+
 //	private ImageView chargerImage(int colonne, int ligne) {
 //		VBox c = (VBox) inv.getChildren().get(colonne);
 //		return ((ImageView) c.getChildren().get(ligne));

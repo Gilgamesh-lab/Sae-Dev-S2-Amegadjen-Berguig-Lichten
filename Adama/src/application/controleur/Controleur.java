@@ -39,7 +39,7 @@ public class Controleur implements Initializable{
     @FXML
     private Label nbPVResant;
     @FXML
-	private HBox inventaire;
+	private TilePane inventaire;
 
 	private Timeline gameLoop;
 	private int temps;
@@ -75,6 +75,11 @@ public class Controleur implements Initializable{
 	}
 
 	@FXML
+	void equiper(MouseEvent event) {
+
+	}
+
+	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
 		/*
@@ -105,7 +110,7 @@ public class Controleur implements Initializable{
 			inventaire.setVisible(false);
 		}
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
@@ -115,7 +120,7 @@ public class Controleur implements Initializable{
 		}
 		envVue = new EnvironnementVue(env, carte);
 		persoVue = new JoueurVue();
-		
+
 		listResssourceListener = (cs -> {
 			System.out.println("changement bloc");
 			while(cs.next()) {
@@ -139,7 +144,7 @@ public class Controleur implements Initializable{
 					}
 				}
 			}});
-		
+
 		listPersonnageListener = (pc -> {
 			System.out.println("changement peronnage");
 			while(pc.next()) {
@@ -159,8 +164,8 @@ public class Controleur implements Initializable{
 					}
 				}
 			}});
-		
-		
+
+
 		env.getCarte().getBlockMap().addListener(listResssourceListener);
 		env.getPersonnages().addListener(listPersonnageListener);
 		perso  = new Joueur(320, 0, env);
@@ -182,7 +187,7 @@ public class Controleur implements Initializable{
 				(ev -> {
 					if(temps==100)
 						System.out.println("ok");
-					
+
 					else if(temps==251)
 						System.out.println("Toto");
 					perso.gravite();
