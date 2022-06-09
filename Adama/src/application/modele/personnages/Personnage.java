@@ -23,16 +23,19 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public abstract class Personnage {
 
+	private static int compteur = 0;
 	private IntegerProperty pvProperty;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
 	private int vitesseDeplacement;
+	private int id;
 	private Environnement environnement;
 	private Inventaire inventaire;
 	private int hauteurSaut;
-	private int longueurSaut;
+	private int hauteurMaxSaut;
 	private int[] taille;
 	private Checkpoint checkpoint;
+	private boolean saut;
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
 		this.pvProperty = new SimpleIntegerProperty(pv);
@@ -43,9 +46,16 @@ public abstract class Personnage {
 		this.inventaire = inventaire;
 		this.hauteurSaut = hauteurSaut;
 		this.taille = taille;
+<<<<<<< HEAD
 		this.longueurSaut = longueurSaut;
 		this.environnement.ajouterPersonnage(this);
+=======
+		this.hauteurMaxSaut = this.hauteurSaut;
+		this.environnement.ajouter(this);
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		this.checkpoint = checkpoint;
+		this.id=compteur;
+		compteur++;
 	}
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement){
@@ -70,8 +80,8 @@ public abstract class Personnage {
 		this.vitesseDeplacement = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
-		this.hauteurSaut = 1;
-		this.longueurSaut = 5;
+		this.hauteurSaut = 0;
+		this.hauteurMaxSaut = this.hauteurSaut;
 		this.taille = taille;
 		this.environnement.ajouterPersonnage(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
@@ -122,30 +132,36 @@ public abstract class Personnage {
 	 * @ failed or interrupted I/O operation
 	 */
 	public void descendre(int val) {
-		if(this.toucheY(false)) {
-			translationY(-val);
-		}
+		for (int i=0; i<val; i++)
+			if(this.toucheY(false)) 
+				translationY(-1);
+
 	}
 	
 	/**
 	 * Permet de savoir si on ne touche rien au niveau des y au dessus du perso si auDessus est true est en dessous sinon 
-	 * @param auDessus
-	 * @return
-	 * @
+	 * 
+	 * 
+	 * @param auDessus si il est vrai on vérifie les collision audessus du Sprite sinon en dessous
+	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
+	 * 			false si il ne peut pas passer (si il touche un autre bloc)
 	 */
 	public boolean toucheY(boolean auDessus) {
-		boolean gauche;
-		boolean droite;
+		boolean gaucheTuile=true;
+		boolean droiteSprite;
+		Ressource blocAEmplacement;
+		int i=0;
 		if(auDessus) {
-			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null 
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Plante);
-			
-			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Plante);
+			while (i<taille[0] && gaucheTuile) {
+				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*i+2, this.getY()-32);
+				gaucheTuile = ( blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+				i++;
+			}
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*taille[0]-2, this.getY()-32);
+			droiteSprite = (blocAEmplacement ==null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
 		else {
+<<<<<<< HEAD
 			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null
 			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Bois
 			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Plante); // faire varier  64 , 32 en fonction taille
@@ -153,18 +169,32 @@ public abstract class Personnage {
 			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Plante);
+=======
+			while (i<taille[0] && gaucheTuile) {
+				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*i+2, this.getY()+64);
+				gaucheTuile = ( blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+				i++;
+			}
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*taille[0]-2, this.getY()+64);
+			droiteSprite = (blocAEmplacement ==null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		}
-		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
+		return (gaucheTuile && droiteSprite);
 	}
 
 	/**
 	 * Sauter permet uniquement de sauter de la hauteur du saut du personnage.
 	 * Et est donc différent de monter car un perso pourrait être projeter par une attaque
 	 * a une valeur plus haute/basse que celle de son saut.
-	 * @
 	 */
 	public void sauter() {
+		saut = true;
 		this.monter(this.hauteurSaut);
+		hauteurSaut++;
+		if (hauteurSaut==12) {
+			this.saut = false;
+			hauteurSaut = hauteurMaxSaut;
+		}
 	}
 	
 	public void descendre() {
@@ -174,14 +204,30 @@ public abstract class Personnage {
 	/**
 	 * Permet de faire un saut en fonction du paramètre d'entrée direction
 	 * @param direction : true pour droite, false pour gauche
-	 * @throws IOException
 	 */
+<<<<<<< HEAD
 	public void sauter(boolean direction) throws IOException { // a finir
 		this.monter(this.hauteurSaut);
 		int i = 0;
 		while(i < this.hauteurSaut) {
 			this.translationY(1); // TODO sleep
 			i++;
+=======
+	public void sauter(boolean direction) { // a finir
+		this.monter(hauteurSaut);
+		int i = 0;
+		if(direction) {
+			while(i < this.hauteurMaxSaut) {
+				this.translationX(-1); // TODO sleep
+				i++;
+			}
+		}
+		else {
+			while(i < this.hauteurMaxSaut) {
+				this.translationX(1);
+				i++;
+			}
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		}
 	
 
@@ -203,29 +249,45 @@ public abstract class Personnage {
 		if(toucheX(false))
 			this.translationX(vitesseDeplacement);
 	}
+<<<<<<< HEAD
 
 	public boolean toucheX(boolean aDroite) {
 		boolean teteCogne;
 		boolean corpCogne;
+=======
+	
+	/**
+	 * Permet de savoir si on ne touche rien au niveau des x à droite du perso si aDroite est true est à gauche sinon 
+	 * 
+	 * @param aDroite si il est vrai on vérifie les collision à droite du Sprite sinon à gauche
+	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
+	 * 			false si il ne peut pas passer (si il touche un autre bloc)
+	 */
+	private boolean toucheX(boolean aDroite) {
+		boolean hautTuileTouchePas = true;
+		boolean basTuileTouchePas;
+		Ressource blocAEmplacement;
+		int i = 0;
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		if(aDroite) {
-			teteCogne = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY())==null
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Plante);
-			
-			corpCogne = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32)==null
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Plante);
+			while (i<taille[1] && hautTuileTouchePas) {
+				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+33, this.getY()+32*i);
+				hautTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
+				i++;
+			}
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+33, this.getY()+32*taille[1]-1);
+			basTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
 		else {
-			teteCogne = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY())==null 
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Plante);
-			
-			corpCogne = (this.environnement.getCarte().emplacement(this.getX(), this.getY()+32)==null 
-			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Plante);
+			while (i<taille[1] && hautTuileTouchePas) {
+				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()-1, this.getY()+32*i);
+				hautTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
+				i++;
+			}
+			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()-1, this.getY()+32*taille[1]-1);
+			basTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
 		}
-		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
+		return (hautTuileTouchePas && basTuileTouchePas);
 	}
 
 
@@ -252,7 +314,9 @@ public abstract class Personnage {
 	}
 
 	public void gravite() {
-		this.descendre(5);
+		this.descendre(2);
+		if (this.saut)
+			sauter();			
 	}
 	
 	public final int getPv() {
@@ -300,11 +364,11 @@ public abstract class Personnage {
 	}
 	
 	public final int getLongueurSaut() {
-		return this.longueurSaut;
+		return this.hauteurMaxSaut;
 	}
 	
 	public final void setLongueurSaut(int val) {
-		this.longueurSaut = val;
+		this.hauteurMaxSaut = val;
 	}
 	
 	public boolean estEnDehorsMap() {
@@ -377,6 +441,7 @@ public abstract class Personnage {
 		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
 		return this.getX() - val <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + val >= joueur.getX()  && this.getX() <= joueur.getX();
 	}
+<<<<<<< HEAD
 	
 	
 	public boolean estSurLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
@@ -421,4 +486,10 @@ public abstract class Personnage {
 	
 	
 	
+=======
+
+	public int getId() {
+		return id;
+	}
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 }

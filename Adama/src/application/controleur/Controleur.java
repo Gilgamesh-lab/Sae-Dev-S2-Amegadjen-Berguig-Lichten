@@ -14,7 +14,10 @@ import application.modele.outils.Pelle;
 import application.modele.personnages.Cerf;
 import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
+<<<<<<< HEAD
 import application.modele.personnages.Slime;
+=======
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import application.vue.CerfVue;
@@ -59,6 +62,8 @@ public class Controleur implements Initializable{
 	
 	private Environnement env;
 	private EnvironnementVue envVue;
+	private ListChangeListener<Ressource> listResssourceListener;
+	private ListChangeListener<Personnage> listPersonnageListener;
 	
 	private Cerf cerf;
 	private CerfVue cerfVue;
@@ -137,34 +142,52 @@ public class Controleur implements Initializable{
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
-		ListChangeListener<Ressource> listen = (cs -> {
-			System.out.println("changement");
+		persoVue = new JoueurVue();
+		
+		listResssourceListener = (cs -> {
+			System.out.println("changement bloc");
 			while(cs.next()) {
-				if (cs.wasRemoved()) {
-					int indiceBloc;
-					for (Ressource ancien : cs.getRemoved()) {
-						if (ancien!=null) {
-							System.out.println(ancien);
-							System.out.println(cs.getRemoved());
-							indiceBloc = ancien.getIndice();
-							System.out.println(indiceBloc+ " indice Bloc");
-							carte.getChildren().set(indiceBloc, new RessourceView(null, env));
-						}
+				int indiceBloc;
+				for (Ressource ancien : cs.getRemoved()) {
+					if (ancien!=null) {
+						System.out.println(ancien);
+						System.out.println(cs.getRemoved());
+						indiceBloc = ancien.getIndice();
+						System.out.println(indiceBloc+ " indice Bloc");
+						carte.getChildren().set(indiceBloc, new RessourceView(null, env));
 					}
 				}
-				else {
-					int indiceBloc;
-					for (Ressource nouveau : cs.getAddedSubList()) {
-						if (nouveau != null) {
-							System.out.println(nouveau);
-							System.out.println(cs.getAddedSubList());
-							indiceBloc = nouveau.getIndice();
-							System.out.println(indiceBloc+ " indice Bloc");
-							carte.getChildren().set(indiceBloc, new RessourceView(nouveau, env));
-						}
+				for (Ressource nouveau : cs.getAddedSubList()) {
+					if (nouveau != null) {
+						System.out.println(nouveau);
+						System.out.println(cs.getAddedSubList());
+						indiceBloc = nouveau.getIndice();
+						System.out.println(indiceBloc+ " indice Bloc");
+						carte.getChildren().set(indiceBloc, new RessourceView(nouveau, env));
 					}
 				}
 			}});
+		
+		listPersonnageListener = (pc -> {
+			System.out.println("changement peronnage");
+			while(pc.next()) {
+				for (Personnage mort : pc.getRemoved()) {
+					this.plateau.getChildren().remove(mort);
+				}
+				for (Personnage nouveau : pc.getAddedSubList()) {
+					System.out.println(nouveau.getClass());
+					this.plateau.getChildren().add(new JoueurVue().getSprite());
+					if (nouveau instanceof Joueur) {
+						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue);
+						persoVue.getSprite().xProperty().bind(nouveau.xProperty());
+						persoVue.getSprite().yProperty().bind(nouveau.yProperty());
+						persoVue.getSprite().setFitHeight(64);
+						persoVue.getSprite().setFitWidth(32);
+						nbPVResant.textProperty().bind(nouveau.pvProperty().asString());
+					}
+				}
+			}});
+<<<<<<< HEAD
 		env.getCarte().getBlockMap().addListener(listen);
 		perso  = new Joueur(420, 0, env);
 		perso.setHauteurSaut(4);
@@ -174,11 +197,23 @@ public class Controleur implements Initializable{
 		
 		persoControleur = new JoueurControleur(perso, persoVue);
 		
+=======
+		
+		
+		env.getCarte().getBlockMap().addListener(listResssourceListener);
+		env.getPersonnages().addListener(listPersonnageListener);
+		perso  = new Joueur(320, 0, env);
+		perso.setHauteurSaut(4);
+//		nbPVResant.textProperty().bind(perso.pvProperty().asString());
+		
+//		persoControleur = new JoueurControleur(perso, persoVue);
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		plateau.getChildren().add(persoVue.getSprite());
 		
 		envVue.creerEnvironnement();
 		inv = new InventaireControleur(inventaire);
 		perso.equiper(new Pelle(env));
+<<<<<<< HEAD
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
 		
@@ -207,6 +242,13 @@ public class Controleur implements Initializable{
 		monstreVue.getSprite().setFitHeight(32);
 		monstreVue.getSprite().setFitWidth(32);
 
+=======
+//		persoVue.getSprite().xProperty().bind(perso.xProperty());
+//		persoVue.getSprite().yProperty().bind(perso.yProperty());
+		perso.getInventaire().getItems().addListener(inv);
+//		persoVue.getSprite().setFitHeight(64);
+//		persoVue.getSprite().setFitWidth(32);
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		initAnimation();
 		gameLoop.play();
 	}
@@ -225,6 +267,7 @@ public class Controleur implements Initializable{
 					
 					else if(temps>300)
 						perso.equiper(new Terre(0));
+<<<<<<< HEAD
 					
 				//	
 					
@@ -293,6 +336,18 @@ public class Controleur implements Initializable{
 								personnage.gravite();
 							}
 						}
+=======
+//					if(persoControleur.getTempsSaut()<30 && persoControleur.isSaut()) {
+////						perso.monter(4);
+//						perso.sauter();
+//						persoControleur.incremterTempsSaut();
+//					}	
+//					else if(persoControleur.getTempsSaut()==30 && persoControleur.isSaut()) {
+//						persoControleur.setSaut(false);
+//						persoControleur.reinisialiseTempsSaut();
+//					}
+					perso.gravite();
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 					//					else if (temps>1500 && temps<1600) {
 					//						System.out.println("Changement d'outils");//teste de la pioche elle marche
 					//						perso.equiper(new Pioche(env));

@@ -11,8 +11,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Environnement {
+	
 	private ObservableList<Personnage> personnages;
-	private ObservableList<Item> items;
 	private Carte carte;
 
 
@@ -20,7 +20,6 @@ public class Environnement {
 	public Environnement(Carte carte) {
 		this.carte = carte;
 		this.personnages = FXCollections.observableArrayList();
-		this.items = FXCollections.observableArrayList();
 	}
 
 	public Environnement() throws TailleMapException, IOException {
@@ -28,6 +27,7 @@ public class Environnement {
 		this.personnages = FXCollections.observableArrayList();
 	}
 
+<<<<<<< HEAD
 	public ObservableList<Item> getItems() {
 		return this.items;
 	}
@@ -41,6 +41,9 @@ public class Environnement {
 	
 
 	public void ajouterPersonnage(Personnage personnage) {
+=======
+	public void ajouter(Personnage personnage) {
+>>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		this.personnages.add(personnage);
 	}
 	
