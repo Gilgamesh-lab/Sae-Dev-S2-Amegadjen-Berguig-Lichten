@@ -158,7 +158,7 @@ public class Joueur extends Personnage {
 		}
 	}
 	
-	public void utiliserMain(int emplacement) {
+	public void utiliserMain(int emplacement) throws ErreurInventairePlein {
 		Ressource bloc =this.objetEquiper.utiliser(emplacement);
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
@@ -167,12 +167,7 @@ public class Joueur extends Personnage {
 //			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
 		}
 		if (bloc!=null)
-			try {
-				this.getInventaire().ajouter(bloc);
-			} catch (ErreurInventairePlein e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.getInventaire().ajouter(bloc);
 	}
 	
 	public boolean estUneArmeOuUnOutil(Item item) { 

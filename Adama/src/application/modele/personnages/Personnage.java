@@ -175,7 +175,7 @@ public abstract class Personnage {
 		int i = 0;
 		if(direction) {
 			while(i < this.hauteurMaxSaut) {
-				this.translationX(-1); // TODO sleep
+				this.translationX(-1);
 				i++;
 			}
 		}

@@ -1,11 +1,16 @@
 package application.controleur;
 
 import application.modele.Environnement;
+import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Hache;
 import application.modele.outils.Pelle;
 import application.modele.outils.Pioche;
 import application.modele.personnages.Joueur;
 import application.vue.JoueurVue;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 
 public class JoueurControleur {
 
@@ -51,7 +56,18 @@ public class JoueurControleur {
 	public void sourisPresse(String click, int emplacement) {
 		switch (click) {
 		case "PRIMARY":
-			perso.utiliserMain(emplacement);
+			try {
+				perso.utiliserMain(emplacement);
+			} catch (ErreurInventairePlein e) {
+				// TODO Alert
+				Label message = new Label(e.getMessage());
+				Alert a = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.CLOSE);
+				a.setTitle("Inventaire Plein");
+				a.setHeaderText("Votre Inventaire est plein");
+				a.getDialogPane().setPrefWidth(400);
+				a.show();
+				
+			}
 			break;
 		default:
 			break;
