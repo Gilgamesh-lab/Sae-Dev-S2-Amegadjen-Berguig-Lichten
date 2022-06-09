@@ -254,7 +254,7 @@ public abstract class Personnage {
 	public void perdreRessources() throws ErreurInventairePlein { // Lorsque mort perd ses ressources
 		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
 			if(this.inventaire.getItem(i) instanceof Ressource) {
-				this.getEnvironnement().getCarte().getItems().transferer(this.inventaire.getItem(i), this.inventaire);
+				this.inventaire.supprimer(i);
 			}
 		}
 	}

@@ -6,13 +6,10 @@ import java.util.ResourceBundle;
 
 import application.modele.Carte;
 import application.modele.Environnement;
-import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Pelle;
 import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
-import application.modele.ressources.Pierre;
 import application.modele.ressources.Ressource;
-import application.modele.ressources.Terre;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
 import application.vue.RessourceView;
@@ -153,7 +150,7 @@ public class Controleur implements Initializable{
 					System.out.println(nouveau.getClass());
 					this.plateau.getChildren().add(new JoueurVue().getSprite());
 					if (nouveau instanceof Joueur) {
-						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue);
+						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue, env);
 						persoVue.getSprite().xProperty().bind(nouveau.xProperty());
 						persoVue.getSprite().yProperty().bind(nouveau.yProperty());
 						persoVue.getSprite().setFitHeight(64);
@@ -168,18 +165,11 @@ public class Controleur implements Initializable{
 		env.getPersonnages().addListener(listPersonnageListener);
 		perso  = new Joueur(320, 0, env);
 		perso.setHauteurSaut(4);
-//		nbPVResant.textProperty().bind(perso.pvProperty().asString());
-		
-//		persoControleur = new JoueurControleur(perso, persoVue);
 		plateau.getChildren().add(persoVue.getSprite());
 		envVue.creerEnvironnement();
 		inv = new InventaireControleur(inventaire);
 		perso.equiper(new Pelle(env));
-//		persoVue.getSprite().xProperty().bind(perso.xProperty());
-//		persoVue.getSprite().yProperty().bind(perso.yProperty());
 		perso.getInventaire().getItems().addListener(inv);
-//		persoVue.getSprite().setFitHeight(64);
-//		persoVue.getSprite().setFitWidth(32);
 		initAnimation();
 		gameLoop.play();
 	}
@@ -195,31 +185,7 @@ public class Controleur implements Initializable{
 					
 					else if(temps==251)
 						System.out.println("Toto");
-					else if(temps>300)
-						perso.equiper(new Terre(0));
-					else if (temps<10)
-						try {
-							perso.getInventaire().ajouter(new Pierre(temps));
-						} catch (ErreurInventairePlein e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					else if (temps<20)
-						try {
-							perso.getInventaire().ajouter(new Terre(temps));
-						} catch (ErreurInventairePlein e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 					perso.gravite();
-//					else if (temps>1500 && temps<1600) {
-//						System.out.println("Changement d'outils");//teste de la pioche elle marche
-//						perso.equiper(new Pioche(env));
-//					}
-//					else if(temps>1600 && temps<1700) {
-//						System.out.println("Changement outils");
-//						perso.equiper(new Hache(env));
-//					}
 					temps++;
 				})
 				);

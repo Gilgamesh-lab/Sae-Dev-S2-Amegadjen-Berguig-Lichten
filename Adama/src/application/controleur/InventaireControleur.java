@@ -5,7 +5,6 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class InventaireControleur implements ListChangeListener<Item> {
@@ -22,11 +21,11 @@ public class InventaireControleur implements ListChangeListener<Item> {
 	@Override
 	public void onChanged(Change<? extends Item> c) {
 		ImageView image = new ImageView();
-		if (compteurColonne==3) {
+		if (compteurColonne==4) {
 			compteurColonne=0;
 			compteurLigne++;
 		}
-		if (compteurLigne==4)
+		if (compteurLigne==5)
 			compteurLigne=0;
 		while(c.next()) {
 			for(Item ajout : c.getAddedSubList()) {
@@ -44,10 +43,9 @@ public class InventaireControleur implements ListChangeListener<Item> {
 				default:
 					break;
 				}
-				compteurColonne++;
 				VBox colonne = (VBox) inv.getChildren().get(compteurColonne);
 				colonne.getChildren().set(compteurLigne, image);
-				
+				compteurColonne++;	
 			}
 			
 			for(Item suppression : c.getRemoved()) {
