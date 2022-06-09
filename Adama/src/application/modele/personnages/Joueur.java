@@ -159,7 +159,7 @@ public class Joueur extends Personnage {
 	}
 
 	public void utiliserMain(int emplacement) {
-		this.objetEquiper.utiliser(emplacement);
+		Ressource bloc =this.objetEquiper.utiliser(emplacement);
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
 			if(carte.getBlockMap().get(emplacement)== null) {
@@ -168,6 +168,13 @@ public class Joueur extends Personnage {
 				//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
 			}
 		}
+		if (bloc!=null)
+			try {
+				this.getInventaire().ajouter(bloc);
+			} catch (ErreurInventairePlein e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	public boolean estUneArmeOuUnOutil(Item item) { 
@@ -236,10 +243,10 @@ public class Joueur extends Personnage {
 		}
 	}
 
-	public void jeter(Item item) throws ErreurInventairePlein, ErreurArmeEtOutilPasJetable {
+	public void jeter(Item item) throws ErreurArmeEtOutilPasJetable {
 		if(!this.estUneArmeOuUnOutil(item)) {
-			this.getInventaire().supprimer(item);
-			this.getEnvironnement().getCarte().getItems().ajouter(item);
+
+			this.getInventaire().supprimer(item);;
 		}
 		else {
 			throw new ErreurArmeEtOutilPasJetable();
@@ -267,7 +274,7 @@ public class Joueur extends Personnage {
 			((Ressource) this.objetEquiper).setY(this.getY());
 		}
 		this.getInventaire().supprimer(this.objetEquiper);
-		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
+//		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
 		this.desequiper();
 	}
 

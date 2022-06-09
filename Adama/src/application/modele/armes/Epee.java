@@ -1,5 +1,6 @@
 package application.modele.armes;
 
+import application.modele.ressources.Ressource;
 import application.modele.Environnement;
 import application.modele.Inventaire;
 import application.modele.personnages.Personnage;
@@ -30,34 +31,9 @@ public class Epee extends Arme{
 	}
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -11,7 +11,8 @@ public class PlanteMédicinale extends Plante {
 	}
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		
 	}
 

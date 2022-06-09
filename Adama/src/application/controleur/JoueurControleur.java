@@ -1,5 +1,9 @@
 package application.controleur;
 
+import application.modele.Environnement;
+import application.modele.outils.Hache;
+import application.modele.outils.Pelle;
+import application.modele.outils.Pioche;
 import application.modele.personnages.Joueur;
 import application.vue.JoueurVue;
 
@@ -7,14 +11,13 @@ public class JoueurControleur {
 
 	private Joueur perso;
 	private JoueurVue persoVue;
-	private boolean saut;
-	private int tempsSaut;
+	private Environnement env;
 
-	public JoueurControleur(Joueur perso, JoueurVue persoVue) {
+
+	public JoueurControleur(Joueur perso, JoueurVue persoVue, Environnement env) {
 		this.perso=perso;
 		this.persoVue=persoVue;
-		saut = false;
-		tempsSaut = 0;
+		this.env=env;
 	}
 
 	public void touchePresse(String touchePresse) {
@@ -33,6 +36,15 @@ public class JoueurControleur {
 			break;
 		case "s":
 			break;
+		case "f":
+			perso.equiper(new Pelle(env));
+			break;
+		case "g":
+			perso.equiper(new Pioche(env));
+			break;
+		case "h":
+			perso.equiper(new Hache(env));
+			break;
 		}
 	}
 
@@ -45,25 +57,4 @@ public class JoueurControleur {
 			break;
 		}
 	}
-
-	public boolean isSaut() {
-		return saut;
-	}
-
-	public void setSaut(boolean saut) {
-		this.saut = saut;
-	}
-
-	public int getTempsSaut() {
-		return tempsSaut;
-	}
-	
-	public void incremterTempsSaut() {
-		this.tempsSaut+=1;
-	}
-	
-	public void reinisialiseTempsSaut() {
-		this.tempsSaut = 0;
-	}
-
 }

@@ -32,13 +32,10 @@ public class Carte {
 	public final static int LARGEUR = 60;
 	public final static int TAILLE_BLOCK = 32;
 	private ObservableList<Ressource> blocMap;
-	private Inventaire items;
-
 	public Carte() throws TailleMapException, IOException {
 		this.map = Csv.ouvrir("mapsTest.csv");
 		this.blocMap = FXCollections.observableArrayList();
 		creerListeBlock();
-		this.items = new Inventaire(99);
 	}
 	
 	/**
@@ -140,9 +137,10 @@ public class Carte {
 	 * @param indice
 	 * @throws ErreurInventairePlein 
 	 */
-	public void detruireBlock(int indice) throws ErreurInventairePlein {
-		this.items.ajouter(this.blocMap.remove(indice));
+	public Ressource detruireBlock(int indice) {
+		Ressource blocDetruit = this.blocMap.remove(indice);
 		this.blocMap.add(indice, null);
+		return blocDetruit;
 	}
 	/**
 	 * @param ressource la ressource testé
@@ -169,12 +167,13 @@ public class Carte {
 	 * Permet de faire des degats à des blocs
 	 * @param indice l'endroit où se trouve le bloc dans la liste 
 	 * @param val de combien il est attaquée
-	 * @throws ErreurInventairePlein 
+	 * @return 
 	 */
-	public void attaquerBloc(int indice, int val) throws ErreurInventairePlein {
+	public Ressource attaquerBloc(int indice, int val) {
 		this.blocMap.get(indice).prendreDegat(val);
 		if (this.blocMap.get(indice).estDetruit())
-			detruireBlock(indice);			
+			return detruireBlock(indice);
+		return null;			
 	}
 
 	/**
@@ -183,15 +182,6 @@ public class Carte {
 	 */
 	public ObservableList<Ressource> getBlockMap() {
 		return blocMap;
-	}
-	
-	/**
-	 * 
-	 * @return la liste d'items de la map
-	 */
-	public Inventaire getItems() {
-		return items;
-	}
-	
+	}	
 }
 

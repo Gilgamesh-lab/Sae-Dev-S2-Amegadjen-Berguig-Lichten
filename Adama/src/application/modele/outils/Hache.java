@@ -1,8 +1,9 @@
 package application.modele.outils;
 
+import application.modele.Carte;
 import application.modele.Environnement;
-import application.modele.exception.ErreurInventairePlein;
 import application.modele.ressources.Bois;
+import application.modele.ressources.Ressource;
 
 public class Hache extends Outil {
 
@@ -20,28 +21,19 @@ public class Hache extends Outil {
 
 	/**
 	 * Permet d'utiliser la hache elle fait des dégat au bloc de Bois viser et ceux au-dessus
-	 * @param lieu l'indice où sont donné les coups de hache  
-	 * @throws ErreurInventairePlein 
+	 * @param lieu l'indice où sont donné les coups de hache
+	 * @return 
 	 */
-	public void couper(int lieu) throws ErreurInventairePlein {
-		int largeur=super.getEnvironnement().getCarte().LARGEUR;
-		if (super.getEnvironnement().getCarte().emplacement(lieu) instanceof Bois)
-			super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
+	public Ressource utiliser(int lieu) {
+		int largeur=Carte.LARGEUR;
 		try {
 			if (super.getEnvironnement().getCarte().emplacement(lieu-largeur) instanceof Bois)
-				this.utiliser(lieu-largeur);
-			//		if (super.getEnvironnement().getCarte().emplacement(lieu+largeur) instanceof Bois)
-			//			this.utiliser(lieu+largeur);
+				return this.utiliser(lieu-largeur);
 		} catch(IndexOutOfBoundsException e) {
 			System.err.println("Pas du bois");
-		}
+		}//TODO faire en sorte que l'on récupère plus que un bois si récursivité arrive
+		if (super.getEnvironnement().getCarte().emplacement(lieu) instanceof Bois)
+			return super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
+		return null;
 	}
-	
-	public void utiliser(int val) {
-		
-	}
-	
-	
-
-
 }
