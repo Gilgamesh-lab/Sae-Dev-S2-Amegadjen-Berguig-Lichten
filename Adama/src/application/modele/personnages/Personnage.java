@@ -52,18 +52,6 @@ public abstract class Personnage {
 		this.id=compteur;
 		compteur++;
 	}
-
-	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement){
-		this.pvProperty = new SimpleIntegerProperty(pv);
-		this.xProperty = new SimpleIntegerProperty(x);
-		this.yProperty = new SimpleIntegerProperty(y);
-		this.vitesseDeplacement = vitesseDeplacement;
-		this.environnement = environnement;
-		this.inventaire = new Inventaire(20);
-		this.hauteurSaut = 64;
-		this.environnement.ajouter(this);
-		this.checkpoint = new Checkpoint(x,y,environnement);
-	}
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
@@ -228,7 +216,7 @@ public abstract class Personnage {
 	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
 	 * 			false si il ne peut pas passer (si il touche un autre bloc)
 	 */
-	private boolean toucheX(boolean aDroite) {
+	public boolean toucheX(boolean aDroite) {
 		boolean hautTuileTouchePas = true;
 		boolean basTuileTouchePas;
 		Ressource blocAEmplacement;
@@ -403,7 +391,7 @@ public abstract class Personnage {
 	 */
 	public boolean estPrèsDuJoueur(int val) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
 		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
-		return this.getX() - val <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + val >= joueur.getX()  && this.getX() <= joueur.getX();
+		return this.getX() - val <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + val >= joueur.getX()  && this.getX() <= joueur.getX(); //TODO vision au niveau des y
 	}
 	
 	public boolean estSurLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage

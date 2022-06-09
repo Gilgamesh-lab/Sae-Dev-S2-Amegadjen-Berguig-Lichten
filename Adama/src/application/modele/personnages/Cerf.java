@@ -6,13 +6,15 @@ import application.modele.Environnement;
 import application.modele.exception.ErreurObjetIntrouvable;
 
 public class Cerf extends Personnage {
+	
+	private static final int[] TAILLE = {2,2};
 
 	public Cerf(Environnement environnement) {
-		super(10, 10, 10, 10, environnement);
+		super(10, 10, 10, 10, environnement, TAILLE);
 	}
 	
 	public Cerf(int x,int y,Environnement environnement) {
-		super(10, x, y, 10, environnement);
+		super(10, x, y, 10, environnement, TAILLE);
 	}
 	
 	public  void agir() throws ErreurObjetIntrouvable{

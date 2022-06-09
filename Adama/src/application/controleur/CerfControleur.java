@@ -12,14 +12,11 @@ public class CerfControleur {
 
 	private Cerf cerf;
 	private CerfVue cerfVue;
-	private boolean saut;
-	private int tempsSaut;
+
 
 	public CerfControleur(Cerf cerf2, CerfVue cerfVue2) {
 		this.cerf=cerf2;
 		this.cerfVue=cerfVue2;
-		saut = false;
-		tempsSaut = 0;
 	}
 
 	
@@ -42,25 +39,4 @@ public class CerfControleur {
 			}
 		}
 	}
-
-	public boolean isSaut() {
-		return saut;
-	}
-
-	public void setSaut(boolean saut) {
-		this.saut = saut;
-	}
-
-	public int getTempsSaut() {
-		return tempsSaut;
-	}
-	
-	public void incremterTempsSaut() {
-		this.tempsSaut+=1;
-	}
-	
-	public void reinisialiseTempsSaut() {
-		this.tempsSaut = 0;
-	}
-
 }
