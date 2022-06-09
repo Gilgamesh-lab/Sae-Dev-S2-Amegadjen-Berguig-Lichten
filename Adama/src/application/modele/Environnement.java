@@ -1,6 +1,7 @@
 package application.modele;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
@@ -34,8 +35,12 @@ public class Environnement {
 	public void ajouter(Item item) {
 		this.items.add(item);
 	}
+	
+	
+	
+	
 
-	public void ajouter(Personnage personnage) {
+	public void ajouterPersonnage(Personnage personnage) {
 		this.personnages.add(personnage);
 	}
 	

@@ -41,7 +41,7 @@ public class Csv {
      */
     public static String getChemin(String nom) {
      	File getCSVFiles = new File("");
-     	return getCSVFiles.getAbsolutePath() + "/src/application/modele/" + nom ;
+     	return getCSVFiles.getAbsolutePath() + "/src/ressource/" + nom ;
      }
     
 

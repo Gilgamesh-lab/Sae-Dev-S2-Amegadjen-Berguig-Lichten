@@ -337,12 +337,13 @@ public abstract class Personnage {
 		return taille;
 	}
 	
-	public void meurt() {
+	public void meurt() throws ErreurInventairePlein {
 		this.setX(-320);
 		this.setY(-320);
 		if(!this.estMort()) {
 			this.setPv(0);
 		}
+		this.perdreRessources();
 		
 	}
 	
