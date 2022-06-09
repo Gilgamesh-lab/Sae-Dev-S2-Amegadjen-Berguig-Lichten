@@ -207,8 +207,7 @@ public class Controleur implements Initializable{
 //						persoControleur.setSaut(false);
 //						persoControleur.reinisialiseTempsSaut();
 //					}
-					if(temps%2==0)
-						perso.gravite();
+					perso.gravite();
 					//					else if (temps>1500 && temps<1600) {
 					//						System.out.println("Changement d'outils");//teste de la pioche elle marche
 					//						perso.equiper(new Pioche(env));
