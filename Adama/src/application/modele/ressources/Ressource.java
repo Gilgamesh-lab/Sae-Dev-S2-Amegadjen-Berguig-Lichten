@@ -81,6 +81,10 @@ public abstract class Ressource implements Item {
 	public int getDurabiliter() {
 		return this.durabiliter;
 	}
+	
+	public boolean estEnDehorsMap() {
+		return this.getX() < 0 || this.getY() > 0;
+	}
 
 	public boolean estCasser() {
 		return this.durabiliter <= 0;

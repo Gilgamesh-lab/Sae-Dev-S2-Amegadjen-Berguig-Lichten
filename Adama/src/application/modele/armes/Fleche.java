@@ -59,11 +59,11 @@ public class Fleche extends Arme{
 	}
 
 	public void droite() {
-		this.droite(this.VITESSE);
+		this.droite(VITESSE);
 	}
 
 	public void gauche() {
-		this.gauche(this.VITESSE);
+		this.gauche(VITESSE);
 	}
 
 	public void tirer(boolean direction) {

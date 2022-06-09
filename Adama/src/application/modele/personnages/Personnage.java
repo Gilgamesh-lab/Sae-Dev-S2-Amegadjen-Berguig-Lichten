@@ -53,6 +53,18 @@ public abstract class Personnage {
 		compteur++;
 	}
 
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement){
+		this.pvProperty = new SimpleIntegerProperty(pv);
+		this.xProperty = new SimpleIntegerProperty(x);
+		this.yProperty = new SimpleIntegerProperty(y);
+		this.vitesseDeplacement = vitesseDeplacement;
+		this.environnement = environnement;
+		this.inventaire = new Inventaire(20);
+		this.hauteurSaut = 64;
+		this.environnement.ajouter(this);
+		this.checkpoint = new Checkpoint(x,y,environnement);
+	}
+	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
@@ -86,6 +98,7 @@ public abstract class Personnage {
 	public Checkpoint getCheckpoint() {
 		return this.checkpoint;
 	}
+
 
 	/**
 	 * Effectue un mouvement vers le haut si le param est négative le joueur descend
@@ -166,6 +179,10 @@ public abstract class Personnage {
 		}
 	}
 	
+	public void descendre() {
+		this.monter(-this.hauteurSaut);
+	}
+	
 	/**
 	 * Permet de faire un saut en fonction du paramètre d'entrée direction
 	 * @param direction : true pour droite, false pour gauche
@@ -185,12 +202,13 @@ public abstract class Personnage {
 				i++;
 			}
 		}
-		this.descendre(hauteurSaut);
 	}
 
 	
 	public void translationX(int val) {
-		this.xProperty.setValue(this.getX() - val);
+		if(toucheX(true)) {
+			this.xProperty.setValue(this.getX() - val);
+		}
 	}
 
 	public void droite() {
@@ -317,6 +335,10 @@ public abstract class Personnage {
 		this.hauteurMaxSaut = val;
 	}
 	
+	public boolean estEnDehorsMap() {
+		return this.getX() < 0 || this.getY() > 0;
+	}
+	
 	
 	public boolean estEnLaire() throws IOException {
 		int[] taille = {1,2};//provisoire
@@ -343,9 +365,14 @@ public abstract class Personnage {
 		return taille;
 	}
 	
-	public void meurt() {
-		this.setX(-32);
-		this.setY(-32);
+	public void meurt() throws ErreurInventairePlein {
+		this.setX(-320);
+		this.setY(-320);
+		if(!this.estMort()) {
+			this.setPv(0);
+		}
+		this.perdreRessources();
+		
 	}
 	
 	
@@ -375,8 +402,17 @@ public abstract class Personnage {
 	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans la carte
 	 */
 	public boolean estPrèsDuJoueur(int val) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-		Joueur joueur = this.getEnvironnement().getJoueur();
+		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
 		return this.getX() - val <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + val >= joueur.getX()  && this.getX() <= joueur.getX();
+	}
+	
+	public boolean estSurLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		return this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY()  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() - 16 == this.getX() && this.getEnvironnement().getJoueur().getY()  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY() + 16 == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY() -16  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY() + 16 == this.getY() ||
+				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY() -16  == this.getY();
 	}
 
 	public int getId() {

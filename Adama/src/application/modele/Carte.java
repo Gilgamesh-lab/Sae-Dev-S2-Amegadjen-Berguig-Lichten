@@ -146,9 +146,7 @@ public class Carte {
 	 * @param ressource la ressource testé
 	 * @return si la ressource est en dehors de la map
 	 */
-	public boolean enDehorsMap(Ressource ressource) {
-		return ressource.getX() < 0 || ressource.getY() > 0;
-	}
+	
 
 	/**
 	 * Si on trouve des blocs dans blockMap avec x et y en dehors de la map ils sont détruit.
@@ -157,7 +155,7 @@ public class Carte {
 	 */
 	public void ressourceEnDehorsMap() throws ErreurInventairePlein {
 		for(int i = 0 ; i < this.getBlockMap().size(); i++) {
-			if(this.enDehorsMap(this.getBlockMap().get(i))){
+			if(this.blocMap.get(i).estEnDehorsMap()){
 				this.detruireBlock(i);
 			}
 		}

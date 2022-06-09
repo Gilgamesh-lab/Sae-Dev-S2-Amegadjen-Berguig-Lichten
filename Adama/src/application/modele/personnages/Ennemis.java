@@ -22,12 +22,25 @@ public abstract class Ennemis extends Personnage{
 		this.vole = vole;
 	}
 	
+	public Ennemis(int x, int y,int vitesseDeplacement,Environnement environnement) {
+		super(10, x, y, 10, environnement, null);
+		this.degat = 1;
+		this.vole = false;
+	}
+	
 	public int getDegat() {
 		return this.degat;
 	}
 	
+	
 	public boolean peutVoler() {
 		return this.vole;
+	}
+	
+	public void attaquer() throws ErreurObjetIntrouvable {
+		if(this.ouSeTrouveLeJoueur()) {
+			this.droite();
+		}
 	}
 	
 	
