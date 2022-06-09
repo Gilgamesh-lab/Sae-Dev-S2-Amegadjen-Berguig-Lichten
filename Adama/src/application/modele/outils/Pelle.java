@@ -28,5 +28,4 @@ public class Pelle extends Outil {
 			return super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
 		return null;
 	}
-
 }

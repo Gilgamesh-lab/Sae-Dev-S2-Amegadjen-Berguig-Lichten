@@ -9,6 +9,9 @@ import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
+import application.modele.ressources.PlanteDeNike;
+import application.modele.ressources.PlanteHercule;
+import application.modele.ressources.PlanteMédicinale;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.collections.FXCollections;
@@ -29,7 +32,6 @@ public class Carte {
 	public final static int LARGEUR = 60;
 	public final static int TAILLE_BLOCK = 32;
 	private ObservableList<Ressource> blocMap;
-
 	public Carte() throws TailleMapException, IOException {
 		this.map = Csv.ouvrir("mapsTest.csv");
 		this.blocMap = FXCollections.observableArrayList();
@@ -44,8 +46,29 @@ public class Carte {
 	 * @param y position sur l'axe des y
 	 * @return le bloc à indiceMap
 	 */
+	
+	public BufferedReader getMap(){
+		System.out.println(map);
+		return this.map;
+	}
+	
+	
+
+	public int getHauteur() {
+		return HAUTEUR;
+	}
+
+	public int getLargeur() {
+		return LARGEUR;
+	}
+	
 	public Ressource emplacement(int x, int y) {
 		int indiceDansMap = (x/TAILLE_BLOCK) + ((y/TAILLE_BLOCK) * LARGEUR);
+		return this.blocMap.get(indiceDansMap);
+	}
+	
+	public Ressource emplacement(int x, int y, int[] taille) {
+		int indiceDansMap = (x/TAILLE_BLOCK)+(taille[0]/2) + ((y/TAILLE_BLOCK) * LARGEUR)+taille[1];
 		return this.blocMap.get(indiceDansMap);
 	}
 	
@@ -74,17 +97,23 @@ public class Carte {
 			for (int indice=0; indice<ligne.length(); indice+=2) {
 				suivant=ligne.charAt(indice);
 				switch (suivant) {
-					case '3':
+					case '2':
 						blocMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
+					case '3':
+						blocMap.add(new Bois(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '4':
-						blocMap.add(new Terre(true, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
-						break;
-					case '5':
 						blocMap.add(new Pierre(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
+					case '5':
+						blocMap.add(new PlanteDeNike(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
 					case '6':
-						blocMap.add(new Bois(false, x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blocMap.add(new PlanteHercule(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						break;
+					case '7':
+						blocMap.add(new PlanteMédicinale(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					default://tous las chiffres de tuile avec lesquelles on ne peut intéragir (ciel, nuage,...)
 						blocMap.add(null);
@@ -93,7 +122,7 @@ public class Carte {
 				x++;
 			}
 			if (x!=LARGEUR)
-				throw new TailleMapException("Problème de Largeur : "+x+" a la place des "+LARGEUR+" demandés.");
+				throw new TailleMapException("Problème de Largeur a la hauteur " + y + " : "+x+" a la place des "+LARGEUR+" demandés.");
 			x=0;
 			y++;
 			ligne = this.map.readLine();
@@ -106,6 +135,7 @@ public class Carte {
 	/**
 	 * detruit le bloc qui se trouve a indice et la remplace par null
 	 * @param indice
+	 * @throws ErreurInventairePlein 
 	 */
 	public Ressource detruireBlock(int indice) {
 		Ressource blocDetruit = this.blocMap.remove(indice);
@@ -122,9 +152,10 @@ public class Carte {
 
 	/**
 	 * Si on trouve des blocs dans blockMap avec x et y en dehors de la map ils sont détruit.
+	 * @throws ErreurInventairePlein 
 	 * 
 	 */
-	public void ressourceEnDehorsMap() {
+	public void ressourceEnDehorsMap() throws ErreurInventairePlein {
 		for(int i = 0 ; i < this.getBlockMap().size(); i++) {
 			if(this.enDehorsMap(this.getBlockMap().get(i))){
 				this.detruireBlock(i);
