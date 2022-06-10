@@ -11,7 +11,7 @@ import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
 import application.modele.ressources.PlanteDeNike;
 import application.modele.ressources.PlanteHercule;
-import application.modele.ressources.PlanteMédicinale;
+import application.modele.ressources.PlanteMedicinale;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.collections.FXCollections;
@@ -113,7 +113,7 @@ public class Carte {
 						blocMap.add(new PlanteHercule(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '7':
-						blocMap.add(new PlanteMédicinale(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blocMap.add(new PlanteMedicinale(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					default://tous las chiffres de tuile avec lesquelles on ne peut intéragir (ciel, nuage,...)
 						blocMap.add(null);

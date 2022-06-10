@@ -16,6 +16,18 @@ import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.ErreurObjetInvalide;
+import application.modele.effet.Effet;
+import application.modele.effet.Ralentir;
+import application.modele.exception.ErreurArmeEtOutilPasJetable;
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.outils.Seau;
+import application.modele.potions.AntiPoison;
+import application.modele.potions.Potion;
+import application.modele.potions.PotionDegat;
+import application.modele.potions.PotionVie;
+import application.modele.potions.PotionVitesse;
+import application.modele.ressources.Ressource;
+import application.modele.ressources.Terre;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,10 +38,12 @@ import application.modele.armes.Arme;
 import application.modele.armes.Epee;
 import application.modele.armes.Arc;
 import application.modele.armes.Fleche;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Joueur extends Personnage {
 
-	private final static IntegerProperty MAX_PV = new SimpleIntegerProperty(7);
+	private final static IntegerProperty MAX_PV_PROPERTY = new SimpleIntegerProperty(7);
 	private IntegerProperty faimProperty;
 	private final  int MAX_FAIM = 7;
 	private Item objetEquiper;
@@ -41,6 +55,7 @@ public class Joueur extends Personnage {
 	private final static int VITESSE_ACCROUPIE = 5;
 	private BooleanProperty estAccroupiProperty;
 	private final static int[] TAILLE = {1,2};
+
 
 
 
@@ -139,8 +154,35 @@ public class Joueur extends Personnage {
 
 
 	public void courrir() {
-		this.setVitesseDeplacement(VITESSE_COURRIR);
+		super.setVitesseDeplacement(VITESSE_COURRIR);
 	}
+
+	public void utiliserMain(int emplacement) {
+		if (objetEquiper instanceof Potion) {
+			String potion = objetEquiper.getClass().getSimpleName();
+			switch (potion) {
+			case "PotionVie":
+				incrementerPv(PotionVie.getNombrePvRestaurer());
+				break;
+			case "PotionVitesse":
+//				super.Deplacement(objetEquiper.getDuree());
+				break;
+			case "AntiPoison":
+				super.SupprimerEffet(0);
+			default:
+				break;
+			}
+		}
+		this.objetEquiper.utiliser(emplacement);
+		if (objetEquiper instanceof Terre) {
+			Carte carte = this.getEnvironnement().getCarte();
+			carte.getBlockMap().remove(emplacement);
+			carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
+//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
+		}
+
+	}
+
 
 	public void accroupie() {
 		super.setVitesseDeplacement(VITESSE_ACCROUPIE);
@@ -194,16 +236,28 @@ public class Joueur extends Personnage {
 	public Item craft (ArrayList<Item> items) throws ErreurPasDobjetCraftable, ErreurObjetInvalide {
 		String pierre = "Pierre";
 		String bois = "Bois";
-		String plante = "Plante";
+		String planteDeNike = "PlanteDeNike";
+		String planteHercule = "¨PlanteHercule";
+		String planteMedicinale = "PlanteMedicinale";
+		String fils = "Fils";
+		String antiPoison = "AntiPoison";
+		Seau PossedeSeau = null;
+		String seau = null;
+		int indiceSaut = items.indexOf(PossedeSeau);
+		if(indiceSaut != -1);
+			PossedeSeau = (application.modele.outils.Seau) super.getInventaire().getItems().get(indiceSaut);
+			if(PossedeSeau.EstRempli())
+				seau = "Seau";
 
 		Item item;
 		Map<String, Integer> recette = new HashMap<String, Integer>();
 
 		recette.put(pierre, 0);
 		recette.put(bois, 0);
-		recette.put(plante, 0);
-
-		int k = 0;
+		recette.put(planteDeNike, 0);
+		recette.put(planteMedicinale, 0);
+		recette.put(planteHercule, 0);
+		recette.put(antiPoison, 0);
 
 		try {
 			for(k = 0 ; k < items.size() ; k ++) {
@@ -224,8 +278,22 @@ public class Joueur extends Personnage {
 
 		else if(recette.get(bois) == 1 && recette.get(pierre) == 1) { // 1 de bois et 1 pierre crée une flèche
 			item = new Fleche();
+		else if(recette.get(bois) == 3 && recette.get(fils) == 1) {
+			return new Arc();
 		}
 
+		else if(recette.get(bois) == 5)
+			return new Seau(getEnvironnement());
+
+		else if (seau != null && recette.get(planteDeNike) == 2)
+			return new PotionVitesse();
+		else if (seau != null && recette.get(planteHercule) == 2)
+			return new PotionDegat();
+
+		else if (seau != null && recette.get(planteMedicinale) == 3)
+			return new PotionVie();
+		else if (seau != null && recette.get(planteMedicinale) == 2 && recette.get(antiPoison) == 1)
+			return new AntiPoison();
 		else {
 			throw new ErreurPasDobjetCraftable();
 		}
@@ -254,8 +322,8 @@ public class Joueur extends Personnage {
 		this.setPv(this.getPv() + 1);
 	}
 
-	public void incrementerPv(int nourriture) {
-		for (int i = 0; this.getPv() < Joueur.getMaxPv() && i < nourriture ; i++) {
+	public void incrementerPv(int nombrePvRestaurer) {
+		for (int i = 0; this.getPv() < Joueur.getMaxPv() && i < nombrePvRestaurer ; i++) {
 			this.soin();
 		}
 	}
@@ -295,5 +363,5 @@ public class Joueur extends Personnage {
 	public Item getObjetEquiper() {
 		return objetEquiper;
 	}
-	
+
 }
