@@ -347,7 +347,7 @@ public class Controleur implements Initializable {
 			/*
 			 * Test
 			 */
-			cerf = new Cerf(320,0,env);
+			cerf = new Cerf(320,50,env);
 			//		cerfVue = new CerfVue();
 			//		plateau.getChildren().add(cerfVue.getSprite());
 			//		cerfControleur = new IACerf(cerf, cerfVue);
@@ -356,7 +356,7 @@ public class Controleur implements Initializable {
 			//		cerfVue.getSprite().setFitHeight(64);
 			//		cerfVue.getSprite().setFitWidth(32);
 			// Test
-			monstre = new Slime(120,0,1, env);
+			monstre = new Slime(120,50,1, env);
 			//		monstreVue = new MonstreVue();
 			//		plateau.getChildren().add(monstreVue.getSprite());
 			//		monstreControleur = new IAEnnemi(monstre, monstreVue);
