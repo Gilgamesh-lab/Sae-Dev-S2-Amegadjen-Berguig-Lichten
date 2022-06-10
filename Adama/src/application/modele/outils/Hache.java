@@ -24,6 +24,7 @@ public class Hache extends Outil {
 	 * @param lieu l'indice où sont donné les coups de hache
 	 * @return 
 	 */
+	@Override
 	public Ressource utiliser(int lieu) {
 		int largeur=Carte.LARGEUR;
 		try {

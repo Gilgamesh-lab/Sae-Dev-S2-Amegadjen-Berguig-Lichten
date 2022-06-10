@@ -157,7 +157,8 @@ public class Joueur extends Personnage {
 		super.setVitesseDeplacement(VITESSE_COURRIR);
 	}
 
-	public void utiliserMain(int emplacement) {
+	
+	public void utiliserMain(int emplacement) throws ErreurInventairePlein {
 		if (objetEquiper instanceof Potion) {
 			String potion = objetEquiper.getClass().getSimpleName();
 			switch (potion) {
@@ -173,14 +174,17 @@ public class Joueur extends Personnage {
 				break;
 			}
 		}
-		this.objetEquiper.utiliser(emplacement);
+		Ressource bloc =this.objetEquiper.utiliser(emplacement);
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
-			carte.getBlockMap().remove(emplacement);
-			carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
-//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
+			if(carte.getBlockMap().get(emplacement)== null) {
+				carte.getBlockMap().remove(emplacement);
+				carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
+				//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
+			}
 		}
-
+		if (bloc!=null)
+			this.getInventaire().ajouter(bloc);
 	}
 
 
@@ -201,19 +205,6 @@ public class Joueur extends Personnage {
 		}
 	}
 
-	public void utiliserMain(int emplacement) throws ErreurInventairePlein {
-		Ressource bloc =this.objetEquiper.utiliser(emplacement);
-		if (objetEquiper instanceof Terre) {
-			Carte carte = this.getEnvironnement().getCarte();
-			if(carte.getBlockMap().get(emplacement)== null) {
-				carte.getBlockMap().remove(emplacement);
-				carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
-				//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
-			}
-		}
-		if (bloc!=null)
-			this.getInventaire().ajouter(bloc);
-	}
 
 	public boolean estUneArmeOuUnOutil(Item item) {
 		return item instanceof Arme || item instanceof Ressource;
@@ -258,7 +249,7 @@ public class Joueur extends Personnage {
 		recette.put(planteMedicinale, 0);
 		recette.put(planteHercule, 0);
 		recette.put(antiPoison, 0);
-
+		int k = 0;
 		try {
 			for(k = 0 ; k < items.size() ; k ++) {
 				recette.put(items.get(k).getClass().getSimpleName(), recette.get(items.get(k).getClass().getSimpleName()) + 1);
@@ -267,20 +258,15 @@ public class Joueur extends Personnage {
 			throw new ErreurObjetInvalide(items.get(k));
 		}
 
-		if(recette.get(bois) == 3 && recette.get(plante) == 1) {  // 3 bois et 1 plante crée un arc
-			item = new Arc(this.getInventaire()); // TODO revoir recette pour l'arc (remplacer la plante part de la ficelle)
-		}
-
-		else if(recette.get(bois) == 2 && recette.get(pierre) == 1) { // 2 bois et 1 pierre crée une épée
+		if(recette.get(bois) == 2 && recette.get(pierre) == 1) // 2 bois et 1 pierre crée une épée
 			item = new Epee();
-		}
 
 
-		else if(recette.get(bois) == 1 && recette.get(pierre) == 1) { // 1 de bois et 1 pierre crée une flèche
+		else if(recette.get(bois) == 1 && recette.get(pierre) == 1) // 1 de bois et 1 pierre crée une flèche
 			item = new Fleche();
-		else if(recette.get(bois) == 3 && recette.get(fils) == 1) {
-			return new Arc();
-		}
+		else if(recette.get(bois) == 3 && recette.get(fils) == 1) 
+			item = new Arc(super.getInventaire());
+		
 
 		else if(recette.get(bois) == 5)
 			return new Seau(getEnvironnement());
@@ -343,7 +329,7 @@ public class Joueur extends Personnage {
 	}
 
 	public static IntegerProperty maxPvProperty() {
-		return MAX_PV;
+		return MAX_PV_PROPERTY;
 	}
 
 	public void teleporterToCheckpoint() {
@@ -357,7 +343,7 @@ public class Joueur extends Personnage {
 
 
 	public static int getMaxPv() {
-		return MAX_PV.getValue();
+		return MAX_PV_PROPERTY.getValue();
 	}
 
 	public Item getObjetEquiper() {

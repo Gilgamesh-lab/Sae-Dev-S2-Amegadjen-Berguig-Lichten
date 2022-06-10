@@ -1,6 +1,7 @@
 package application.modele.potions;
 
 import application.modele.personnages.Joueur;
+import application.modele.ressources.Ressource;
 
 public class PotionVie implements Potion {
 	
@@ -17,7 +18,8 @@ public class PotionVie implements Potion {
 
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		
 		
 	}

@@ -1,6 +1,7 @@
 package application.modele.potions;
 
 import application.modele.personnages.Joueur;
+import application.modele.ressources.Ressource;
 
 public class PotionDegat implements Potion {
 	
@@ -11,7 +12,8 @@ public class PotionDegat implements Potion {
 	}
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		// TODO Auto-generated method stub
 
 	}

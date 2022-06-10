@@ -2,6 +2,7 @@ package application.modele.outils;
 
 import application.modele.Environnement;
 import application.modele.ressources.Eau;
+import application.modele.ressources.Ressource;
 
 public class Seau extends Outil {
 	
@@ -16,8 +17,10 @@ public class Seau extends Outil {
 	}
 
 	@Override
-	public void utiliser(int val) {
-		// TODO Auto-generated method stub
+	public Ressource utiliser(int val) {
+		if(!estRempli)
+			this.vider();
+		return eau;
 
 	}
 	

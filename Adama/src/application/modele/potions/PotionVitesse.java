@@ -1,5 +1,7 @@
 package application.modele.potions;
 
+import application.modele.ressources.Ressource;
+
 public class PotionVitesse implements Potion {
 	
 	private static final int POURCENTAGE_AMELOIRATION_VITESSE = 25;
@@ -8,7 +10,8 @@ public class PotionVitesse implements Potion {
 	}
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		
 	}
 
