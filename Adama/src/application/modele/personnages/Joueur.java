@@ -18,6 +18,7 @@ import application.modele.effet.Ralentir;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Seau;
+import application.modele.potions.AntiPoison;
 import application.modele.potions.Potion;
 import application.modele.potions.PotionDegat;
 import application.modele.potions.PotionVie;

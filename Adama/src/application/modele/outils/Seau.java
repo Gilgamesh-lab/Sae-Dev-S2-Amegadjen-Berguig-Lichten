@@ -22,7 +22,7 @@ public class Seau extends Outil {
 	}
 	
 	public void remplir() {
-		eau = new Eau(0);
+		eau = new Eau();
 		estRempli = true;
 	}
 	

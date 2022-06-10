@@ -16,10 +16,11 @@ public class PotionDegat implements Potion {
 
 	}
 
-	@Override
-	public void utiliser(Joueur joueur) {
-		// TODO Auto-generated method stub
 
+	@Override
+	public void utiliser() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

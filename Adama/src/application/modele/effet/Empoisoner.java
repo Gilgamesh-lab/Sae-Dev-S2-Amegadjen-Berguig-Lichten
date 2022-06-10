@@ -12,7 +12,8 @@ public class Empoisoner extends Effet {
 	}
 
 	@Override
-	public void appliquerEffet() {
+	public int appliquerEffet() {
+		return 0;
 		
 
 	}

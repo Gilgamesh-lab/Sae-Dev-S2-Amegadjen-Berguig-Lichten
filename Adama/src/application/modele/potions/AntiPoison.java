@@ -1,6 +1,4 @@
-package application.modele.personnages;
-
-import application.modele.potions.Potion;
+package application.modele.potions;
 
 public class AntiPoison implements Potion {
 
