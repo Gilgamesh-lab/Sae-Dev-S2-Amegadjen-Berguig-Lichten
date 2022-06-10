@@ -8,9 +8,12 @@ import java.util.ResourceBundle;
 //import application.IA.IAEnnemi;
 import application.modele.Carte;
 import application.modele.Environnement;
+import application.modele.Item;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
+import application.modele.outils.Hache;
 import application.modele.outils.Pelle;
+import application.modele.outils.Pioche;
 import application.modele.personnages.Cerf;
 import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
@@ -50,8 +53,8 @@ public class Controleur implements Initializable {
 	private Label nbPVResant;
 	@FXML
 	private TilePane inventaire;
-//    @FXML
-//    private Label nbPVMax;
+    @FXML
+    private Label nbPVMax;
 
 	private Timeline gameLoop;
 	private int temps;
@@ -101,15 +104,19 @@ public class Controleur implements Initializable {
 		System.out.println("Click dans l'inventaire");
 		System.out.println("X = " + event.getX());
 		System.out.println("Y = " +event.getY());
+		try {
+			ImageView ev = (ImageView) event.getTarget();
+			int indiceDansInventaire = Integer.parseInt(ev.getId());
+			Item objetAEquiper = perso.getInventaire().getItem(indiceDansInventaire);
 
-		ImageView ev = (ImageView) event.getTarget();
-		int indiceDansInventaire = Integer.parseInt(ev.getId());
-		Item objetAEquiper = perso.getInventaire().getItem(indiceDansInventaire);
-
-		if(objetAEquiper.equals(perso.getObjetEquiper()))
-			perso.desequiper();
-		else
-			perso.equiper(objetAEquiper);
+			if(objetAEquiper.equals(perso.getObjetEquiper()))
+				perso.desequiper();
+			else
+				perso.equiper(objetAEquiper);
+		}catch(Exception e) {
+			System.err.println("Merci de ne pas cliquer sur le bord gris claire");
+		}
+		
 	}
 
 	@FXML
@@ -200,7 +207,6 @@ public class Controleur implements Initializable {
 				}
 				for (Personnage nouveau : pc.getAddedSubList()) {
 					System.out.println(nouveau.getClass());
-					this.plateau.getChildren().add(persoVue.getSprite());
 					if (nouveau instanceof Joueur) {
 						persoVue = new JoueurVue();
 						this.plateau.getChildren().add(persoVue.getSprite());
@@ -237,8 +243,8 @@ public class Controleur implements Initializable {
 		////////Ajout du Joueur et bind au Sprite du Joueur
 		nbPVResant.textProperty().bind(perso.pvProperty().asString());
 		nbPVMax.textProperty().bind(Joueur.maxPvProperty().asString());
-		inv = new InventaireControleur(inventaire);
-		perso.getInventaire().getItems().addListener(inv);
+		invControleur = new InventaireControleur(inventaire);
+		perso.getInventaire().getItems().addListener(invControleur);
 
 		/*
 		 * Test
@@ -266,8 +272,6 @@ public class Controleur implements Initializable {
 
 		//////////// Gameloop
 //		perso.equiper(new Pelle(env));
-		invControleur = new InventaireControleur(inventaire);
-		perso.getInventaire().getItems().addListener(invControleur);
 		try {
 			perso.getInventaire().ajouter(new Hache(env));
 			perso.getInventaire().ajouter(new Pelle(env));

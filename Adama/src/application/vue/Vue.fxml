@@ -12,8 +12,8 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane onKeyPressed="#touchePresse" onMouseClicked="#sourisPresse" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
-	<center>
-		<Pane fx:id="plateau" maxHeight="1024" maxWidth="1920" minHeight="1024" minWidth="1920">
+   <center>
+		<Pane fx:id="plateau" maxHeight="1024" maxWidth="1920" minHeight="1024" minWidth="1920" BorderPane.alignment="CENTER">
 			<children>
 				<TilePane fx:id="carte" prefColumns="60" style="-fx-background-color: #028ED4;">
 				</TilePane>
@@ -30,7 +30,7 @@
 						</Button>
 						<TilePane fx:id="inventaire" hgap="8.0" prefColumns="4" prefTileHeight="64.0" prefTileWidth="64.0" style="-fx-background-color: #808080;" vgap="8.0" visible="false">
 							<children>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="0" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -40,7 +40,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="1" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -50,7 +50,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="2" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -60,7 +60,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="3" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -70,7 +70,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="4" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -80,7 +80,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="5" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -90,7 +90,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="6" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -100,7 +100,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="7" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -110,7 +110,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="8" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -120,7 +120,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="9" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -130,7 +130,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="10" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -140,7 +140,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="11" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -150,7 +150,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="12" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -160,7 +160,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="13" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -170,7 +170,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="14" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -180,7 +180,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="15" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -190,7 +190,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="16" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -200,7 +200,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="17" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -210,7 +210,7 @@
 										</Label>
 									</children>
 								</Pane>
-								<Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
+								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
 										<ImageView id="18" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
 										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -220,7 +220,7 @@
 										</Label>
 									</children>
 								</Pane>
-                        <Pane onMouseClicked="#equiper" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #bbbbbb;">
+                        <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;">
                            <children>
                               <ImageView id="19" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
                               <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
@@ -238,36 +238,21 @@
 					</children>
 				</HBox>
 
-				<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" translateX="1725.0">
+				<HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" translateX="1720.0">
 					<children>
-						<Label fx:id="nbPVResant" alignment="CENTER" textFill="RED">
+						<Label fx:id="nbPVResant" alignment="CENTER" contentDisplay="CENTER" textFill="RED">
 							<font>
-								<Font size="18.0" />
-							</font>
-						</Label>
-						<Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" text="/9" textFill="RED">
-							<font>
-								<Font name="System Bold" size="18.0" />
-							</font>
-						</Label>
-					</children>
-				</HBox>
-
-				<HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
-					<children>
-						<Label fx:id="nbPVResant" alignment="CENTER" textFill="RED">
-							<font>
-								<Font size="18.0" />
+								<Font size="50.0" />
 							</font>
 						</Label>
 						<Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" text="/" textFill="RED">
 							<font>
-								<Font size="18.0" />
+								<Font size="50.0" />
 							</font>
 						</Label>
                   <Label fx:id="nbPVMax" textFill="RED">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="50.0" />
                      </font></Label>
 					</children>
 				</HBox>
@@ -276,5 +261,5 @@
 				<Insets left="40.0" />
 			</padding>
 		</Pane>
-	</center>
+   </center>
 </BorderPane>
