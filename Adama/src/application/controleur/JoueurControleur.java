@@ -31,7 +31,7 @@ public class JoueurControleur {
 			perso.droite();
 			break;
 		case "z":
-			if(!perso.toucheY(false))
+			if(!perso.touchePasY(false))
 				perso.sauter();
 			break;
 		case "s":

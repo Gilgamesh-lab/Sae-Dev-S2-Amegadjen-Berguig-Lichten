@@ -103,7 +103,7 @@ public abstract class Personnage {
 	 * @ failed or interrupted I/O operation
 	 */
 	public void monter(int val) {
-		if(this.toucheY(true))
+		if(this.touchePasY(true))
 			translationY(val);
 	}
 	
@@ -114,7 +114,7 @@ public abstract class Personnage {
 	 */
 	public void descendre(int val) {
 		for (int i=0; i<val; i++)
-			if(this.toucheY(false)) 
+			if(this.touchePasY(false)) 
 				translationY(-1);
 
 	}
@@ -127,7 +127,7 @@ public abstract class Personnage {
 	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
 	 * 			false si il ne peut pas passer (si il touche un autre bloc)
 	 */
-	public boolean toucheY(boolean auDessus) {
+	public boolean touchePasY(boolean auDessus) {
 		boolean gaucheTuile=true;
 		boolean droiteSprite;
 		Ressource blocAEmplacement;
@@ -195,18 +195,18 @@ public abstract class Personnage {
 
 	
 	public void translationX(int val) {
-		if(toucheX(true)) {
+		if(touchePasX(true)) {
 			this.xProperty.setValue(this.getX() - val);
 		}
 	}
 
 	public void droite() {
-		if(toucheX(true))
+		if(touchePasX(true))
 			this.translationX(-vitesseDeplacement);
 	}
 
 	public void gauche() {
-		if(toucheX(false))
+		if(touchePasX(false))
 			this.translationX(vitesseDeplacement);
 	}
 	
@@ -217,7 +217,7 @@ public abstract class Personnage {
 	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
 	 * 			false si il ne peut pas passer (si il touche un autre bloc)
 	 */
-	public boolean toucheX(boolean aDroite) {
+	public boolean touchePasX(boolean aDroite) {
 		boolean hautTuileTouchePas = true;
 		boolean basTuileTouchePas;
 		Ressource blocAEmplacement;

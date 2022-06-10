@@ -26,12 +26,12 @@ public class Slime extends Ennemis {
 		if(this.estPrèsDuJoueur(Carte.TAILLE_BLOCK * 10)) {
 			if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
 				this.droite();
-				if(!this.toucheX(true))
+				if(!this.touchePasX(true))
 					this.sauterEnDirection(true);
 			}
 			else {
 				this.gauche();
-				if(!this.toucheX(false))
+				if(!this.touchePasX(false))
 					this.sauterEnDirection(false);
 			}
 			

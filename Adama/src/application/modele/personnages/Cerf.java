@@ -22,12 +22,12 @@ public class Cerf extends Personnage {
 		if(this.estPrèsDuJoueur(Carte.TAILLE_BLOCK * 5)) {
 			if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
 					this.gauche();
-					if(!this.toucheX(false))
+					if(!this.touchePasX(false))
 						this.sauterEnDirection(false);
 				}
 				else {
 					this.droite();
-					if(!this.toucheX(true))
+					if(!this.touchePasX(true))
 						this.sauterEnDirection(true);
 			}
 		}
