@@ -1,16 +1,11 @@
 package application.modele.personnages;
 
-import java.io.IOException;
-
 import application.modele.Checkpoint;
 import application.modele.Environnement;
 import application.modele.Inventaire;
+import application.modele.effet.Effet;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
-import application.modele.Environnement;
-import application.modele.Inventaire;
-import application.modele.effet.Effet;
-import application.modele.effet.Ralentir;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Plante;
 import application.modele.ressources.Ressource;
@@ -489,7 +484,7 @@ public abstract class Personnage {
 	}
 
 
-	public boolean estEnLaire() throws IOException {
+	public boolean estEnLaire() {
 		int[] taille = {1,2};//provisoire
 		return this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null;
     }

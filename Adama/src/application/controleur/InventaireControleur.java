@@ -1,6 +1,8 @@
 package application.controleur;
 
 import application.modele.Item;
+import application.modele.outils.Seau;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -27,38 +29,20 @@ public class InventaireControleur implements ListChangeListener<Item> {
 		
 		while(c.next()) {
 			for(Item ajout : c.getAddedSubList()) {
-//				image = chargerImage(compteur, compteur/2);
-				switch (ajout.getClass().getSimpleName()) {
-				case "Pierre":
-					image = new Image("ressource/pierreIcone.png");
-					break;
-				case "Terre":
-					image = new Image("ressource/terreIcone.png");
-					break;
-				case "Bois":
-					image = new Image("ressource/boisIcone.png");
-					break;
-				case "Hache":
-					image = new Image("ressource/Hache.png");
-					Pane Case = (Pane) inv.getChildren().get(compteur);
-					((Label)(Case.getChildren().get(1))).setText("1");
-					break;
-				case "Pioche":
-					image = new Image("ressource/Pioche.png");
-					Pane tuile = (Pane) inv.getChildren().get(compteur);
-					((Label)(tuile.getChildren().get(1))).setText("1");
-					break;
-				case "Pelle":
-					image = new Image("ressource/Pelle.png");
-					Pane Tuile = (Pane) inv.getChildren().get(compteur);
-					((Label)(Tuile.getChildren().get(1))).setText("1");
-					break;
-				default:
-					break;
-				}
-				
+				image = chargerImage(ajout.getClass().getSimpleName());
 				Pane tuile = (Pane) inv.getChildren().get(compteur);
-				((ImageView) tuile.getChildren().get(0)).setImage(image);
+				ImageView b = ((ImageView) tuile.getChildren().get(0));
+				if(ajout instanceof Seau) {
+					ChangeListener<Boolean> ecouteurDeSeau =  ((obs,old,nouv)-> {
+						if(((Seau) ajout).EstRempli())
+							b.setImage(new Image("ressource/seau_plein.png"));
+						else
+							b.setImage(new Image("ressource/seau_vide.png"));
+					});
+					((Seau) ajout).EstRempliProperty().addListener(ecouteurDeSeau);
+					
+				}
+				b.setImage(image);
 				compteur++;
 			}
 
@@ -69,10 +53,68 @@ public class InventaireControleur implements ListChangeListener<Item> {
 		}
 
 	}
-
-//	private ImageView chargerImage(int colonne, int ligne) {
-//		VBox c = (VBox) inv.getChildren().get(colonne);
-//		return ((ImageView) c.getChildren().get(ligne));
-//	}
+	/**
+	 * cette méthode renvoie l'image correspondant à la class de ajout
+	 * @param nomClass
+	 * @return
+	 */
+	private Image chargerImage(String nomClass) {
+		Image image = null;
+		String chemin = "ressource/";
+		String extention = ".png";
+		switch (nomClass) {
+		case "Pierre":
+			image = new Image(chemin + "pierreIcone" + extention);
+			break;
+		case "Terre":
+			image = new Image(chemin + "terreIcone" + extention);
+			break;
+		case "Bois":
+			image = new Image(chemin + "boisIcone" + extention);
+			break;
+		case "Hache":
+			image = new Image(chemin + "Hache" + extention);
+			Pane Case = (Pane) inv.getChildren().get(compteur);
+			((Label)(Case.getChildren().get(1))).setText("1");
+			break;
+		case "Pioche":
+			image = new Image(chemin + "Pioche" + extention);
+			Pane tuile = (Pane) inv.getChildren().get(compteur);
+			((Label)(tuile.getChildren().get(1))).setText("1");
+			break;
+		case "Pelle":
+			image = new Image(chemin + "Pelle" + extention);
+			Pane Tuile = (Pane) inv.getChildren().get(compteur);
+			((Label)(Tuile.getChildren().get(1))).setText("1");
+			break;
+		case "Seau":
+			image = new Image(chemin + "seau_vide" + extention);
+			break;
+		case "PlanteMedicinal":
+			image = new Image(chemin + "planteMedicinaleIcone" + extention);
+			break;
+		case "PlanteHercule":
+			image = new Image(chemin + "planteHerculeIcone" + extention);
+			break;
+		case "PlanteDeNike":
+			image = new Image(chemin + "planteNikéIcone" + extention);
+			break;
+		case "PotionDegat":
+			image = new Image(chemin + "potionDegat" + extention);
+			break;
+		case "PotionVie":
+			image = new Image(chemin + "potionVie" + extention);
+			break;
+		case "PotionVitesse":
+			image = new Image(chemin + "potionVitesse" + extention);
+			break;
+		case "AntiPoison":
+			image = new Image(chemin + "potionAntipoison" + extention);
+			break;
+		default:
+			break;
+		}
+		return image;
+	}
 
 }
