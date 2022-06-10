@@ -4,8 +4,6 @@ package application.controleur;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-//import application.IA.IACerf;
-//import application.IA.IAEnnemi;
 import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.exception.ErreurInventairePlein;
@@ -16,10 +14,9 @@ import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
 import application.modele.personnages.Slime;
 import application.modele.ressources.Ressource;
-//import application.vue.CerfVue;
+import application.modele.ressources.Terre;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
-//import application.vue.MonstreVue;
 import application.vue.PNJVue;
 import application.vue.RessourceView;
 import javafx.animation.KeyFrame;
@@ -58,17 +55,13 @@ public class Controleur implements Initializable {
 
 	private Environnement env;
 	private EnvironnementVue envVue;
+
 	private ListChangeListener<Ressource> listResssourceListener;
 	private ListChangeListener<Personnage> listPersonnageListener;
 
 	private PNJVue nouveauPnjVue;
 	private Cerf cerf;
-	//	private CerfVue cerfVue;
-	//	private IACerf cerfControleur;
-
 	private Slime monstre;
-	//	private MonstreVue monstreVue;
-	//	private IAEnnemi monstreControleur;
 
 	@FXML
 	void ouvrirInventaire(ActionEvent event) {
@@ -111,7 +104,6 @@ public class Controleur implements Initializable {
 		case "e":
 			ouvrirInventaire();
 			break;
-
 		case "m":
 			try {
 				perso.meurt();
@@ -121,7 +113,6 @@ public class Controleur implements Initializable {
 			}
 			persoVue.getSprite().setVisible(false);
 			break;
-
 		default:
 			persoControleur.touchePresse(touchePresse);
 		}
@@ -148,35 +139,40 @@ public class Controleur implements Initializable {
 		}
 		envVue = new EnvironnementVue(env, carte);
 
+		
+///////////List Listener
 
-		///////////List Listener
-
-		//////////Bloc de la carte
+	//////////Bloc de la carte
 		listResssourceListener = (cs -> {
 			System.out.println("changement bloc");
 			while(cs.next()) {
-				int indiceBloc;
-				for (Ressource ancien : cs.getRemoved()) {
-					if (ancien!=null) {
-						System.out.println(ancien);
-						System.out.println(cs.getRemoved());
-						indiceBloc = ancien.getIndice();
-						System.out.println(indiceBloc+ " indice Bloc");
-						carte.getChildren().set(indiceBloc, new RessourceView(null, env));
+				if (cs.wasRemoved()) {
+					int indiceBloc;
+					for (Ressource ancien : cs.getRemoved()) {
+						if (ancien!=null) {
+							System.out.println(ancien);
+							System.out.println(cs.getRemoved());
+							indiceBloc = ancien.getIndice();
+							System.out.println(indiceBloc+ " indice Bloc");
+							carte.getChildren().set(indiceBloc, new RessourceView(null, env));
+						}
 					}
 				}
-				for (Ressource nouveau : cs.getAddedSubList()) {
-					if (nouveau != null) {
-						System.out.println(nouveau);
-						System.out.println(cs.getAddedSubList());
-						indiceBloc = nouveau.getIndice();
-						System.out.println(indiceBloc+ " indice Bloc");
-						carte.getChildren().set(indiceBloc, new RessourceView(nouveau, env));
+				else {
+					int indiceBloc;
+					for (Ressource nouveau : cs.getAddedSubList()) {
+						if (nouveau != null) {
+							System.out.println(nouveau);
+							System.out.println(cs.getAddedSubList());
+							indiceBloc = nouveau.getIndice();
+							System.out.println(indiceBloc+ " indice Bloc");
+							carte.getChildren().set(indiceBloc, new RessourceView(nouveau, env));
+						}
 					}
 				}
 			}});
 
-		//////////Personnages dans l'environnement
+	//////////Personnages dans l'environnement
 		listPersonnageListener = (pc -> {
 			System.out.println("changement peronnage");
 			while(pc.next()) {
@@ -206,19 +202,18 @@ public class Controleur implements Initializable {
 				}
 			}});
 
-		//////////Ajout des listener aux deux liste de l'environement
+	//////////Ajout des listener aux deux liste de l'environement
 		env.getCarte().getBlockMap().addListener(listResssourceListener);
 		env.getPersonnages().addListener(listPersonnageListener);
 
 
-		///////////Création du Joueur et de son menu
+	///////////Création du Joueur et de son menu
 
-		////////Ajout du Joueur et bind au Sprite du Joueur
+	////////Ajout du Joueur et bind au Sprite du Joueur
 		perso  = new Joueur(420, 0, env);
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
-
-		////////Ajout du Joueur et bind au Sprite du Joueur
+	////////Ajout du Joueur et bind au Sprite du Joueur
 		nbPVResant.textProperty().bind(perso.pvProperty().asString());
 		inv = new InventaireControleur(inventaire);
 		perso.getInventaire().getItems().addListener(inv);
