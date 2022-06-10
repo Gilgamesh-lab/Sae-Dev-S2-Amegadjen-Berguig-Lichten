@@ -1,8 +1,8 @@
 package application.modele.outils;
 
 import application.modele.Environnement;
-import application.modele.exception.ErreurInventairePlein;
 import application.modele.ressources.Pierre;
+import application.modele.ressources.Ressource;
 
 public class Pioche extends Outil {
 
@@ -21,15 +21,11 @@ public class Pioche extends Outil {
 	/**
 	 * Permet d'utiliser la pioche sur le bloc visé
 	 * @param lieu indice du bloc visé
-	 * @throws ErreurInventairePlein 
+	 * @return 
 	 */
-	public void miner(int lieu) throws ErreurInventairePlein {
+	public Ressource utiliser(int lieu) {
 		if (super.getEnvironnement().getCarte().emplacement(lieu) instanceof Pierre)
-			super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
+			return super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
+		return null;
 	}
-	
-	public void utiliser(int val) {
-		
-	}
-
 }

@@ -1,15 +1,13 @@
 package application.modele.ressources;
 
-public class PlanteHercule extends Plante {
+public class PlanteMedicinale extends Plante {
 
-	public PlanteHercule(int x, int y, int indice) {
+	public PlanteMedicinale(int x, int y, int indice) {
 		super(x, y, indice);
-		
 	}
 
-	public PlanteHercule(int indice) {
+	public PlanteMedicinale(int indice) {
 		super(indice);
-		
 	}
 
 	@Override

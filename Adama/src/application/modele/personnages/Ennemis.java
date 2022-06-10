@@ -4,7 +4,7 @@ package application.modele.personnages;
 import application.modele.Environnement;
 import application.modele.exception.ErreurObjetIntrouvable;
 
-public abstract class Ennemis extends Personnage{
+public abstract class Ennemis extends Pnj{
 	private int degat;
 	private boolean vole;
 	
@@ -21,8 +21,11 @@ public abstract class Ennemis extends Personnage{
 		this.vole = vole;
 	}
 	
-	public Ennemis(int x, int y,int vitesseDeplacement,Environnement environnement) {
-		super(10, x, y, 10, environnement, null);
+	public Ennemis(int x, int y,int vitesseDeplacement,Environnement environnement, int[] taille) {
+
+
+		super(10, x, y, 10, environnement, taille);
+
 		this.degat = 1;
 		this.vole = false;
 	}
@@ -44,9 +47,12 @@ public abstract class Ennemis extends Personnage{
 	
 	
 	
+
 	public void sauterSurJoueur() throws ErreurObjetIntrouvable {
-		this.sauter(this.ouSeTrouveLeJoueur());
+		this.sauterEnDirection(this.ouSeTrouveLeJoueur());
 	}
+
+	
 	
 	
 	

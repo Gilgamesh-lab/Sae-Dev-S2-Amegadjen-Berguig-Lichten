@@ -13,6 +13,7 @@ public class EnvironnementVue {
 	public EnvironnementVue(Environnement env, TilePane carte) {
 		this.carte=carte;
 		this.env=env;
+		creerEnvironnement();
 	}
 	
 	public void creerEnvironnement() {

@@ -15,14 +15,10 @@ public class Pierre extends Ressource {
 		super(false, 5,5, indice);
 	}
 
-	@Override
-	public void utiliser() {
-
-	}
-
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
+		return null;
 		
 	}
 

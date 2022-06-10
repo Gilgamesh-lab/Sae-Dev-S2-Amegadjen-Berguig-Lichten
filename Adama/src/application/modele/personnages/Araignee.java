@@ -23,5 +23,9 @@ public class Araignee extends Ennemis {
 		super(environnement, TAILLE, degat, false);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public boolean agir() {
+		return true;
+	}
 
 }

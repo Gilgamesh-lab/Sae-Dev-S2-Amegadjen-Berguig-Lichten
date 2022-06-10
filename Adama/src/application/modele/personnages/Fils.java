@@ -9,13 +9,11 @@ public class Fils extends Ressource {
 	}
 
 	@Override
-	public void utiliser(int val) {
-
+	public Ressource utiliser(int val) {
+		return this;
 	}
 
-	@Override
-	public void utiliser() {
+	
 
-	}
 
 }
