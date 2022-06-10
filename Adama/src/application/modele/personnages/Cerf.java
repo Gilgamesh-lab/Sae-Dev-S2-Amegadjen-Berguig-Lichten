@@ -23,12 +23,12 @@ public class Cerf extends Personnage {
 			if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
 					this.gauche();
 					if(!this.toucheX(false))
-						this.sauter();
+						this.sauterEnDirection(false);
 				}
 				else {
 					this.droite();
 					if(!this.toucheX(true))
-						this.sauter();
+						this.sauterEnDirection(true);
 			}
 		}
 	}

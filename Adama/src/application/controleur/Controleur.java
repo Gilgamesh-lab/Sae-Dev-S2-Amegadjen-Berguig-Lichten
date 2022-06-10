@@ -185,7 +185,6 @@ public class Controleur implements Initializable {
 				}
 				for (Personnage nouveau : pc.getAddedSubList()) {
 					System.out.println(nouveau.getClass());
-					this.plateau.getChildren().add(new JoueurVue().getSprite());
 					if (nouveau instanceof Joueur) {
 						persoVue = new JoueurVue();
 						this.plateau.getChildren().add(persoVue.getSprite());
@@ -272,8 +271,8 @@ public class Controleur implements Initializable {
 							monstre.agir();
 							//							if(monstre.getTempsSaut() < 8 && monstre.isSaut()) {
 							//									System.out.println(2);
-							//									monstre.monter(4);
-							//									monstre.translationX(-2);
+//																monstre.monter(4);
+//																monstre.translationX(-2);
 							//									monstre.incremterTempsSaut();
 							//							}
 							//							
