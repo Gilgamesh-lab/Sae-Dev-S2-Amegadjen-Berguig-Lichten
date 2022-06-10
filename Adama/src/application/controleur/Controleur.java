@@ -125,7 +125,7 @@ public class Controleur implements Initializable {
 				ev.getParent().setStyle(newStyle);
 				ev.getParent().applyCss();
 			}
-						
+
 		}catch(Exception e) {
 			System.err.println("Merci de ne pas cliquer sur le bord gris claire");
 		}
