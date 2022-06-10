@@ -17,11 +17,4 @@ public class Bois extends Ressource {
 	public void utiliser(int val) {
 		
 	}
-
-
-	@Override
-	public void utiliser() {
-		// TODO Auto-generated method stub
-		
-	}
 }

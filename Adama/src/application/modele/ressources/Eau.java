@@ -11,10 +11,4 @@ public class Eau extends Ressource {
 
 
 	}
-
-	@Override
-	public void utiliser() {
-
-	}
-
 }

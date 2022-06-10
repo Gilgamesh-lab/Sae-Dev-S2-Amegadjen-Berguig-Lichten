@@ -13,12 +13,7 @@ public abstract class Plante extends Ressource {
 	public Plante(int indice) {
 		super(false, 5,5, indice);
 	}	
-	
-	@Override
-	public void utiliser() {
-		
-	}
-	
+
 	public int getTempsRepousse() {
 		return tempsRepousse;
 	}
