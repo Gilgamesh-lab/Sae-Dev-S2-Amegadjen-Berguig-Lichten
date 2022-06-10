@@ -28,7 +28,7 @@ import application.modele.armes.Fleche;
 
 public class Joueur extends Personnage {
 	
-	private final static  int MAX_PV = 7;
+	private final static IntegerProperty MAX_PV = new SimpleIntegerProperty(7);
 	private IntegerProperty faimProperty;
 	private final  int MAX_FAIM = 7;
 	private Item objetEquiper;
@@ -54,7 +54,7 @@ public class Joueur extends Personnage {
 	}
 	
 	public Joueur(int x, int y, Environnement environnement) {
-		super(MAX_PV, x, y, 5, environnement, TAILLE );
+		super(Joueur.getMaxPv(), x, y, 5, environnement, TAILLE );
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
 		this.objetEquiper = this.POING;
 		this.inventaireRaccourci = new Inventaire(10);
@@ -257,7 +257,7 @@ public class Joueur extends Personnage {
 	}
 	
 	public void incrementerPv(int nourriture) {
-		for (int i = 0; this.getPv() < Joueur.MAX_PV && i < nourriture ; i++) {
+		for (int i = 0; this.getPv() < Joueur.getMaxPv() && i < nourriture ; i++) {
 			this.soin();
 		}
 	}
@@ -275,11 +275,21 @@ public class Joueur extends Personnage {
 //		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
 		this.desequiper();
 	}
+
+	public static IntegerProperty maxPvProperty() {
+		return MAX_PV;
+	}
 	
 	
 	
 	
-	
+	public static int getMaxPv() {
+		return MAX_PV.getValue();
+	}
+
+	public Item getObjetEquiper() {
+		return objetEquiper;
+	}
 	
 	
 	
