@@ -188,7 +188,7 @@ public class Controleur implements Initializable {
 			}
 			break;
 
-		case "i":
+		case "k":
 			try {
 				perso.meurt();
 			} catch (ErreurInventairePlein e1) {
@@ -207,7 +207,7 @@ public class Controleur implements Initializable {
 			System.out.println("Game Over");
 			break;
 
-		case "k":
+		case "i":
 			if(perso.estMort()) {
 				perso.incrementerPv(7);
 				perso.teleporterToCheckpoint();
