@@ -17,13 +17,10 @@ public class Terre extends Ressource {
 	}
 
 	@Override
-	public void utiliser(int val) {
+	public Ressource utiliser(int val) {
 		this.setIndice(val);
+		return null;
 	}
 
-	@Override
-	public void utiliser() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

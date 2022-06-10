@@ -23,7 +23,10 @@ public abstract class Ennemis extends Personnage{
 	}
 	
 	public Ennemis(int x, int y,int vitesseDeplacement,Environnement environnement, int[] taille) {
-		super(10, x, y, 1, environnement, taille);
+
+
+		super(10, x, y, 10, environnement, taille);
+
 		this.degat = 1;
 		this.vole = false;
 	}
@@ -46,7 +49,7 @@ public abstract class Ennemis extends Personnage{
 	
 	
 	public void sauterSurJoueur() throws ErreurObjetIntrouvable, IOException {
-		this.sauter(this.ouSeTrouveLeJoueur());
+		this.sauterEnDirection(this.ouSeTrouveLeJoueur());
 	}
 	
 	

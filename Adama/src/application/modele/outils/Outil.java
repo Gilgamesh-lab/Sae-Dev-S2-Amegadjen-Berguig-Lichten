@@ -2,6 +2,7 @@ package application.modele.outils;
 
 import application.modele.Environnement;
 import application.modele.Item;
+import application.modele.ressources.Ressource;
 
 /**
  * Est au-dessus de Hache, Pelle, Pioche
@@ -11,7 +12,7 @@ import application.modele.Item;
 public abstract class Outil implements Item{
 	
 	private Environnement env;
-	private int effet; //correspond au dégat infligé au bloc 
+	private int effet; //correspond au dégat infligé au bloc e
 	
 	/**
 	 * Crée un outil (soit une hache, soit une pelle, soit une pioche
@@ -22,6 +23,11 @@ public abstract class Outil implements Item{
 		this.env=env;
 		this.effet=effet;
 	}
+	
+	@Override
+	public abstract Ressource utiliser(int val);
+	
+	
 	
 	/**
 	 * 
