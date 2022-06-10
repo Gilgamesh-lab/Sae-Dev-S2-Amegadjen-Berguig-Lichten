@@ -34,7 +34,6 @@ public class Joueur extends Personnage {
 	private final  int MAX_FAIM = 7;
 	private Item objetEquiper;
 	private Inventaire inventaireRaccourci;
-	private Checkpoint checkpoint;
 	private final Poing POING =  new Poing();
 	private final static int VITESSE_COURRIR = 20;
 	private final static int VITESSE_MARCHE = 10;
@@ -62,19 +61,8 @@ public class Joueur extends Personnage {
 		this.estAccroupiProperty = new SimpleBooleanProperty(false);
 	}
 
-	public Checkpoint getCheckpoint() { 
-		return this.checkpoint;
-	}
-
-	public void setCheckpoint(Checkpoint checkpoint) {
-		this.checkpoint = checkpoint;
-	}
-<<<<<<< HEAD
 	
-	
-=======
 
->>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 	public final int getFaim() {
 		return this.faimProperty.getValue();
 	}
@@ -276,7 +264,7 @@ public class Joueur extends Personnage {
 		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
 		this.desequiper();
 	}
-<<<<<<< HEAD
+
 	
 	public void teleporterToCheckpoint() {
 		this.setX(this.getCheckpoint().getX());
@@ -301,8 +289,6 @@ public class Joueur extends Personnage {
 	
 	
 	
-	
-=======
 
 
 
@@ -316,6 +302,7 @@ public class Joueur extends Personnage {
 
 
 
->>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
+
+
 
 }

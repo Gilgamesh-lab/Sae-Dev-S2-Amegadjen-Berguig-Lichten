@@ -13,39 +13,63 @@ public class MonstreControleur {
 	private MonstreVue slimeVue;
 	private boolean saut;
 	private int tempsSaut;
+	private boolean avancer;
 
 	public MonstreControleur(Slime slime, MonstreVue monstreVue) {
 		this.slime=slime;
 		this.slimeVue=monstreVue;
 		saut = false;
 		tempsSaut = 0;
+		avancer = false;
 	}
 
 	
 
 	public void agir() throws ErreurObjetIntrouvable {
-		if(!slime.estPrèsDuJoueur(32)) {
-			if(slime.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
-				slimeVue.orrientationSpriteDroite();
-				slime.translationX(-1);
-				if(!slime.toucheX(true)) {
-					slime.sauter();
-				}
-			}
-			else {
-				slimeVue.orrientationSpriteGauche();
-				slime.translationX(1);
-				if(!slime.toucheX(false)) {
-					slime.sauter();
-				}
-			}
-		}
-		
-		else{
-			//this.slime.getEnvironnement().getJoueur().meurt();
+		if(!slime.getEnvironnement().getJoueur().estMort()) {
 			if(!slime.toucheY(false)) {
-				this.saut = true;
-				System.out.println("saut" + this.tempsSaut);
+				if(!slime.estPrèsDuJoueur(32, 64)) {
+					if(slime.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
+						slimeVue.orrientationSpriteDroite();
+						slime.translationX(-1);
+						if(!slime.toucheX(true) && avancer) {
+							int i = 0;
+							System.out.println("sauter");
+							while(!slime.toucheX(true) && i < slime.getHauteurSaut()){
+								slime.translationY(slime.getHauteurSaut()/8);
+								i += 8;
+							}
+							
+							avancer = false;
+							
+						}
+						if(slime.toucheX(true) && !avancer) {
+							avancer = true;
+						}
+					}
+					
+					
+					else {
+						slimeVue.orrientationSpriteGauche();
+						slime.translationX(1);
+						if(!slime.toucheX(false)) {
+							System.out.println("sauter");
+							slime.sauter();
+						}
+					}
+				}
+				
+				else {
+					saut = true;
+					this.slime.getEnvironnement().getJoueur().decrementerPv(2);
+//					for (int k = 0 ; k < 32 ; k++) {
+//						slime.getEnvironnement().getJoueur().translationX(-2);
+//					}
+		//			if(!slime.toucheY(false)) {
+		//				this.saut = true;
+		//				System.out.println("saut" + this.tempsSaut);
+		//			}
+				}
 			}
 		}
 			

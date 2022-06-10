@@ -36,6 +36,7 @@ public abstract class Personnage {
 	private int[] taille;
 	private Checkpoint checkpoint;
 	private boolean saut;
+	private int longueurSaut;
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
 		this.pvProperty = new SimpleIntegerProperty(pv);
@@ -46,32 +47,19 @@ public abstract class Personnage {
 		this.inventaire = inventaire;
 		this.hauteurSaut = hauteurSaut;
 		this.taille = taille;
-<<<<<<< HEAD
+
 		this.longueurSaut = longueurSaut;
-		this.environnement.ajouterPersonnage(this);
-=======
+		this.environnement.ajouter(this);
+
 		this.hauteurMaxSaut = this.hauteurSaut;
 		this.environnement.ajouter(this);
->>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
+
 		this.checkpoint = checkpoint;
 		this.id=compteur;
 		compteur++;
 	}
 
-	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement){
-		this.pvProperty = new SimpleIntegerProperty(pv);
-		this.xProperty = new SimpleIntegerProperty(x);
-		this.yProperty = new SimpleIntegerProperty(y);
-		this.vitesseDeplacement = vitesseDeplacement;
-		this.environnement = environnement;
-		this.inventaire = new Inventaire(20);
-		this.hauteurSaut = 64;
-		this.longueurSaut = 5;
-		//this.taille[0] = 1;
-		//this.taille[1] = 1;
-		this.environnement.ajouterPersonnage(this);
-		this.checkpoint = new Checkpoint(x,y,environnement);
-	}
+	
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
@@ -80,11 +68,17 @@ public abstract class Personnage {
 		this.vitesseDeplacement = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
-		this.hauteurSaut = 0;
+		this.hauteurSaut = 64;
 		this.hauteurMaxSaut = this.hauteurSaut;
 		this.taille = taille;
-		this.environnement.ajouterPersonnage(this);
+		this.environnement.ajouter(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
+	}
+	
+	
+
+	public void setCheckpoint(Checkpoint checkpoint) {
+		this.checkpoint = checkpoint;
 	}
 	
 	
@@ -94,12 +88,15 @@ public abstract class Personnage {
 	 * @param degat nombre de pv perdue
 	 */
 	public void degat() {
-		this.setPv(this.getPv() + 1);
+		this.setPv(this.getPv() - 1);
 	}
 	
 	public void decrementerPv(int degat) {
 		for (int i = 0; this.getPv() > 0 && i < degat ; i++) {
 			this.degat();
+		}
+		if(this.estMort()) {
+			this.meurt();
 		}
 	}
 	
@@ -146,40 +143,80 @@ public abstract class Personnage {
 	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
 	 * 			false si il ne peut pas passer (si il touche un autre bloc)
 	 */
+//	public boolean toucheY(boolean auDessus) {
+//		boolean gaucheTuile=true;
+//		boolean droiteSprite;
+//		Ressource blocAEmplacement;
+//		int i=0;
+//		if(auDessus) {
+//			while (i<taille[0] && gaucheTuile) {
+//				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*i+2, this.getY()-32);
+//				gaucheTuile = ( blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+//				i++;
+//			}
+//			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*taille[0]-2, this.getY()-32);
+//			droiteSprite = (blocAEmplacement ==null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+//		}
+//		else {
+//
+//			while (i<taille[0] && gaucheTuile) {
+//				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*i+2, this.getY()+64);
+//				gaucheTuile = ( blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+//				i++;
+//			}
+//			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*taille[0]-2, this.getY()+64);
+//			droiteSprite = (blocAEmplacement ==null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+//
+//		}
+//		return (gaucheTuile && droiteSprite);
+//	}
+	
+	//
+	
+//	public boolean toucheY(boolean auDessus) {
+//		boolean gauche; // this.getHauteur() * 32 pour 64
+//		boolean droite; // this.getLargeur() * 32 pour 32
+//		if(auDessus) {
+//			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Bois;
+//			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois;
+//		}
+//		else {
+//			gauche = this.environnement.getCarte().emplacement(this.getX()+1, this.getHauteur() * 32)==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+this.getHauteur() * 32) instanceof Bois;
+//			droite = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+ this.getHauteur() * 32)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+this.getHauteur() * 32) instanceof Bois;
+//		}
+//		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
+//	}
+	
 	public boolean toucheY(boolean auDessus) {
-		boolean gaucheTuile=true;
-		boolean droiteSprite;
-		Ressource blocAEmplacement;
-		int i=0;
+		boolean gauche;
+		boolean droite;
 		if(auDessus) {
-			while (i<taille[0] && gaucheTuile) {
-				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*i+2, this.getY()-32);
-				gaucheTuile = ( blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
-				i++;
-			}
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*taille[0]-2, this.getY()-32);
-			droiteSprite = (blocAEmplacement ==null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32)==null 
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()-32) instanceof Plante);
+			
+			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32)==null
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Bois
+			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()-32) instanceof Plante);
 		}
 		else {
-<<<<<<< HEAD
-			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64)==null
+			gauche = (this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+ this.getHauteur() * 32)==null
 			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Bois
-			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Plante); // faire varier  64 , 32 en fonction taille
+			|| this.environnement.getCarte().emplacement(this.getX()+1, this.getY()+64) instanceof Plante);
 			
-			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64)==null
+			droite = (this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+ this.getHauteur() * 32)==null
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Bois
 			|| this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+64) instanceof Plante);
-=======
-			while (i<taille[0] && gaucheTuile) {
-				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*i+2, this.getY()+64);
-				gaucheTuile = ( blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
-				i++;
-			}
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+32*taille[0]-2, this.getY()+64);
-			droiteSprite = (blocAEmplacement ==null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
->>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 		}
-		return (gaucheTuile && droiteSprite);
+		return (gauche && droite) && !((gauche || droite) && !(gauche && droite));
+	}
+	
+	public int getHauteur() {
+		return this.taille[1];
+	}
+	
+	public int getLargeur() {
+		return this.taille[0];
 	}
 
 	/**
@@ -191,11 +228,17 @@ public abstract class Personnage {
 		saut = true;
 		this.monter(this.hauteurSaut);
 		hauteurSaut++;
-		if (hauteurSaut==12) {
+		System.out.println("je saute");
+		if (hauteurSaut>=32) { //12
 			this.saut = false;
 			hauteurSaut = hauteurMaxSaut;
 		}
 	}
+//	
+	
+//	public void sauter() {
+//		this.monter(this.hauteurSaut);
+//	}
 	
 	public void descendre() {
 		this.monter(-this.hauteurSaut);
@@ -205,14 +248,7 @@ public abstract class Personnage {
 	 * Permet de faire un saut en fonction du paramètre d'entrée direction
 	 * @param direction : true pour droite, false pour gauche
 	 */
-<<<<<<< HEAD
-	public void sauter(boolean direction) throws IOException { // a finir
-		this.monter(this.hauteurSaut);
-		int i = 0;
-		while(i < this.hauteurSaut) {
-			this.translationY(1); // TODO sleep
-			i++;
-=======
+
 	public void sauter(boolean direction) { // a finir
 		this.monter(hauteurSaut);
 		int i = 0;
@@ -227,7 +263,7 @@ public abstract class Personnage {
 				this.translationX(1);
 				i++;
 			}
->>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
+
 		}
 	
 
@@ -249,12 +285,7 @@ public abstract class Personnage {
 		if(toucheX(false))
 			this.translationX(vitesseDeplacement);
 	}
-<<<<<<< HEAD
 
-	public boolean toucheX(boolean aDroite) {
-		boolean teteCogne;
-		boolean corpCogne;
-=======
 	
 	/**
 	 * Permet de savoir si on ne touche rien au niveau des x à droite du perso si aDroite est true est à gauche sinon 
@@ -262,32 +293,47 @@ public abstract class Personnage {
 	 * @param aDroite si il est vrai on vérifie les collision à droite du Sprite sinon à gauche
 	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
 	 * 			false si il ne peut pas passer (si il touche un autre bloc)
+	 * 
 	 */
-	private boolean toucheX(boolean aDroite) {
-		boolean hautTuileTouchePas = true;
-		boolean basTuileTouchePas;
-		Ressource blocAEmplacement;
-		int i = 0;
->>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
+//	public boolean toucheX(boolean aDroite) {
+//		boolean hautTuileTouchePas = true;
+//		boolean basTuileTouchePas;
+//		Ressource blocAEmplacement;
+//		int i = 0;
+//		if(aDroite) {
+//			while (i<taille[1] && hautTuileTouchePas) {
+//				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+33, this.getY()+32*i);
+//				hautTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
+//				i++;
+//			}
+//			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+33, this.getY()+32*taille[1]-1);
+//			basTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+//		}
+//		else {
+//			while (i<taille[1] && hautTuileTouchePas) {
+//				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()-1, this.getY()+32*i);
+//				hautTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
+//				i++;
+//			}
+//			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()-1, this.getY()+32*taille[1]-1);
+//			basTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+//		}
+//		return (hautTuileTouchePas && basTuileTouchePas);
+//	}
+	
+	
+	public boolean toucheX(boolean aDroite) {
+		boolean teteCogne;
+		boolean corpCogne;
 		if(aDroite) {
-			while (i<taille[1] && hautTuileTouchePas) {
-				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+33, this.getY()+32*i);
-				hautTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
-				i++;
-			}
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()+33, this.getY()+32*taille[1]-1);
-			basTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+			teteCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()) instanceof Bois;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+this.getHauteur() * 16)==null || this.environnement.getCarte().emplacement(this.getX()+31, this.getY()+32) instanceof Bois;
 		}
 		else {
-			while (i<taille[1] && hautTuileTouchePas) {
-				blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()-1, this.getY()+32*i);
-				hautTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois|| blocAEmplacement instanceof Plante);
-				i++;
-			}
-			blocAEmplacement = this.environnement.getCarte().emplacement(this.getX()-1, this.getY()+32*taille[1]-1);
-			basTuileTouchePas = (blocAEmplacement == null || blocAEmplacement instanceof Bois || blocAEmplacement instanceof Plante);
+			teteCogne = this.environnement.getCarte().emplacement(this.getX()+1, this.getY())==null || this.environnement.getCarte().emplacement(this.getX()+1, this.getY()) instanceof Bois;
+			corpCogne = this.environnement.getCarte().emplacement(this.getX(), this.getY()+this.getHauteur() * 16)==null || this.environnement.getCarte().emplacement(this.getX(), this.getY()+32) instanceof Bois;
 		}
-		return (hautTuileTouchePas && basTuileTouchePas);
+		return (teteCogne && corpCogne) && !((teteCogne || corpCogne) && !(teteCogne && corpCogne));// négation d'un ou exclusif
 	}
 
 
@@ -305,18 +351,18 @@ public abstract class Personnage {
 		return this.vitesseDeplacement*(vitesseBonus/100)+this.vitesseDeplacement;
 	}
 
-	public void perdreRessources() throws ErreurInventairePlein { // Lorsque mort perd ses ressources
+	public void perdreRessources() { // Lorsque mort perd ses ressources
 		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
 			if(this.inventaire.getItem(i) instanceof Ressource) {
-				this.getEnvironnement().getCarte().getItems().transferer(this.inventaire.getItem(i), this.inventaire);
+				this.inventaire.supprimer(i);
+				// this.getEnvironnement().getCarte().getItems().transferer(this.inventaire.getItem(i), this.inventaire);
 			}
 		}
 	}
 
 	public void gravite() {
-		this.descendre(2);
-		if (this.saut)
-			sauter();			
+		this.descendre(5);
+					
 	}
 	
 	public final int getPv() {
@@ -401,7 +447,7 @@ public abstract class Personnage {
 		return taille;
 	}
 	
-	public void meurt() throws ErreurInventairePlein {
+	public void meurt(){
 		this.setX(-320);
 		this.setY(-320);
 		if(!this.estMort()) {
@@ -437,20 +483,10 @@ public abstract class Personnage {
 	 * @return Retourne true si le joueur est près du personnage , false sinon
 	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans la carte
 	 */
-	public boolean estPrèsDuJoueur(int val) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+	public boolean estPrèsDuJoueur(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
 		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
-		return this.getX() - val <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + val >= joueur.getX()  && this.getX() <= joueur.getX();
-	}
-<<<<<<< HEAD
-	
-	
-	public boolean estSurLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-		return this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY()  == this.getY() ||
-				this.getEnvironnement().getJoueur().getX() - 16 == this.getX() && this.getEnvironnement().getJoueur().getY()  == this.getY() ||
-				this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY() + 16 == this.getY() ||
-				this.getEnvironnement().getJoueur().getX() + 16 == this.getX() && this.getEnvironnement().getJoueur().getY() -16  == this.getY() ||
-				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY() + 16 == this.getY() ||
-				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY() -16  == this.getY();
+		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX() && (this.getY() == joueur.getY() || (this.getY() + valY  <= joueur.getY() && this.getY() >= joueur.getY()) || this.getY() - valY <= joueur.getY()&& this.getY() >= joueur.getY())
+				|| this.getX() + valX >= joueur.getX()  && this.getX() < joueur.getX() && (this.getY() == joueur.getY() || (this.getY() - valY  >= joueur.getY()  && this.getY() <= joueur.getY()) || this.getY() + valY >= joueur.getY() && this.getY() <= joueur.getY());
 	}
 	
 	
@@ -471,6 +507,30 @@ public abstract class Personnage {
 	
 	
 	
+	public boolean estPrèsDuJoueurBased(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
+		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX()
+				|| this.getX() + valX >= joueur.getX()  && this.getX() < joueur.getX() ;
+	}
+	
+	public boolean estPrèsDuJoueur2(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
+		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX() && this.getY() - valY <= joueur.getY()  && this.getY() >= joueur.getY()
+				|| this.getX() + valX <= joueur.getX()  && this.getX() >= joueur.getX() && this.getY() + valY <= joueur.getY()  && this.getY() >= joueur.getY();
+	}
+
+	
+	
+	public boolean estSurLeJoueur(int val) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		return this.getEnvironnement().getJoueur().getX() + val == this.getX() && this.getEnvironnement().getJoueur().getY()  == this.getY() ||
+			 this.getEnvironnement().getJoueur().getX() - val == this.getX() && this.getEnvironnement().getJoueur().getY()  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() + val == this.getX() && this.getEnvironnement().getJoueur().getY() + val == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() + val == this.getX() && this.getEnvironnement().getJoueur().getY() - val  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY() + val == this.getY() ||
+				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY() - val  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX() - val  == this.getX() && this.getEnvironnement().getJoueur().getY() - val  == this.getY() ||
+				this.getEnvironnement().getJoueur().getX()  == this.getX() && this.getEnvironnement().getJoueur().getY()   == this.getY();
+	}
 	
 	
 	
@@ -486,10 +546,28 @@ public abstract class Personnage {
 	
 	
 	
-=======
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
 	public int getId() {
 		return id;
 	}
->>>>>>> 83536be99779d83947a3a134a31b71bb4247f1f1
 }

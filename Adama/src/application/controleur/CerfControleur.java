@@ -25,14 +25,17 @@ public class CerfControleur {
 	
 
 	public void agir() throws ErreurObjetIntrouvable {
-		if(cerf.estPrèsDuJoueur(Carte.TAILLE_BLOCK * 5)) {
+		if(cerf.estPrèsDuJoueur(Carte.TAILLE_BLOCK * 5, 32)) {
+			System.out.println("cerf : " + cerf.ouSeTrouveLeJoueur());
 			if(cerf.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
 				cerfVue.orrientationSpriteGauche();
 				cerf.gauche();
-				if(!cerf.toucheX(false)) {
+				if(cerf.toucheX(false)) {
 					cerf.sauter();
 				}
 			}
+			
+			
 			else {
 				cerfVue.orrientationSpriteDroite();
 				cerf.droite();
@@ -40,8 +43,27 @@ public class CerfControleur {
 					cerf.sauter();
 				}
 			}
+			
+			
 		}
 	}
+
+
+	
+	/*if(cerf.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
+				cerfVue.orrientationSpriteGauche();
+				cerf.gauche();
+				if(!cerf.toucheX(true)) {
+					cerf.sauter();
+				}
+			}
+			else {
+				cerfVue.orrientationSpriteDroite();
+				cerf.droite();
+				if(!cerf.toucheX(false)) {
+					cerf.sauter();
+				}
+			 } */
 
 	public boolean isSaut() {
 		return saut;
