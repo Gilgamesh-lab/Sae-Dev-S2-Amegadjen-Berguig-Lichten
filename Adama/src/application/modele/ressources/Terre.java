@@ -1,5 +1,8 @@
 package application.modele.ressources;
 
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.personnages.Joueur;
+
 public class Terre extends Ressource {
 
 	
@@ -17,7 +20,7 @@ public class Terre extends Ressource {
 	}
 
 	@Override
-	public void utiliser(int val) {
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein {
 		this.setIndice(val);
 	}
 }

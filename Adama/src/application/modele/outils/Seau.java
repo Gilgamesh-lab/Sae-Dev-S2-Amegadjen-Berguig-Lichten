@@ -1,6 +1,8 @@
 package application.modele.outils;
 
 import application.modele.Environnement;
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.personnages.Joueur;
 import application.modele.ressources.Eau;
 
 public class Seau extends Outil {
@@ -13,12 +15,6 @@ public class Seau extends Outil {
 		super(env, TEMPS_REMPLISSAGE);
 		this.estRempli = false;
 		eau = null;
-	}
-
-	@Override
-	public void utiliser(int val) {
-		// TODO Auto-generated method stub
-
 	}
 	
 	public void remplir() {
@@ -41,6 +37,12 @@ public class Seau extends Outil {
 
 	public Eau getEau() {
 		return eau;
+	}
+
+	@Override
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein {
+		// TODO Auto-generated method stub utiliser seau
+		
 	}
 	
 	

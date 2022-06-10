@@ -2,15 +2,20 @@ package application.modele.armes;
 
 import java.util.ArrayList;
 
+import application.modele.Environnement;
+import application.modele.Inventaire;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
+import application.modele.ressources.Ressource;
+import application.modele.personnages.Joueur;
+import application.modele.personnages.Personnage;
 
 public class Arc extends Arme {
 	private Fleche fleche;
 	private ArrayList<Fleche> carquois;
 	
 	
-	public Arc() {
+	public Arc(Inventaire inventaire) {
 		super(1, 1, 2);
 		this.carquois = new ArrayList<Fleche>();
 	}
@@ -26,39 +31,34 @@ public class Arc extends Arme {
 		
 	}
 	
-//	public void tirer(Environnement environnement, boolean direction) throws ErreurInventairePlein {
-//		int distance = 0;
-//		int lieu = 0;
-//		int largeur = environnement.getCarte().getLargeur();
-//		environnement.getCarte().getPoubelle().ajouter(this.fleche);
-//		while(this.getPorter() >= distance) {
-//			fleche.tirer(direction);
-//			lieu = fleche.getX();
-//			distance++;
-//			//TODO méthode pour récupérer 
-//			if (environnement. instanceof Personnage)
-//				environnement.attaquerPersonnages(lieu, this.fleche.getDegat());
-//			if (environnement.getCarte().emplacement(lieu-largeur) instanceof Personnage)
-//				environnement.attaquerPersonnages(lieu-largeur, this.fleche.getDegat());
-//			if (environnement.getCarte().emplacement(lieu+largeur) instanceof Personnage)
-//				environnement.attaquerPersonnages(lieu+largeur, this.fleche.getDegat());
-//		}
-//		
-//		this.fleche.detruire();
-//		this.fleche = null;
-//	}
-//	
-//	
-
-	
-	public void utiliser() {
+	public void tirer(Environnement environnement, boolean direction) throws ErreurInventairePlein {
+		int distance = 0;
+		int lieu = 0;
+		int largeur = environnement.getCarte().getLargeur();
+		//environnement.getCarte().getPoubelle().ajouter(this.fleche);
+		while(this.getPorter() >= distance) {
+			fleche.tirer(direction);
+			lieu = fleche.getX();
+			distance += this.fleche.getVitesse();
+			if (environnement.emplacement(lieu) instanceof Personnage)
+				environnement.attaquerPersonnages(lieu, this.fleche.getDegat());
+			if (environnement.emplacement(lieu-largeur) instanceof Personnage)
+				environnement.attaquerPersonnages(lieu-largeur, this.fleche.getDegat());
+			if (environnement.emplacement(lieu+largeur) instanceof Personnage)
+				environnement.attaquerPersonnages(lieu+largeur, this.fleche.getDegat());
+		}
 		
+		this.fleche.detruire();
+		this.fleche = null;
+	}
+	
+	
+	public String toString() {
+		return "Arc";
 	}
 
-
 	@Override
-	public void utiliser(int val) {
-		// TODO Auto-generated method stub
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein {
 		
 	}
 	

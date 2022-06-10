@@ -1,20 +1,19 @@
 package application.modele.personnages;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import application.modele.exception.ErreurPasDobjetCraftable;
 import application.modele.Carte;
 import application.modele.Checkpoint;
-import application.modele.Environnement;
 import application.modele.Inventaire;
-import application.modele.Item;
-import application.modele.armes.Arc;
-import application.modele.armes.Arme;
-import application.modele.armes.Epee;
 import application.modele.armes.Poing;
 import application.modele.effet.Effet;
 import application.modele.effet.Ralentir;
+import application.modele.Item;
+import application.modele.Environnement;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Seau;
@@ -25,12 +24,20 @@ import application.modele.potions.PotionVie;
 import application.modele.potions.PotionVitesse;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
+import application.modele.exception.ErreurObjetIntrouvable;
+import application.modele.exception.ErreurObjetInvalide;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import application.modele.ressources.Ressource;
+import application.modele.ressources.Terre;
+import application.modele.armes.Arme;
+import application.modele.armes.Epee;
+import application.modele.armes.Arc;
+import application.modele.armes.Fleche;
 
 public class Joueur extends Personnage {
 
@@ -51,17 +58,16 @@ public class Joueur extends Personnage {
 
 
 	public Joueur(int pv,int x, int y,
-			Environnement carte, int faim, Inventaire inventaire,
-			Item objetEquiper, Inventaire inventaireRaccourci, int saut) {
-		super(pv, x, y,5, carte,inventaire, saut, TAILLE);
+			Environnement environnement, int faim, Inventaire inventaire,
+			Item objetEquiper, Inventaire inventaireRaccourci, int hauteurSaut, int longueurSaut, Checkpoint checkpoint) { 
+		super(pv, x, y,5, environnement,inventaire, hauteurSaut, TAILLE, longueurSaut, checkpoint);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
 		this.inventaireRaccourci = inventaireRaccourci;
 		this.estAccroupiProperty = new SimpleBooleanProperty(false);
 	}
 
-	public Joueur(int x, int y,
-			Environnement carte) {
+	public Joueur(int x, int y, Environnement carte) {
 		super(Joueur.getMaxPv(), x, y,5, carte, TAILLE);
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
 		this.objetEquiper = this.POING;
@@ -69,7 +75,7 @@ public class Joueur extends Personnage {
 		this.estAccroupiProperty = new SimpleBooleanProperty(false);
 	}
 
-	public Checkpoint getCheckpoint() {
+	public Checkpoint getCheckpoint() { 
 		return this.checkpoint;
 	}
 
@@ -95,6 +101,10 @@ public class Joueur extends Personnage {
 
 	public final void setEstAccroupi(Boolean val) {
 		this.estAccroupiProperty.setValue(val);
+	}
+
+	public final void setEstAccroupi() {
+		this.estAccroupiProperty.setValue(!this.getEstAccroupi());
 	}
 
 	public final BooleanProperty estAccroupiProperty() {
@@ -137,14 +147,32 @@ public class Joueur extends Personnage {
 	}
 
 	public void marcher() {
-		super.setVitesseDeplacement(VITESSE_MARCHE);
+		this.setVitesseDeplacement(VITESSE_MARCHE);
 	}
+
 
 	public void courrir() {
-		super.setVitesseDeplacement(VITESSE_COURRIR);
+		this.setVitesseDeplacement(VITESSE_COURRIR);
 	}
 
-	public void utiliserMain(int emplacement) {
+	public void accroupie() { 
+		super.setVitesseDeplacement(VITESSE_ACCROUPIE);
+		this.setEstAccroupi(true);
+	}
+
+	public void setModeDeplacement() { // TODO trouver un meilleure nom 
+		if(this.getVitesseDeplacement() != VITESSE_COURRIR) {
+			this.setVitesseDeplacement(VITESSE_COURRIR);
+		}
+		else {
+			this.setVitesseDeplacement(VITESSE_MARCHE);
+			if(this.getEstAccroupi()) {
+				this.setEstAccroupi();
+			}
+		}
+	}
+
+	public void utiliserMain(int emplacement) throws ErreurInventairePlein {
 		if (objetEquiper instanceof Potion) {
 			String potion = objetEquiper.getClass().getSimpleName();
 			switch (potion) {
@@ -160,39 +188,36 @@ public class Joueur extends Personnage {
 				break;
 			}
 		}
-		this.objetEquiper.utiliser(emplacement);
+		this.objetEquiper.utiliser(emplacement, this);
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
-			carte.getBlockMap().remove(emplacement);
-			carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
-//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
+			if(carte.getBlockMap().get(emplacement)== null) {
+				carte.getBlockMap().remove(emplacement);
+				carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
+				//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
+			}
 		}
-		 
 	}
 	
-	
-	public void accroupie() {
-		super.setVitesseDeplacement(VITESSE_ACCROUPIE);
-	}
-
 	public boolean estUneArmeOuUnOutil(Item item) {
 		return item instanceof Arme || item instanceof Ressource;
 	}
 
-	public void attaquer() {
-		if (!((Arme)this.objetEquiper).estEnRecharge()) {
-			// attaque à coder
-			((Arme)this.objetEquiper).enRecharge();
-
+	public void attaquer() throws ErreurObjetInvalide {
+		if(this.objetEquiper instanceof Arme) {
+			if (!((Arme)this.objetEquiper).estEnRecharge()) {
+				((Arme)this.objetEquiper).attaquer();
+				((Arme)this.objetEquiper).enRecharge();
+			}
+		}
+		else {
+			throw new ErreurObjetInvalide(this.objetEquiper);
 		}
 	}
 
 
 
-	public Item craft (ArrayList<Item> items) { // à tester/ à finir
-		//		String pierre = new Pierre().getClass().getSimpleName();
-		//		String bois = new Bois().getClass().getSimpleName();
-		//		String plante = new Plante().getClass().getSimpleName();
+	public Item craft (ArrayList<Item> items) throws ErreurPasDobjetCraftable, ErreurObjetInvalide { 
 		String pierre = "Pierre";
 		String bois = "Bois";
 		String planteDeNike = "PlanteDeNike";
@@ -207,47 +232,46 @@ public class Joueur extends Personnage {
 			PossedeSeau = (application.modele.outils.Seau) super.getInventaire().getItems().get(indiceSaut);
 			if(PossedeSeau.EstRempli())
 				seau = "Seau";
-
+		Item item;
 		Map<String, Integer> recette = new HashMap<String, Integer>();
 
-		recette.put(pierre, 0);
+		recette.put(pierre, 0); 
 		recette.put(bois, 0);
 		recette.put(planteDeNike, 0);
 		recette.put(planteMedicinale, 0);
 		recette.put(planteHercule, 0);
 		recette.put(antiPoison, 0);
-
-		for(int k = 0 ; k < items.size() ; k ++) {
-			for (String ressource : recette.keySet()) {
-				if(items.get(k).getClass().getName() == ressource) {
-					recette.put(ressource, recette.get(ressource) + 1);
-				}
+		int k = 0;
+		try {
+			for(k = 0 ; k < items.size() ; k ++) { 
+				recette.put(items.get(k).getClass().getSimpleName(), recette.get(items.get(k).getClass().getSimpleName()) + 1);
 			}
-		}
-
-		if(recette.get(bois) == 2 && recette.get(pierre) == 1) {
-			return new Epee();
-		}
-
-		else if(recette.get(bois) == 3 && recette.get(fils) == 1) {
-			return new Arc();
+		}catch (java.lang.NullPointerException e) { 
+			throw new ErreurObjetInvalide(items.get(k));
 		}
 		
+		if(recette.get(bois) == 3 && recette.get(fils) == 1)
+			item = new Arc(this.getInventaire());
+		else if(recette.get(bois) == 2 && recette.get(pierre) == 1) // 2 bois et 1 pierre crée une épée
+			item = new Epee();
+		else if(recette.get(bois) == 1 && recette.get(pierre) == 1) // 1 de bois et 1 pierre crée une flèche
+			item = new Fleche();
 		else if(recette.get(bois) == 5)
-			return new Seau(getEnvironnement());
-		
+			item = new Seau(getEnvironnement());
 		else if (seau != null && recette.get(planteDeNike) == 2)
-			return new PotionVitesse();
+			item = new PotionVitesse();
 		else if (seau != null && recette.get(planteHercule) == 2)
-			return new PotionDegat();
+			item = new PotionDegat();
 		
 		else if (seau != null && recette.get(planteMedicinale) == 3)
-			return new PotionVie();
+			item = new PotionVie();
 		else if (seau != null && recette.get(planteMedicinale) == 2 && recette.get(antiPoison) == 1)
-			return new AntiPoison();
+			item = new AntiPoison();
 		else {
-			return new Poing();
+			throw new ErreurPasDobjetCraftable();
 		}
+
+		return item;
 	}
 
 	public void afficherMap(Map<String, Integer> maps) {
@@ -256,10 +280,10 @@ public class Joueur extends Personnage {
 		}
 	}
 
-	public void jeter(Item item) throws ErreurInventairePlein, ErreurArmeEtOutilPasJetable {
+	public void jeter(Item item) throws ErreurArmeEtOutilPasJetable {
 		if(!this.estUneArmeOuUnOutil(item)) {
-			this.getInventaire().supprimer(item);
-			this.getEnvironnement().getCarte().getItems().add(item);
+
+			this.getInventaire().supprimer(item);;
 		}
 		else {
 			throw new ErreurArmeEtOutilPasJetable();
@@ -277,17 +301,27 @@ public class Joueur extends Personnage {
 		}
 	}
 
-	public void poser(boolean direction, Ressource ressource ) {
+	public void poser(boolean direction) throws ErreurInventairePlein {
 		if(direction) {
-			ressource.setX(this.getX() + 32);
-			ressource.setY(this.getY());
+			((Ressource) this.objetEquiper).setX(this.getX() + 32);
+			((Ressource) this.objetEquiper).setY(this.getY()); 
 		}
 		else {
-			ressource.setX(this.getX() - 32);
-			ressource.setY(this.getY());
+			((Ressource) this.objetEquiper).setX(this.getX() - 32);
+			((Ressource) this.objetEquiper).setY(this.getY());
 		}
-		this.getInventaire().supprimer(ressource);
-		this.getEnvironnement().getCarte().getBlockMap().add(ressource);
+		this.getInventaire().supprimer(this.objetEquiper);
+//		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
+		this.desequiper();
+	}
+	
+	public void teleporterToCheckpoint() {
+		this.setX(this.getCheckpoint().getX());
+		this.setY(this.getCheckpoint().getY());
+	}
+	
+	public  void agir() throws ErreurObjetIntrouvable{
+		
 	}
 
 	public static int getMaxPv() {

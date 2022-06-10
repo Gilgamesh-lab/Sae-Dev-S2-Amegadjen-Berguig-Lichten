@@ -1,5 +1,8 @@
 package application.modele.ressources;
 
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.personnages.Joueur;
+
 public class Eau extends Ressource {
 
 	public Eau() {
@@ -7,8 +10,9 @@ public class Eau extends Ressource {
 	}
 
 	@Override
-	public void utiliser(int val) {
-
-
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein {
+		// TODO Auto-generated method stub
+		
 	}
+
 }

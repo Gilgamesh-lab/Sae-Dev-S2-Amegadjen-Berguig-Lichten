@@ -1,5 +1,6 @@
 package application.modele.potions;
 
+import application.modele.exception.ErreurInventairePlein;
 import application.modele.personnages.Joueur;
 
 public class PotionDegat implements Potion {
@@ -9,18 +10,10 @@ public class PotionDegat implements Potion {
 	public PotionDegat() {
 		
 	}
-
+	
 	@Override
-	public void utiliser(int val) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void utiliser() {
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

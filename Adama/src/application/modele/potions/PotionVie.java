@@ -1,5 +1,6 @@
 package application.modele.potions;
 
+import application.modele.exception.ErreurInventairePlein;
 import application.modele.personnages.Joueur;
 
 public class PotionVie implements Potion {
@@ -9,20 +10,14 @@ public class PotionVie implements Potion {
 	public PotionVie() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	@Override
-	public void utiliser() {
-		
-	}
 
-
-	@Override
-	public void utiliser(int val) {
-		
-		
-	}
-	
 	public static int getNombrePvRestaurer() {
 		return NOMBRE_PV_RESTAURER;
+	}
+
+	@Override
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein {
+		// TODO Auto-generated method stub
+		
 	}
 }

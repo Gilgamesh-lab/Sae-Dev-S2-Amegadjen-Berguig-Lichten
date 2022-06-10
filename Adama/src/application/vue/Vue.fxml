@@ -9,175 +9,357 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane onKeyPressed="#touchePresse" onMouseClicked="#sourisPresse" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controleur.Controleur">
+<BorderPane onKeyPressed="#touchePresse"
+	onMouseClicked="#sourisPresse" xmlns="http://javafx.com/javafx/18"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="application.controleur.Controleur">
 	<center>
-		<Pane fx:id="plateau">
+		<Pane fx:id="plateau" maxHeight="1024" maxWidth="1920"
+			minHeight="1024" minWidth="1920">
 			<children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label fx:id="nbPVResant" alignment="CENTER" textFill="RED">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" text="/9" textFill="RED">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-					<TilePane fx:id="carte" prefColumns="60" style="-fx-background-color: #028ED4;">
-					</TilePane>
+				<TilePane fx:id="carte" prefColumns="60"
+					style="-fx-background-color: #028ED4;">
+				</TilePane>
 				<HBox prefHeight="400.0" prefWidth="400.0" spacing="10.0">
 					<children>
-						<Button fx:id="boutonInventaire" alignment="TOP_RIGHT" maxHeight="64.0" maxWidth="64.0" onAction="#ouvrirInventaire" onKeyPressed="#touchePresse" prefHeight="64.0">
+						<Button fx:id="boutonInventaire" alignment="TOP_RIGHT"
+							maxHeight="64.0" maxWidth="64.0" onAction="#ouvrirInventaire"
+							onKeyPressed="#touchePresse" prefHeight="64.0">
 							<graphic>
-								<ImageView fitHeight="64.0" fitWidth="64.0" preserveRatio="true">
+								<ImageView fitHeight="64.0" fitWidth="64.0"
+									preserveRatio="true">
 									<image>
 										<Image url="@../../ressource/icone-Inventaire.jpg" />
 									</image>
 								</ImageView>
 							</graphic>
 						</Button>
-						<HBox fx:id="inventaire" alignment="TOP_RIGHT" disable="true" style="-fx-background-color: #FBF9C8;" visible="false">
+						<TilePane fx:id="inventaire" hgap="8.0" prefColumns="4"
+							prefTileHeight="64.0" prefTileWidth="64.0"
+							style="-fx-background-color: #808080;" vgap="8.0" visible="false">
 							<children>
-								<VBox style="-fx-background-color: #0000ff;">
-									<HBox.margin>
-										<Insets bottom="20.0" left="10.0" right="2.0" top="20.0" />
-									</HBox.margin>
-                           <children>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                           </children>
-								</VBox>
-                        <VBox style="-fx-background-color: #0000ff;">
-                           <children>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                           </children>
-                           <HBox.margin>
-                              <Insets bottom="20.0" left="2.0" right="2.0" top="20.0" />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox style="-fx-background-color: #0000ff;">
-                           <children>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                           </children>
-                           <HBox.margin>
-                              <Insets bottom="20.0" left="2.0" right="2.0" top="20.0" />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox style="-fx-background-color: #0000ff;">
-                           <children>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                           </children>
-                           <HBox.margin>
-                              <Insets bottom="20.0" left="2.0" right="10.0" top="20.0" />
-                           </HBox.margin>
-                        </VBox>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
+								<Pane prefHeight="200.0" prefWidth="200.0"
+									style="-fx-background-color: #bbbbbb;">
+									<children>
+										<ImageView fitHeight="60" fitWidth="60"
+											onMouseClicked="#equiper" pickOnBounds="true"
+											preserveRatio="true" />
+										<Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper"
+											text="0" textAlignment="CENTER" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Label>
+									</children>
+								</Pane>
 							</children>
-							<opaqueInsets>
-								<Insets right="40.0" />
-							</opaqueInsets>
-						</HBox>
+							<HBox.margin>
+								<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+							</HBox.margin>
+						</TilePane>
+					</children>
+				</HBox>
+
+				<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+					<children>
+						<Label fx:id="nbPVResant" alignment="CENTER" textFill="RED">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<Label alignment="BOTTOM_CENTER" contentDisplay="CENTER"
+							text="/9" textFill="RED">
+							<font>
+								<Font name="System Bold" size="18.0" />
+							</font>
+						</Label>
+					</children>
+				</HBox>
+
+				<HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+					<children>
+						<Label fx:id="nbPVResant" alignment="CENTER" textFill="RED">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" text="/" textFill="RED">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+                  <Label fx:id="nbPVMax" textFill="RED">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
 					</children>
 				</HBox>
 			</children>

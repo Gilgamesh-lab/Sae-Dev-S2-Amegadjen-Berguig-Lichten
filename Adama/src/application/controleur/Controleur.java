@@ -6,12 +6,18 @@ import java.util.ResourceBundle;
 
 import application.modele.Carte;
 import application.modele.Environnement;
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.outils.Pelle;
+import application.modele.personnages.Cerf;
 import application.modele.personnages.Joueur;
+import application.modele.personnages.Personnage;
+import application.modele.personnages.Slime;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
+import application.vue.PNJVue;
 import application.vue.RessourceView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,14 +27,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.collections.ListChangeListener;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 
-public class Controleur implements Initializable{
+public class Controleur implements Initializable {
 
 	@FXML
 	private Pane plateau;
@@ -36,10 +41,10 @@ public class Controleur implements Initializable{
 	private TilePane carte;
 	@FXML
 	private Button boutonInventaire;
-    @FXML
-    private Label nbPVResant;
-    @FXML
-	private HBox inventaire;
+	@FXML
+	private Label nbPVResant;
+	@FXML
+	private TilePane inventaire;
 
 	private Timeline gameLoop;
 	private int temps;
@@ -47,27 +52,20 @@ public class Controleur implements Initializable{
 	private Joueur perso;
 	private JoueurVue persoVue;
 	private JoueurControleur persoControleur;
+
 	private Environnement env;
 	private EnvironnementVue envVue;
-	
 
+	private ListChangeListener<Ressource> listResssourceListener;
+	private ListChangeListener<Personnage> listPersonnageListener;
 
+	private PNJVue nouveauPnjVue;
+	private Cerf cerf;
+	private Slime monstre;
 
 	@FXML
 	void ouvrirInventaire(ActionEvent event) {
 		ouvrirInventaire();
-	}
-
-	private void ouvrirInventaire() {
-		System.out.println("Bonjour");
-		if(!inventaire.isVisible()) {
-			inventaire.setDisable(false);
-			inventaire.setVisible(true);
-		}
-		else {
-			inventaire.setDisable(true);
-			inventaire.setVisible(false);
-		}
 	}
 
 	@FXML
@@ -88,6 +86,11 @@ public class Controleur implements Initializable{
 	}
 
 	@FXML
+	void equiper(MouseEvent event) {
+
+	}
+
+	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
 		/*
@@ -101,22 +104,47 @@ public class Controleur implements Initializable{
 		case "e":
 			ouvrirInventaire();
 			break;
-
+		case "m":
+			try {
+				perso.meurt();
+			} catch (ErreurInventairePlein e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			persoVue.getSprite().setVisible(false);
+			break;
 		default:
 			persoControleur.touchePresse(touchePresse);
 		}
 	}
 
+	private void ouvrirInventaire() {
+		if(!inventaire.isVisible()) {
+			inventaire.setDisable(false);
+			inventaire.setVisible(true);
+		}
+		else {
+			inventaire.setDisable(true);
+			inventaire.setVisible(false);
+		}
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		///////////// Création de l'environement
 		try {
 			env =new Environnement();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		envVue = new EnvironnementVue(env, carte);
-		ListChangeListener<Ressource> listen = (cs -> {
-			System.out.println("changement");
+
+		
+///////////List Listener
+
+	//////////Bloc de la carte
+		listResssourceListener = (cs -> {
+			System.out.println("changement bloc");
 			while(cs.next()) {
 				if (cs.wasRemoved()) {
 					int indiceBloc;
@@ -143,22 +171,78 @@ public class Controleur implements Initializable{
 					}
 				}
 			}});
-		env.getCarte().getBlockMap().addListener(listen);
-		perso  = new Joueur(320, 0, env);
-		perso.setHauteurSaut(4);
-		nbPVResant.textProperty().bind(perso.pvProperty().asString());
-		persoVue = new JoueurVue();
-		persoControleur = new JoueurControleur(perso, persoVue);
-		plateau.getChildren().add(persoVue.getSprite());
-		envVue.creerEnvironnement();
-		inv = new InventaireControleur(inventaire);
-		perso.equiper(new Pelle(env));
+
+	//////////Personnages dans l'environnement
+		listPersonnageListener = (pc -> {
+			System.out.println("changement peronnage");
+			while(pc.next()) {
+				for (Personnage mort : pc.getRemoved()) {
+					this.plateau.getChildren().remove(mort);
+				}
+				for (Personnage nouveau : pc.getAddedSubList()) {
+					System.out.println(nouveau.getClass());
+					if (nouveau instanceof Joueur) {
+						persoVue = new JoueurVue();
+						this.plateau.getChildren().add(persoVue.getSprite());
+						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue, env);
+						persoVue.getSprite().xProperty().bind(nouveau.xProperty());
+						persoVue.getSprite().yProperty().bind(nouveau.yProperty());
+						persoVue.getSprite().setFitHeight(64);
+						persoVue.getSprite().setFitWidth(32);
+					}
+					else {
+						nouveauPnjVue = new PNJVue(nouveau.getClass().getSimpleName());
+						System.out.println(nouveau.getClass().getSimpleName());
+						this.plateau.getChildren().add(nouveauPnjVue.getSprite());
+						nouveauPnjVue.getSprite().xProperty().bind(nouveau.xProperty());
+						nouveauPnjVue.getSprite().xProperty().bind(nouveau.xProperty());
+						nouveauPnjVue.getSprite().setFitHeight(nouveau.getTaille()[0]);
+						nouveauPnjVue.getSprite().setFitHeight(nouveau.getTaille()[1]);
+					}
+				}
+			}});
+
+	//////////Ajout des listener aux deux liste de l'environement
+		env.getCarte().getBlockMap().addListener(listResssourceListener);
+		env.getPersonnages().addListener(listPersonnageListener);
+
+
+	///////////Création du Joueur et de son menu
+
+	////////Ajout du Joueur et bind au Sprite du Joueur
+		perso  = new Joueur(420, 0, env);
 		persoVue.getSprite().xProperty().bind(perso.xProperty());
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
+	////////Ajout du Joueur et bind au Sprite du Joueur
+		nbPVResant.textProperty().bind(perso.pvProperty().asString());
+		inv = new InventaireControleur(inventaire);
 		perso.getInventaire().getItems().addListener(inv);
-		persoVue.getSprite().setFitHeight(64);
-		persoVue.getSprite().setFitWidth(32);
 
+		/*
+		 * Test
+		 */
+		cerf = new Cerf(320,0,env);
+		//		cerfVue = new CerfVue();
+		//		plateau.getChildren().add(cerfVue.getSprite());
+		//		cerfControleur = new IACerf(cerf, cerfVue);
+		//		cerfVue.getSprite().xProperty().bind(cerf.xProperty());
+		//		cerfVue.getSprite().yProperty().bind(cerf.yProperty());
+		//		cerfVue.getSprite().setFitHeight(64);
+		//		cerfVue.getSprite().setFitWidth(32);
+		// Test
+		monstre = new Slime(120,0,1, env);
+		//		monstreVue = new MonstreVue();
+		//		plateau.getChildren().add(monstreVue.getSprite());
+		//		monstreControleur = new IAEnnemi(monstre, monstreVue);
+		//		monstreVue.getSprite().xProperty().bind(monstre.xProperty());
+		//		monstreVue.getSprite().yProperty().bind(monstre.yProperty());
+		//		monstreVue.getSprite().setFitHeight(32);
+		//		monstreVue.getSprite().setFitWidth(32);
+		/*
+		 * Test
+		 */
+
+		//////////// Gameloop
 		initAnimation();
 		gameLoop.play();
 	}
@@ -170,34 +254,50 @@ public class Controleur implements Initializable{
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
 				(ev -> {
 					if(temps==100)
-						System.out.println("ok");
-					
-					else if(temps==251)
-						System.out.println("Toto");
-					else if(temps>300)
-						perso.equiper(new Terre(0));
-					if(persoControleur.getTempsSaut()<30&&persoControleur.isSaut()) {
-//						perso.monter(4);
-						perso.sauter();
-						persoControleur.incremterTempsSaut();
+						System.out.println("ok");					
+					try {
+						this.cerf.agir();
+					} catch (ErreurObjetIntrouvable e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}	
-					else if(persoControleur.getTempsSaut()==30&&persoControleur.isSaut()) {
-						persoControleur.setSaut(false);
-						persoControleur.reinisialiseTempsSaut();
+					try {
+						if(!monstre.estMort()) {
+							monstre.agir();
+							//							if(monstre.getTempsSaut() < 8 && monstre.isSaut()) {
+							//									System.out.println(2);
+//																monstre.monter(4);
+//																monstre.translationX(-2);
+							//									monstre.incremterTempsSaut();
+							//							}
+							//							
+							//							if(monstre.getTempsSaut() >= 8){
+							//								for (int k = 0 ; k < 32 ; k++) {
+							//									perso.translationX(-2);
+							//								}
+							//								
+							//								monstre.reinisialiseTempsSaut();
+							//								monstre.setSaut(false);
+							//							}
+							//							
+							//							
+							//							if(monstre.getTempsSaut()== 32 && monstre.isSaut()) {
+							//								System.out.println("Ok");
+							//								monstre.setSaut(false);
+							//								monstre.reinisialiseTempsSaut();
+							//							}
+							//							
+							//							System.out.println(monstre.getTempsSaut());
+						}
+					} catch (ErreurObjetIntrouvable  e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					if(temps%2==0)
-						perso.gravite();
-					//					else if (temps>1500 && temps<1600) {
-					//						System.out.println("Changement d'outils");//teste de la pioche elle marche
-					//						perso.equiper(new Pioche(env));
-					//					}
-					//					else if(temps>1600 && temps<1700) {
-					//						System.out.println("Changement outils");
-					//						perso.equiper(new Hache(env));
-					//					}
+					perso.gravite();
 					temps++;
 				})
 				);
 		gameLoop.getKeyFrames().add(kf);
 	}
 }
+

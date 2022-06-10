@@ -1,5 +1,8 @@
 package application.modele;
 
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.personnages.Joueur;
+
 /**
  * Interface qui est au-dessus de Ressource, Potion, Outil, Arme 
  * @author jberguig
@@ -7,7 +10,7 @@ package application.modele;
  */
 public interface  Item {
 	
-	public void utiliser(int val);
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein;
 	
 	
 }

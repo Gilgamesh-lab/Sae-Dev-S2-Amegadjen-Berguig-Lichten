@@ -1,5 +1,8 @@
 package application.modele.armes;
 
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.personnages.Joueur;
+import application.modele.ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
 
 import javafx.beans.property.IntegerProperty;
@@ -52,13 +55,17 @@ public class Fleche extends Arme{
 	public void gauche(int val) {
 		this.droite(-val);
 	}
+	
+	public int getVitesse() {
+		return VITESSE;
+	}
 
 	public void droite() {
-		this.droite(this.VITESSE);
+		this.droite(VITESSE);
 	}
 
 	public void gauche() {
-		this.gauche(this.VITESSE);
+		this.gauche(VITESSE);
 	}
 
 	public void tirer(boolean direction) {
@@ -74,11 +81,15 @@ public class Fleche extends Arme{
 		this.setX(-32);
 		this.setY(-32);
 	}
+	
+	public String toString() {
+		return "Fleche";
+	}
 
 	@Override
-	public void utiliser(int val) {
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

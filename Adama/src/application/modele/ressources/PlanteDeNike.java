@@ -1,5 +1,8 @@
 package application.modele.ressources;
 
+import application.modele.exception.ErreurInventairePlein;
+import application.modele.personnages.Joueur;
+
 public class PlanteDeNike extends Plante {
 
 	
@@ -12,8 +15,9 @@ public class PlanteDeNike extends Plante {
 	}
 
 	@Override
-	public void utiliser(int val) {
-
+	public void utiliser(int val, Joueur joueur) throws ErreurInventairePlein {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

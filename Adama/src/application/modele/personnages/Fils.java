@@ -1,12 +1,12 @@
-package application.modele.armes;
+package application.modele.personnages;
 
 import application.modele.exception.ErreurInventairePlein;
-import application.modele.personnages.Joueur;
+import application.modele.ressources.Ressource;
 
-public class Poing extends Arme {
+public class Fils extends Ressource {
 
-	public Poing() {
-		super(1, 1, 2);
+	public Fils(int indice) {
+		super(false, 0, -1, -1, -1, indice);
 	}
 
 	@Override
@@ -14,6 +14,4 @@ public class Poing extends Arme {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }
