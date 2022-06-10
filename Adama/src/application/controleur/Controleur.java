@@ -25,10 +25,12 @@ import application.vue.RessourceView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.collections.ListChangeListener;
 import javafx.scene.input.MouseEvent;
@@ -48,10 +50,12 @@ public class Controleur implements Initializable {
 	private Label nbPVResant;
 	@FXML
 	private TilePane inventaire;
+//    @FXML
+//    private Label nbPVMax;
 
 	private Timeline gameLoop;
 	private int temps;
-	private InventaireControleur inv;
+	private InventaireControleur invControleur;
 	private Joueur perso;
 	private JoueurVue persoVue;
 	private JoueurControleur persoControleur;
@@ -78,7 +82,7 @@ public class Controleur implements Initializable {
 	@FXML
 	void sourisPresse(MouseEvent event) {
 		String click = event.getButton().name();
-		System.out.println(click);
+//		System.out.println(click);
 		int x = (int) event.getSceneX();
 		int y = (int) event.getSceneY();
 		Ressource cible = env.getCarte().emplacement(x, y);
@@ -94,16 +98,27 @@ public class Controleur implements Initializable {
 
 	@FXML
 	void equiper(MouseEvent event) {
+		System.out.println("Click dans l'inventaire");
+		System.out.println("X = " + event.getX());
+		System.out.println("Y = " +event.getY());
 
+		ImageView ev = (ImageView) event.getTarget();
+		int indiceDansInventaire = Integer.parseInt(ev.getId());
+		Item objetAEquiper = perso.getInventaire().getItem(indiceDansInventaire);
+
+		if(objetAEquiper.equals(perso.getObjetEquiper()))
+			perso.desequiper();
+		else
+			perso.equiper(objetAEquiper);
 	}
 
 	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
 		/*
-		 * TODO
-		 * Mettre un switch pour gérer les action qui nécessite un wait (ex: pause avec echap)
+		 * TODO Mettre un switch pour gérer les action qui nécessite un wait (ex: pause avec echap)
 		 * et en default persoControleur.touchePresse(touchePresse)
+		 *
 		 */
 
 		System.out.println(touchePresse);
@@ -185,7 +200,7 @@ public class Controleur implements Initializable {
 				}
 				for (Personnage nouveau : pc.getAddedSubList()) {
 					System.out.println(nouveau.getClass());
-					this.plateau.getChildren().add(new JoueurVue().getSprite());
+					this.plateau.getChildren().add(persoVue.getSprite());
 					if (nouveau instanceof Joueur) {
 						persoVue = new JoueurVue();
 						this.plateau.getChildren().add(persoVue.getSprite());
@@ -221,6 +236,7 @@ public class Controleur implements Initializable {
 
 		////////Ajout du Joueur et bind au Sprite du Joueur
 		nbPVResant.textProperty().bind(perso.pvProperty().asString());
+		nbPVMax.textProperty().bind(Joueur.maxPvProperty().asString());
 		inv = new InventaireControleur(inventaire);
 		perso.getInventaire().getItems().addListener(inv);
 
@@ -249,6 +265,19 @@ public class Controleur implements Initializable {
 		 */
 
 		//////////// Gameloop
+//		perso.equiper(new Pelle(env));
+		invControleur = new InventaireControleur(inventaire);
+		perso.getInventaire().getItems().addListener(invControleur);
+		try {
+			perso.getInventaire().ajouter(new Hache(env));
+			perso.getInventaire().ajouter(new Pelle(env));
+			perso.getInventaire().ajouter(new Pioche(env));
+		} catch (ErreurInventairePlein e) {
+			System.out.println("Plein");
+		}
+		envVue.creerEnvironnement();
+
+
 		initAnimation();
 		gameLoop.play();
 	}
@@ -260,13 +289,13 @@ public class Controleur implements Initializable {
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
 				(ev -> {
 					if(temps==100)
-						System.out.println("ok");					
+						System.out.println("ok");
 					try {
 						this.cerf.agir();
 					} catch (ErreurObjetIntrouvable e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					}	
+					}
 					try {
 						if(!monstre.estMort()) {
 							monstre.agir();
@@ -276,23 +305,23 @@ public class Controleur implements Initializable {
 							//									monstre.translationX(-2);
 							//									monstre.incremterTempsSaut();
 							//							}
-							//							
+							//
 							//							if(monstre.getTempsSaut() >= 8){
 							//								for (int k = 0 ; k < 32 ; k++) {
 							//									perso.translationX(-2);
 							//								}
-							//								
+							//
 							//								monstre.reinisialiseTempsSaut();
 							//								monstre.setSaut(false);
 							//							}
-							//							
-							//							
+							//
+							//
 							//							if(monstre.getTempsSaut()== 32 && monstre.isSaut()) {
 							//								System.out.println("Ok");
 							//								monstre.setSaut(false);
 							//								monstre.reinisialiseTempsSaut();
 							//							}
-							//							
+							//
 							//							System.out.println(monstre.getTempsSaut());
 						}
 					} catch (ErreurObjetIntrouvable  e) {
@@ -306,4 +335,3 @@ public class Controleur implements Initializable {
 		gameLoop.getKeyFrames().add(kf);
 	}
 }
-

@@ -29,7 +29,7 @@ import application.modele.armes.Fleche;
 
 public class Joueur extends Personnage {
 
-	private final static  int MAX_PV = 7;
+	private final static IntegerProperty MAX_PV = new SimpleIntegerProperty(7);
 	private IntegerProperty faimProperty;
 	private final  int MAX_FAIM = 7;
 	private Item objetEquiper;
@@ -46,7 +46,7 @@ public class Joueur extends Personnage {
 
 	public Joueur(int pv,int x, int y,
 			Environnement environnement, int faim, Inventaire inventaire,
-			Item objetEquiper, Inventaire inventaireRaccourci, int hauteurSaut, int longueurSaut, Checkpoint checkpoint) { 
+			Item objetEquiper, Inventaire inventaireRaccourci, int hauteurSaut, int longueurSaut, Checkpoint checkpoint) {
 		super(pv, x, y,5, environnement,inventaire, hauteurSaut, TAILLE, longueurSaut, checkpoint);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
@@ -55,14 +55,14 @@ public class Joueur extends Personnage {
 	}
 
 	public Joueur(int x, int y, Environnement environnement) {
-		super(MAX_PV, x, y, 5, environnement, TAILLE );
+		super(Joueur.getMaxPv(), x, y, 5, environnement, TAILLE );
 		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
 		this.objetEquiper = this.POING;
 		this.inventaireRaccourci = new Inventaire(10);
 		this.estAccroupiProperty = new SimpleBooleanProperty(false);
 	}
 
-	public Checkpoint getCheckpoint() { 
+	public Checkpoint getCheckpoint() {
 		return this.checkpoint;
 	}
 
@@ -142,12 +142,12 @@ public class Joueur extends Personnage {
 		this.setVitesseDeplacement(VITESSE_COURRIR);
 	}
 
-	public void accroupie() { 
+	public void accroupie() {
 		super.setVitesseDeplacement(VITESSE_ACCROUPIE);
 		this.setEstAccroupi(true);
 	}
 
-	public void setModeDeplacement() { // TODO trouver un meilleure nom 
+	public void setModeDeplacement() { // TODO trouver un meilleure nom
 		if(this.getVitesseDeplacement() != VITESSE_COURRIR) {
 			this.setVitesseDeplacement(VITESSE_COURRIR);
 		}
@@ -159,7 +159,7 @@ public class Joueur extends Personnage {
 		}
 	}
 
-	public void utiliserMain(int emplacement) {
+	public void utiliserMain(int emplacement) throws ErreurInventairePlein {
 		Ressource bloc =this.objetEquiper.utiliser(emplacement);
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
@@ -170,15 +170,10 @@ public class Joueur extends Personnage {
 			}
 		}
 		if (bloc!=null)
-			try {
-				this.getInventaire().ajouter(bloc);
-			} catch (ErreurInventairePlein e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			this.getInventaire().ajouter(bloc);
 	}
 
-	public boolean estUneArmeOuUnOutil(Item item) { 
+	public boolean estUneArmeOuUnOutil(Item item) {
 		return item instanceof Arme || item instanceof Ressource;
 	}
 
@@ -196,7 +191,7 @@ public class Joueur extends Personnage {
 
 
 
-	public Item craft (ArrayList<Item> items) throws ErreurPasDobjetCraftable, ErreurObjetInvalide { 
+	public Item craft (ArrayList<Item> items) throws ErreurPasDobjetCraftable, ErreurObjetInvalide {
 		String pierre = "Pierre";
 		String bois = "Bois";
 		String plante = "Plante";
@@ -204,17 +199,17 @@ public class Joueur extends Personnage {
 		Item item;
 		Map<String, Integer> recette = new HashMap<String, Integer>();
 
-		recette.put(pierre, 0); 
+		recette.put(pierre, 0);
 		recette.put(bois, 0);
 		recette.put(plante, 0);
 
 		int k = 0;
 
 		try {
-			for(k = 0 ; k < items.size() ; k ++) { 
+			for(k = 0 ; k < items.size() ; k ++) {
 				recette.put(items.get(k).getClass().getSimpleName(), recette.get(items.get(k).getClass().getSimpleName()) + 1);
 			}
-		}catch (java.lang.NullPointerException e) { 
+		}catch (java.lang.NullPointerException e) {
 			throw new ErreurObjetInvalide(items.get(k));
 		}
 
@@ -260,7 +255,7 @@ public class Joueur extends Personnage {
 	}
 
 	public void incrementerPv(int nourriture) {
-		for (int i = 0; this.getPv() < Joueur.MAX_PV && i < nourriture ; i++) {
+		for (int i = 0; this.getPv() < Joueur.getMaxPv() && i < nourriture ; i++) {
 			this.soin();
 		}
 	}
@@ -268,7 +263,7 @@ public class Joueur extends Personnage {
 	public void poser(boolean direction) throws ErreurInventairePlein {
 		if(direction) {
 			((Ressource) this.objetEquiper).setX(this.getX() + 32);
-			((Ressource) this.objetEquiper).setY(this.getY()); 
+			((Ressource) this.objetEquiper).setY(this.getY());
 		}
 		else {
 			((Ressource) this.objetEquiper).setX(this.getX() - 32);
@@ -278,13 +273,27 @@ public class Joueur extends Personnage {
 //		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
 		this.desequiper();
 	}
-	
+
+	public static IntegerProperty maxPvProperty() {
+		return MAX_PV;
+	}
+
 	public void teleporterToCheckpoint() {
 		this.setX(this.getCheckpoint().getX());
 		this.setY(this.getCheckpoint().getY());
 	}
-	
+
 	public  void agir() throws ErreurObjetIntrouvable{
-		
+
 	}
+
+
+	public static int getMaxPv() {
+		return MAX_PV.getValue();
+	}
+
+	public Item getObjetEquiper() {
+		return objetEquiper;
+	}
+	
 }
