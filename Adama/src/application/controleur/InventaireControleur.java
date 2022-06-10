@@ -63,7 +63,7 @@ public class InventaireControleur implements ListChangeListener<Item> {
 			}
 
 			for(Item suppression : c.getRemoved()) {
-				//TODO
+				//TODO suppresion d'inventaire
 			}
 
 		}

@@ -101,9 +101,9 @@ public class Controleur implements Initializable{
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
 		/*
-		 * TODO
-		 * Mettre un switch pour gérer les action qui nécessite un wait (ex: pause avec echap)
+		 * TODO Mettre un switch pour gérer les action qui nécessite un wait (ex: pause avec echap)
 		 * et en default persoControleur.touchePresse(touchePresse)
+		 * 
 		 */
 
 		System.out.println(touchePresse);
