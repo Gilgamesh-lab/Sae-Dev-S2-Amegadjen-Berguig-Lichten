@@ -122,7 +122,7 @@ public abstract class Personnage {
 	 * Permet de savoir si on ne touche rien au niveau des y au dessus du perso si auDessus est true est en dessous sinon 
 	 * 
 	 * 
-	 * @param auDessus si il est vrai on vérifie les collision audessus du Sprite sinon en dessous
+	 * @param auDessus si il est vrai on vérifie les collision audessus du personnage sinon en dessous
 	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
 	 * 			false si il ne peut pas passer (si il touche un autre bloc)
 	 */
@@ -175,12 +175,12 @@ public abstract class Personnage {
 	 * Permet de faire un saut en fonction du paramètre d'entrée direction
 	 * @param direction : true pour droite, false pour gauche
 	 */
-	public void sauter(boolean direction) { // a finir
-		this.monter(hauteurSaut);
+	public void sauterEnDirection(boolean direction) { //TODO a finir saut en direction
+		this.sauter();
 		int i = 0;
 		if(direction) {
 			while(i < this.hauteurMaxSaut) {
-				this.translationX(-1); // TODO sleep
+				this.translationX(-1);
 				i++;
 			}
 		}
@@ -212,7 +212,7 @@ public abstract class Personnage {
 	/**
 	 * Permet de savoir si on ne touche rien au niveau des x à droite du perso si aDroite est true est à gauche sinon 
 	 * 
-	 * @param aDroite si il est vrai on vérifie les collision à droite du Sprite sinon à gauche
+	 * @param aDroite si il est vrai on vérifie les collision à droite du personnage sinon à gauche
 	 * @return 	true si il peut passer (pas de colission, touche un arbre, touche une plante) 
 	 * 			false si il ne peut pas passer (si il touche un autre bloc)
 	 */
@@ -315,11 +315,11 @@ public abstract class Personnage {
 		this.hauteurSaut = val;
 	}
 	
-	public final int getLongueurSaut() {
+	public final int getHauteurMaxSaut() {
 		return this.hauteurMaxSaut;
 	}
 	
-	public final void setLongueurSaut(int val) {
+	public final void setHauteurMaxSaut(int val) {
 		this.hauteurMaxSaut = val;
 	}
 	
@@ -353,6 +353,14 @@ public abstract class Personnage {
 		return taille;
 	}
 	
+	public boolean getSaut() {
+		return saut;
+	}
+	
+	public void setSaut(boolean saut) {
+		this.saut = saut;
+	}
+	
 	public void meurt() throws ErreurInventairePlein {
 		this.setX(-320);
 		this.setY(-320);
@@ -362,7 +370,6 @@ public abstract class Personnage {
 		this.perdreRessources();
 		
 	}
-	
 	
 	/**
 	 * Vérifie si le joueur se trouve à droite ou à gauche du personnage
@@ -380,7 +387,7 @@ public abstract class Personnage {
 	 */
 	public boolean estAporterDuJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
 		Joueur joueur = this.getEnvironnement().getJoueur();
-		return this.getX() - this.getLongueurSaut() <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + this.getLongueurSaut() >= joueur.getX()  && this.getX() <= joueur.getX();
+		return this.getX() - this.vitesseDeplacement*this.hauteurMaxSaut <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + this.vitesseDeplacement*this.hauteurMaxSaut >= joueur.getX()  && this.getX() <= joueur.getX();
 	}
 	
 	/**

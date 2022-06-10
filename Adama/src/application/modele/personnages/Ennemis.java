@@ -46,7 +46,7 @@ public abstract class Ennemis extends Personnage{
 	
 	
 	public void sauterSurJoueur() throws ErreurObjetIntrouvable, IOException {
-		this.sauter(this.ouSeTrouveLeJoueur());
+		this.sauterEnDirection(this.ouSeTrouveLeJoueur());
 	}
 	
 	
