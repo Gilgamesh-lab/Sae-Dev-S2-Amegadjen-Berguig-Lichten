@@ -110,8 +110,8 @@ public class Controleur implements Initializable {
 			ImageView ev = (ImageView) event.getTarget();
 			int indiceDansInventaire = Integer.parseInt(ev.getId());
 			Item objetAEquiper = perso.getInventaire().getItem(indiceDansInventaire);
-			String newStyle = "fx-background-color: #bbbbbb;-fx-border-style:solid;-fx-border-color:red;-fx-border-width:5px;";
-			String oldStyle = "-fx-border-style:none;-fx-border-width:0px;";
+			String newStyle = "-fx-background-color: #bbbbbb;-fx-border-style:solid;-fx-border-color:red;-fx-border-width:5px;";
+			String oldStyle = "-fx-background-color: #bbbbbb;-fx-border-style:none;-fx-border-width:0px;";
 			for (Node a : inventaire.getChildren())
 				if(a.getStyle().equals(newStyle)) {
 					a.setStyle(oldStyle);

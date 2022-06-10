@@ -63,6 +63,8 @@ public class InventaireControleur implements ListChangeListener<Item> {
 		String chemin = "ressource/";
 		String extention = ".png";
 		switch (nomClass) {
+		
+		//chargement Ressource
 		case "Pierre":
 			image = new Image(chemin + "pierreIcone" + extention);
 			break;
@@ -72,6 +74,17 @@ public class InventaireControleur implements ListChangeListener<Item> {
 		case "Bois":
 			image = new Image(chemin + "boisIcone" + extention);
 			break;
+		case "PlanteMedicinal":
+			image = new Image(chemin + "planteMedicinaleIcone" + extention);
+			break;
+		case "PlanteHercule":
+			image = new Image(chemin + "planteHerculeIcone" + extention);
+			break;
+		case "PlanteDeNike":
+			image = new Image(chemin + "planteNikéIcone" + extention);
+			break;
+		
+		//chargement outils
 		case "Hache":
 			image = new Image(chemin + "Hache" + extention);
 			Pane Case = (Pane) inv.getChildren().get(compteur);
@@ -90,15 +103,8 @@ public class InventaireControleur implements ListChangeListener<Item> {
 		case "Seau":
 			image = new Image(chemin + "seau_vide" + extention);
 			break;
-		case "PlanteMedicinal":
-			image = new Image(chemin + "planteMedicinaleIcone" + extention);
-			break;
-		case "PlanteHercule":
-			image = new Image(chemin + "planteHerculeIcone" + extention);
-			break;
-		case "PlanteDeNike":
-			image = new Image(chemin + "planteNikéIcone" + extention);
-			break;
+		
+		//chargement Potion
 		case "PotionDegat":
 			image = new Image(chemin + "potionDegat" + extention);
 			break;
@@ -110,6 +116,17 @@ public class InventaireControleur implements ListChangeListener<Item> {
 			break;
 		case "AntiPoison":
 			image = new Image(chemin + "potionAntipoison" + extention);
+			break;
+		
+		//Chargement Arme
+		case "Epee":
+			image = new Image(chemin + "epee" + extention);
+			break;
+		case "Arc":
+			image = new Image (chemin + "arc" + extention);
+			break;
+		case "Fleche":
+			image = new Image(chemin + "fleche" + extention);
 			break;
 		default:
 			break;
