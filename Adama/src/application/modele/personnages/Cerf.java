@@ -24,7 +24,7 @@ public class Cerf extends Personnage {
 
 	}
 
-	public boolean agir() throws ErreurObjetIntrouvable {
+	public boolean agir()  {
 		if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
 			this.gauche();
 			if(!this.touchePasX(false))

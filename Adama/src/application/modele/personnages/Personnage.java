@@ -226,6 +226,7 @@ public abstract class Personnage {
 	}
 
 	public void droite() {
+		System.out.println("x = "+this.getX()+", y = "+this.getY());
 		if(touchePasX(true))
 			this.translationX(-vitesseDeplacement);
 	}
@@ -388,8 +389,6 @@ public abstract class Personnage {
 	}
 	
 	public void meurt() throws ErreurInventairePlein {
-		this.setX(-320);
-		this.setY(-320);
 		if(!this.estMort()) {
 			this.setPv(0);
 		}
@@ -401,7 +400,7 @@ public abstract class Personnage {
 	 * @return Retourne true si le joueur se trouve à la droite du personnage false sinon
 	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans Environnement.personnages
 	 */
-	public boolean ouSeTrouveLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+	public boolean ouSeTrouveLeJoueur()  { // peut-être à mettre dans Personnage
 		return this.getEnvironnement().getJoueur().getX() > this.getX();
 	}
 	
@@ -438,5 +437,10 @@ public abstract class Personnage {
 
 	public int getId() {
 		return id;
+	}
+
+	public void SupprimerEffet(int i) {
+		// TODO Auto-generated method stub
+		
 	}
 }

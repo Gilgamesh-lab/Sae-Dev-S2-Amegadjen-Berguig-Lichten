@@ -15,6 +15,7 @@ import application.modele.outils.Pioche;
 import application.modele.personnages.Cerf;
 import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
+import application.modele.personnages.Pnj;
 import application.modele.personnages.Slime;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
@@ -161,13 +162,13 @@ public class Controleur implements Initializable {
 			break;
 
 		case "o":
-			if(cerf.estMort()) {
+//			if(cerf.estMort()) {
 				cerf.setPv(10);
 				cerf.setX(perso.getCheckpoint().getX());
 				cerf.setY(perso.getCheckpoint().getY());
 				//cerfVue.getSprite().setVisible(true);
 				System.out.println("Respawn du cerf");
-			}
+//			}
 			break;
 
 		case "k":
@@ -307,27 +308,11 @@ public class Controleur implements Initializable {
 		 * Test
 		 */
 		cerf = new Cerf(320,100,env);
-		//		cerfVue = new CerfVue();
-		//		plateau.getChildren().add(cerfVue.getSprite());
-		//		cerfControleur = new IACerf(cerf, cerfVue);
-		//		cerfVue.getSprite().xProperty().bind(cerf.xProperty());
-		//		cerfVue.getSprite().yProperty().bind(cerf.yProperty());
-		//		cerfVue.getSprite().setFitHeight(64);
-		//		cerfVue.getSprite().setFitWidth(32);
 		// Test
-		monstre = new Slime(120,100,1, env);
-		//		monstreVue = new MonstreVue();
-		//		plateau.getChildren().add(monstreVue.getSprite());
-		//		monstreControleur = new IAEnnemi(monstre, monstreVue);
-		//		monstreVue.getSprite().xProperty().bind(monstre.xProperty());
-		//		monstreVue.getSprite().yProperty().bind(monstre.yProperty());
-		//		monstreVue.getSprite().setFitHeight(32);
-		//		monstreVue.getSprite().setFitWidth(32);
+		monstre = new Slime(120,100,100, env);
 		/*
 		 * Test
 		 */
-
-		//		perso.equiper(new Pelle(env));
 		try {
 			perso.getInventaire().ajouter(new Hache(env));
 			perso.getInventaire().ajouter(new Pelle(env));
@@ -335,7 +320,6 @@ public class Controleur implements Initializable {
 		} catch (ErreurInventairePlein e) {
 			System.out.println("Plein");
 		}
-		envVue.creerEnvironnement();
 		
 ////////////Gameloop
 		initAnimation();
@@ -364,134 +348,13 @@ public class Controleur implements Initializable {
 						System.out.println("Toto");
 					else if(temps>300)
 						perso.equiper(new Terre(0));
-
-					if(!cerf.estMort()) {
-						try {
-							this.cerf.agir();
-						} catch (ErreurObjetIntrouvable e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-
-						try {
-							this.cerf.agir();
-						} catch (ErreurObjetIntrouvable e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-
-						}
-
-						//
-						//							
-						//					
-
-						try {
-							if(!monstre.estMort()) {
-
-								monstre.agir();
-								//									if(monstreControleur.getTempsSaut() < 8 &&monstreControleur.isSaut()) {
-								//										//						perso.monter(4);
-								//										System.out.println(2);
-								//										monstre.monter(4);
-								//										monstre.translationX(-2);
-								//										monstreControleur.incremterTempsSaut();
-								//									}
-								//
-								//									if(monstreControleur.getTempsSaut() >= 8) {
-								//										if(monstre.ouSeTrouveLeJoueur()) {
-								//											valRecul = -2;
-								//										}
-								//										else {
-								//											valRecul = 2;
-								//										}
-								//
-								//										System.out.println(valRecul);
-								//										for (int k = 0 ; k < 32 ; k++) {
-								//											perso.translationX(valRecul);
-								//										}
-								//
-								//										monstreControleur.reinisialiseTempsSaut();
-								//										monstreControleur.setSaut(false);
-								//									}
-								//
-								//
-								//									if(monstreControleur.getTempsSaut()== 32 && monstreControleur.isSaut()) {
-								//										System.out.println("0k");
-								//										monstreControleur.setSaut(false);
-								//										monstreControleur.reinisialiseTempsSaut();
-								//									}
-
-								monstre.agir();
-								//							if(monstre.getTempsSaut() < 8 && monstre.isSaut()) {
-								//									System.out.println(2);
-								//									monstre.monter(4);
-								//									monstre.translationX(-2);
-								//									monstre.incremterTempsSaut();
-								//							}
-								//
-								//							if(monstre.getTempsSaut() >= 8){
-								//								for (int k = 0 ; k < 32 ; k++) {
-								//									perso.translationX(-2);
-								//								}
-								//
-								//								monstre.reinisialiseTempsSaut();
-								//								monstre.setSaut(false);
-								//							}
-								//
-								//
-								//							if(monstre.getTempsSaut()== 32 && monstre.isSaut()) {
-								//								System.out.println("Ok");
-								//								monstre.setSaut(false);
-								//								monstre.reinisialiseTempsSaut();
-								//							}
-								//
-								//							System.out.println(monstre.getTempsSaut());
-
-							}
-						}catch (ErreurObjetIntrouvable  e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-
-						if(perso.estMort() && timeRespawn ==  -1) {
-							persoVue.getSprite().setVisible(false);
-							System.out.println("Game over");
-							timeRespawn =  0;
-						}
-
-						if(timeRespawn > 1) {
-							perso.incrementerPv(7);
-							perso.teleporterToCheckpoint();
-							persoVue.getSprite().setVisible(true);
-							System.out.println("Respawn");
-							timeRespawn =  -1;
-
-						}
-
-
-					}
-
-					if(temps%2==0)
-						for(Personnage personnage : env.getPersonnages()) {
-							if(!personnage.estMort()) {
-								personnage.gravite();
-							}
-						}
-					//					else if (temps>1500 && temps<1600) {
-					//						System.out.println("Changement d'outils");//teste de la pioche elle marche
-					//						perso.equiper(new Pioche(env));
-					//					}
-					//					else if(temps>1600 && temps<1700) {
-					//						System.out.println("Changement outils");
-					//						perso.equiper(new Hache(env));
-					//					}
-					perso.gravite();
+					env.getPersonnages().forEach(pnj -> {
+						if (pnj instanceof Pnj)
+							((Pnj)pnj).agir();
+					});
+					env.getPersonnages().forEach(pj -> pj.gravite());
 
 					temps++;
-					if(timeRespawn >= 0) {
-						timeRespawn++;
-					}
 
 				})
 				);
