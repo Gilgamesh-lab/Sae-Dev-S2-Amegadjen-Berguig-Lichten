@@ -8,11 +8,15 @@ import application.modele.Environnement;
 import application.modele.Inventaire;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
+import application.modele.effet.Effet;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Plante;
 import application.modele.ressources.Ressource;
+import application.modele.Checkpoint;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Classe abstraite qui est au-dessus de Joueur et de PNJ
@@ -24,12 +28,10 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public abstract class Personnage {
 
-	private static int compteur = 0;
 	private IntegerProperty pvProperty;
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
 	private int vitesseDeplacement;
-	private int id;
 	private Environnement environnement;
 	private Inventaire inventaire;
 	private int hauteurSaut;
@@ -37,7 +39,10 @@ public abstract class Personnage {
 	private int[] taille;
 	private Checkpoint checkpoint;
 	private boolean saut;
-	
+	private int id;
+	private static int compteur = 0;
+	private ObservableList<Effet> effets;
+
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
@@ -47,11 +52,14 @@ public abstract class Personnage {
 		this.inventaire = inventaire;
 		this.hauteurSaut = hauteurSaut;
 		this.taille = taille;
+		this.environnement.ajouter(this);
 		this.hauteurMaxSaut = this.hauteurSaut;
 		this.environnement.ajouter(this);
 		this.checkpoint = checkpoint;
-		this.id=compteur;
+		this.id= compteur;
 		compteur++;
+		this.effets = FXCollections.observableArrayList();
+		effets.addAll(null, null, null, null); //Chaque valeur correspond à un effet different
 	}
 	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
@@ -61,29 +69,47 @@ public abstract class Personnage {
 		this.vitesseDeplacement = vitesseDeplacement;
 		this.environnement = environnement;
 		this.inventaire = new Inventaire(20);
-		this.hauteurSaut = 0;
+		this.hauteurSaut = 1;
+		this.hauteurSaut = 64;
 		this.hauteurMaxSaut = this.hauteurSaut;
 		this.taille = taille;
 		this.environnement.ajouter(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
+		this.effets = FXCollections.observableArrayList();
+		effets.addAll(null, null, null, null);
 	}
-	
-	
-	
+
+	public void setCheckpoint(Checkpoint checkpoint) {
+		this.checkpoint = checkpoint;
+
+	}
+
+
+	/**
+	 * Augmente les PV
+	 * @param soin nombre de pv récupéré
+	 */
+	public void incrementerPv(int soin) {
+		this.setPv(pvProperty.getValue() + soin);
+	}
+
 	/**
 	 * Diminue les PV
 	 * @param degat nombre de pv perdue
 	 */
 	public void degat() {
-		this.setPv(this.getPv() + 1);
+		this.setPv(this.getPv() - 1);
 	}
 	
-	public void decrementerPv(int degat) {
+	public void decrementerPv(int degat) throws ErreurInventairePlein {
 		for (int i = 0; this.getPv() > 0 && i < degat ; i++) {
 			this.degat();
 		}
+		if(this.estMort()) {
+			this.meurt();
+		}
 	}
-	
+
 	public Checkpoint getCheckpoint() {
 		return this.checkpoint;
 	}
@@ -152,7 +178,7 @@ public abstract class Personnage {
 		}
 		return (gaucheTuile && droiteSprite);
 	}
-
+	
 	/**
 	 * Sauter permet uniquement de sauter de la hauteur du saut du personnage.
 	 * Et est donc différent de monter car un perso pourrait être projeter par une attaque
@@ -193,7 +219,6 @@ public abstract class Personnage {
 		}
 	}
 
-	
 	public void translationX(int val) {
 		if(touchePasX(true)) {
 			this.xProperty.setValue(this.getX() - val);
@@ -369,7 +394,6 @@ public abstract class Personnage {
 			this.setPv(0);
 		}
 		this.perdreRessources();
-		
 	}
 	
 	/**

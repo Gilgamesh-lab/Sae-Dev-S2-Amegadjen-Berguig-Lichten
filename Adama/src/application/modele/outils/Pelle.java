@@ -23,6 +23,7 @@ public class Pelle extends Outil {
 	 * @param lieu indice du bloc visé
 	 * @return 
 	 */
+	@Override
 	public Ressource utiliser(int lieu) {
 		if (super.getEnvironnement().getCarte().emplacement(lieu) instanceof Terre)
 			return super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);

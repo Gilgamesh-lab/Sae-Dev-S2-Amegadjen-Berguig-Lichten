@@ -22,9 +22,5 @@ public class Terre extends Ressource {
 		return null;
 	}
 
-	@Override
-	public void utiliser() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

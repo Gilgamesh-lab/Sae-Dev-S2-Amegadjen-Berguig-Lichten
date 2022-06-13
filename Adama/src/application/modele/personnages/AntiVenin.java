@@ -16,10 +16,4 @@ public class AntiVenin extends Ressource {
 
 	}
 
-	@Override
-	public void utiliser() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

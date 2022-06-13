@@ -3,6 +3,7 @@ package application.modele.armes;
 import application.modele.ressources.Ressource;
 import application.modele.Environnement;
 import application.modele.Inventaire;
+import application.modele.exception.ErreurInventairePlein;
 import application.modele.personnages.Personnage;
 
 public class Epee extends Arme{
@@ -15,7 +16,7 @@ public class Epee extends Arme{
 		
 	}
 
-	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) {
+	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) throws ErreurInventairePlein {
 		int largeur = environnement.getCarte().getLargeur();
 		if (environnement.emplacement(lieu) instanceof Personnage)
 			environnement.attaquerPersonnages(lieu, this.getDegat());
