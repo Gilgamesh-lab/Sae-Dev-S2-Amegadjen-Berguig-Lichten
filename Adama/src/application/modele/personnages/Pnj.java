@@ -12,6 +12,6 @@ public abstract class Pnj extends Personnage {
 
 	}
 	
-	public abstract boolean agir();
+	public abstract void agir();
 
 }

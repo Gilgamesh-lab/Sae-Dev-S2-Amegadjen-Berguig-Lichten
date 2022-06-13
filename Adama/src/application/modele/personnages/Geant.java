@@ -16,8 +16,7 @@ public class Geant extends Ennemis {
 	
 
 	@Override
-	public boolean agir() {
-		return true;
+	public void agir() {
 		
 	}
 }

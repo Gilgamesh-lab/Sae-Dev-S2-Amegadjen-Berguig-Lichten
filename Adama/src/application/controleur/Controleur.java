@@ -55,12 +55,8 @@ public class Controleur implements Initializable {
 
 	private Timeline gameLoop;
 	private int temps;
-
-	private int timeRespawn;
-
-
+	
 	private InventaireControleur invControleur;
-
 	private Joueur perso;
 	private JoueurVue persoVue;
 	private JoueurControleur persoControleur;
@@ -269,7 +265,7 @@ public class Controleur implements Initializable {
 					if (nouveau instanceof Joueur) {
 						persoVue = new JoueurVue();
 						this.plateau.getChildren().add(persoVue.getSprite());
-						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue, env);
+						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue);
 						persoVue.getSprite().xProperty().bind(nouveau.xProperty());
 						persoVue.getSprite().yProperty().bind(nouveau.yProperty());
 						persoVue.getSprite().setFitWidth(nouveau.getTaille()[0]*Carte.TAILLE_BLOCK);
@@ -330,7 +326,6 @@ public class Controleur implements Initializable {
 	private void initAnimation() {
 		gameLoop = new Timeline();
 		temps=0;
-		timeRespawn = -1;
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
 		try {
 			monstre.meurt();
@@ -343,11 +338,6 @@ public class Controleur implements Initializable {
 				(ev -> {
 					if(temps==100)
 						System.out.println("ok");
-
-					else if(temps==251)
-						System.out.println("Toto");
-					else if(temps>300)
-						perso.equiper(new Terre(0));
 					env.getPersonnages().forEach(pnj -> {
 						if (pnj instanceof Pnj)
 							((Pnj)pnj).agir();

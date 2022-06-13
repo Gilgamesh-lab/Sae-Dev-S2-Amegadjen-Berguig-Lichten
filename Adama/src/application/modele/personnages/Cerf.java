@@ -2,9 +2,8 @@ package application.modele.personnages;
 
 import application.modele.Carte;
 import application.modele.Environnement;
-import application.modele.exception.ErreurObjetIntrouvable;
 
-public class Cerf extends Personnage {
+public class Cerf extends Pnj {
 	
 
 	private static final int[] TAILLE = {2,2};
@@ -24,18 +23,18 @@ public class Cerf extends Personnage {
 
 	}
 
-	public boolean agir()  {
-		if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
-			this.gauche();
-			if(!this.touchePasX(false))
-				this.sauter();
-			return false;
-		}
-		else {
-			this.droite();
-			if(!this.touchePasX(true))
-				this.sauter();
-			return true;
+	public void agir()  {
+		if (this.estPrèsDuJoueur(Carte.TAILLE_BLOCK*5, TAILLE[1])) {
+			if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
+				this.gauche();
+				if(!this.touchePasX(false))
+					this.sauter();
+			}
+			else {
+				this.droite();
+				if(!this.touchePasX(true))
+					this.sauter();
+			}
 		}
 	}
 }

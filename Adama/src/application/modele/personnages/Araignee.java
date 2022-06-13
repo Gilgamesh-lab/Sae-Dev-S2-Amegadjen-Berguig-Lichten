@@ -24,8 +24,8 @@ public class Araignee extends Ennemis {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public boolean agir() {
-		return true;
+	public void agir() {
+		
 	}
 
 }

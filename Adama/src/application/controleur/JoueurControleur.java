@@ -1,10 +1,6 @@
 package application.controleur;
 
-import application.modele.Environnement;
 import application.modele.exception.ErreurInventairePlein;
-import application.modele.outils.Hache;
-import application.modele.outils.Pelle;
-import application.modele.outils.Pioche;
 import application.modele.personnages.Joueur;
 import application.vue.JoueurVue;
 import javafx.scene.control.Alert;
@@ -16,40 +12,37 @@ public class JoueurControleur {
 
 	private Joueur perso;
 	private JoueurVue persoVue;
-	private Environnement env;
+	private boolean messageDejaVu;
 
 
-	public JoueurControleur(Joueur perso, JoueurVue persoVue, Environnement env) {
+	public JoueurControleur(Joueur perso, JoueurVue persoVue) {
 		this.perso=perso;
 		this.persoVue=persoVue;
-		this.env=env;
+		this.messageDejaVu=false;
 	}
 
 	public void touchePresse(String touchePresse) {
 		switch (touchePresse) {
-		case "q":
-			persoVue.orrientationSpriteGauche();
-			perso.gauche();
-			break;
-		case "d":
-			persoVue.orrientationSpriteDroite();
-			perso.droite();
-			break;
-		case "z":
-			if(!perso.touchePasY(false))
-				perso.sauter();
-			break;
-		case "s":
-			break;
-		case "f":
-			perso.equiper(new Pelle(env));
-			break;
-		case "g":
-			perso.equiper(new Pioche(env));
-			break;
-		case "h":
-			perso.equiper(new Hache(env));
-			break;
+			case "q":
+				persoVue.orrientationSpriteGauche();
+				if (perso.getSaut())
+					perso.sauterEnDirection(false);
+				else
+					perso.gauche();
+				break;
+			case "d":
+				persoVue.orrientationSpriteDroite();
+				if (perso.getSaut())
+					perso.sauterEnDirection(true);
+				else
+					perso.droite();
+				break;
+			case "z":
+				if(!perso.touchePasY(false))
+					perso.sauter();
+				break;
+			case "s":
+				break;
 		}
 	}
 
@@ -60,13 +53,15 @@ public class JoueurControleur {
 				perso.utiliserMain(emplacement);
 			} catch (ErreurInventairePlein e) {
 				// TODO Alert
-				Label message = new Label(e.getMessage());
-				Alert a = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.CLOSE);
-				a.setTitle("Inventaire Plein");
-				a.setHeaderText("Votre Inventaire est plein");
-				a.getDialogPane().setPrefWidth(400);
-				a.show();
-				
+				if (!messageDejaVu) {
+					Label message = new Label(e.getMessage());
+					Alert a = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.CLOSE);
+					a.setTitle("Inventaire Plein");
+					a.setHeaderText("Votre Inventaire est plein");
+					a.getDialogPane().setPrefWidth(400);
+					a.show();
+					messageDejaVu=true;
+				}
 			}
 			break;
 		default:
