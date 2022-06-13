@@ -2,6 +2,7 @@ package application.modele.outils;
 
 import application.modele.Environnement;
 import application.modele.Item;
+import application.modele.personnages.Joueur;
 import application.modele.ressources.Ressource;
 
 /**
@@ -12,6 +13,7 @@ import application.modele.ressources.Ressource;
 public abstract class Outil implements Item{
 	
 	private Environnement env;
+	private Joueur joueur;
 	private int effet; //correspond au dégat infligé au bloc e
 	
 	/**
@@ -21,13 +23,9 @@ public abstract class Outil implements Item{
 	 */
 	public Outil(Environnement env, int effet) {
 		this.env=env;
+		this.joueur=this.env.getJoueur();
 		this.effet=effet;
 	}
-	
-	@Override
-	public abstract Ressource utiliser(int val);
-	
-	
 	
 	/**
 	 * 
@@ -35,5 +33,9 @@ public abstract class Outil implements Item{
 	 */
 	public Environnement getEnvironnement() {
 		return env;
+	}
+	
+	public Joueur getJoueur() {
+		return joueur;
 	}
 }

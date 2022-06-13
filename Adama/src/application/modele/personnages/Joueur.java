@@ -168,7 +168,7 @@ public class Joueur extends Personnage {
 				break;
 			}
 		}
-		Ressource bloc =this.objetEquiper.utiliser(emplacement);
+		this.objetEquiper.utiliser(emplacement);
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
 			if(carte.getBlockMap().get(emplacement)== null) {
@@ -177,8 +177,6 @@ public class Joueur extends Personnage {
 				//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
 			}
 		}
-		if (bloc!=null)
-			this.getInventaire().ajouter(bloc);
 	}
 
 

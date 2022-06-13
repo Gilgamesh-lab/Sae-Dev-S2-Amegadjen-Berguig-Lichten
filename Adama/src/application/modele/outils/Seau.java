@@ -19,11 +19,9 @@ public class Seau extends Outil {
 	}
 
 	@Override
-	public Ressource utiliser(int val) {
+	public void utiliser(int val) {
 		if(!EstRempli())
 			this.vider();
-		return eau;
-
 	}
 
 	public void remplir() {

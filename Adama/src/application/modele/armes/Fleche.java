@@ -85,10 +85,8 @@ public class Fleche extends Arme{
 	}
 
 	@Override
-	public Ressource utiliser(int val) {
-		return null;
-		// TODO Auto-generated method stub
-
+	public void utiliser(int val) {
+		
 	}
 
 }

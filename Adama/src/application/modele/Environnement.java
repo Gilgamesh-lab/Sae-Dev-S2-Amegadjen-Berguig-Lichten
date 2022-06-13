@@ -55,13 +55,13 @@ public class Environnement {
 		return this.personnages.get(indice);
 	}
 	
-	public Joueur getJoueur() throws ErreurObjetIntrouvable {
+	public Joueur getJoueur() {
 		for (int i = 0; i < this.getPersonnages().size() ; i++) {
 			if(this.getPersonnages().get(i) instanceof Joueur) {
 				return (Joueur) this.getPersonnages().get(i);
 			}
 		}
-		throw new ErreurObjetIntrouvable("Joueur", "Environnement.personnages");
+		return null;
 	}
 	
 	public ObservableList<Personnage> getPersonnages(){

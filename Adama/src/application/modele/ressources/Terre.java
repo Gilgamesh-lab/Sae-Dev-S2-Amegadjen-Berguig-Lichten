@@ -17,9 +17,8 @@ public class Terre extends Ressource {
 	}
 
 	@Override
-	public Ressource utiliser(int val) {
+	public void utiliser(int val) {
 		this.setIndice(val);
-		return null;
 	}
 
 	

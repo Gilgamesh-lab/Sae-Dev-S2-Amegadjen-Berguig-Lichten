@@ -1,7 +1,5 @@
 package application.modele.armes;
 
-import application.modele.ressources.Ressource;
-
 public class Poing extends Arme {
 
 	public Poing() {
@@ -10,9 +8,7 @@ public class Poing extends Arme {
 	}
 
 	@Override
-	public Ressource utiliser(int val) {
-		return null;
-		// TODO Auto-generated method stub
+	public void utiliser(int val) {
 		
 	}
 

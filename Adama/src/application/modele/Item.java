@@ -1,6 +1,6 @@
 package application.modele;
 
-import application.modele.ressources.Ressource;
+import application.modele.exception.ErreurInventairePlein;
 
 /**
  * Interface qui est au-dessus de Ressource, Potion, Outil, Arme 
@@ -9,7 +9,7 @@ import application.modele.ressources.Ressource;
  */
 public interface  Item {
 	
-	public Ressource utiliser(int val);
+	public void utiliser(int val) throws ErreurInventairePlein;
 	
 	
 }
