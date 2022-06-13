@@ -11,7 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Environnement {
-	
+
 	private ObservableList<Personnage> personnages;
 	private Carte carte;
 
@@ -28,33 +28,33 @@ public class Environnement {
 	}
 
 
-	
-	
-	
-	
-	
 
 
 
-	
+
+
+
+
+
+
 	public void supprimer(Personnage personnage) {
 		this.personnages.remove(personnage);
 	}
-	
+
 	public void supprimer(int indice) {
 		this.personnages.remove(indice);
 	}
-	
+
 
 	public Personnage emplacement(int x, int y) {
 		int indiceDansMap = (x/this.getCarte().getHauteur()) + ((y/this.getCarte().getHauteur()) * this.getCarte().getLargeur());
 		return this.personnages.get(indiceDansMap);
 	}
-	
+
 	public Personnage emplacement(int indice) {
 		return this.personnages.get(indice);
 	}
-	
+
 	public Joueur getJoueur() {
 		for (int i = 0; i < this.getPersonnages().size() ; i++) {
 			if(this.getPersonnages().get(i) instanceof Joueur) {
@@ -63,7 +63,7 @@ public class Environnement {
 		}
 		return null;
 	}
-	
+
 	public ObservableList<Personnage> getPersonnages(){
 		return this.personnages;
 	}
@@ -71,9 +71,9 @@ public class Environnement {
 	public Carte getCarte(){
 		return this.carte;
 	}
-	
-	
-	
+
+
+
 	public void attaquerPersonnages(int lieu, int degat) throws ErreurInventairePlein {
 		this.personnages.get(lieu).decrementerPv(degat);
 		if (this.personnages.get(lieu).estMort()) {
@@ -83,6 +83,6 @@ public class Environnement {
 
 	public void ajouter(Personnage personnage) {
 		this.personnages.add(personnage);
-		
+
 	}
 }

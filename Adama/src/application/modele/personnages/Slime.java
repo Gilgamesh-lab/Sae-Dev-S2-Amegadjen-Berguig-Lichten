@@ -1,8 +1,6 @@
 package application.modele.personnages;
 
-import application.modele.Carte;
 import application.modele.Environnement;
-import application.modele.exception.ErreurObjetIntrouvable;
 
 public class Slime extends Ennemis {
 
@@ -13,7 +11,6 @@ public class Slime extends Ennemis {
 
 	public Slime(int pv, int x, int y,Environnement environnement)  {
 		super(pv, x, y, VITESSE,environnement,TAILLE, DEGATS, false);
-
 	}
 
 	public Slime(Environnement environnement)  {
@@ -24,21 +21,16 @@ public class Slime extends Ennemis {
 		super(x, y, VITESSE, env, TAILLE);
 	}
 
-	public  void agir() throws ErreurObjetIntrouvable{
-		if(this.estPrèsDuJoueur(Carte.TAILLE_BLOCK * 10, 85)) {
-			if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
-				this.droite();
-				if(!this.toucheX(true))
-					this.sauterEnDirection(true);
-			}
-			else {
-				this.gauche();
-				if(!this.toucheX(false))
-					this.sauterEnDirection(false);
-			}
-			
-			
+	public void agir(){
+		if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
+			this.droite();
+			if(!this.touchePasX(true))
+				this.sauterEnDirection(true);
 		}
-
+		else {
+			this.gauche();
+			if(!this.touchePasX(false))
+				this.sauterEnDirection(false);
+		}
 	}
 }
