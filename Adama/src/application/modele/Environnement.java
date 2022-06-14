@@ -1,6 +1,7 @@
 package application.modele;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
@@ -25,6 +26,10 @@ public class Environnement {
 	public Environnement() throws TailleMapException, IOException {
 		this.carte = new Carte();
 		this.personnages = FXCollections.observableArrayList();
+	}
+
+	public void ajouter(Personnage personnage) {
+		this.personnages.add(personnage);
 	}
 
 	public void supprimer(Personnage personnage) {
@@ -62,17 +67,11 @@ public class Environnement {
 		return this.carte;
 	}
 
-
-
 	public void attaquerPersonnages(int lieu, int degat) throws ErreurInventairePlein {
 		this.personnages.get(lieu).decrementerPv(degat);
 		if (this.personnages.get(lieu).estMort()) {
+			this.personnages.get(lieu).meurt();
 			this.supprimer(lieu);
 		}
-	}
-
-	public void ajouter(Personnage personnage) {
-		this.personnages.add(personnage);
-
 	}
 }

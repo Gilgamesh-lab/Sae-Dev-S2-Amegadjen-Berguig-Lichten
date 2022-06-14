@@ -17,5 +17,4 @@ public class Loup extends Ennemis {
 	public void agir() {
 
 	}
-
 }

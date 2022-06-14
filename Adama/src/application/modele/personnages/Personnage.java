@@ -6,21 +6,12 @@ import application.modele.Inventaire;
 import application.modele.effet.Effet;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
-import java.io.IOException;
-
 import application.modele.Carte;
-import application.modele.Checkpoint;
-import application.modele.Environnement;
-import application.modele.Inventaire;
-import application.modele.exception.ErreurInventairePlein;
-import application.modele.exception.ErreurObjetIntrouvable;
-import application.modele.effet.Effet;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Plante;
 import application.modele.ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
@@ -46,8 +37,6 @@ public abstract class Personnage {
 	private int[] taille;
 	private Checkpoint checkpoint;
 	private boolean saut;
-
-//	private int longueurSaut;
 	private ObservableList<Effet> effets;
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
@@ -59,20 +48,15 @@ public abstract class Personnage {
 		this.inventaire = inventaire;
 		this.hauteurSaut = hauteurSaut;
 		this.taille = taille;
-
-
-//		this.longueurSaut = longueurSaut;
-		this.environnement.ajouter(this);
-
 		this.hauteurMaxSaut = this.hauteurSaut;
 		this.environnement.ajouter(this);
 		this.checkpoint = checkpoint;
 		this.id= compteur;
 		compteur++;
-		this.effets = FXCollections.observableArrayList();
-		effets.addAll(null, null, null, null); //Chaque valeur correspond à un effet different
 	}
 
+	
+	
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
@@ -85,14 +69,11 @@ public abstract class Personnage {
 		this.taille = taille;
 		this.environnement.ajouter(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
-		this.effets = FXCollections.observableArrayList();
-		effets.addAll(null, null, null, null);
 	}
 
 	public void setCheckpoint(Checkpoint checkpoint) {
 		this.checkpoint = checkpoint;
 	}
-
 
 	/**
 	 * Augmente les PV
@@ -118,7 +99,7 @@ public abstract class Personnage {
 			this.meurt();
 		}
 	}
-
+	
 	public Checkpoint getCheckpoint() {
 		return this.checkpoint;
 	}
@@ -353,7 +334,7 @@ public abstract class Personnage {
 	}
 
 
-	public boolean estEnLaire() throws IOException {
+	public boolean estEnLaire() {
 		int[] taille = {1,2};//provisoire
 		return this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null;
     }

@@ -1,6 +1,5 @@
 package application.modele.armes;
 
-import application.modele.ressources.Ressource;
 import application.modele.Environnement;
 import application.modele.Inventaire;
 import application.modele.exception.ErreurInventairePlein;
@@ -33,6 +32,6 @@ public class Epee extends Arme{
 
 	@Override
 	public void utiliser(int val) {
-	
+
 	}
 }

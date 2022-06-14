@@ -10,15 +10,12 @@ public class Cerf extends Pnj {
 	private static final int VITESSE = 10;
 	private static final int PV = 10;
 
-
 	public Cerf(Environnement environnement) {
 		super(PV, 10, 10, VITESSE, environnement, TAILLE);
-
 	}
 
 	public Cerf(int x,int y,Environnement environnement) {
-			super(PV, x, y, VITESSE, environnement, TAILLE);
-
+		super(10, x, y, 10, environnement, TAILLE);
 	}
 
 	public void agir()  {

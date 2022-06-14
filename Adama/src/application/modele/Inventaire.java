@@ -28,24 +28,16 @@ public class Inventaire {
 		return this.items.get(indice);
 	}
 
-	public void setItems(ObservableList<Item> items2) {
-		this.items = items2;
+	public void setItems(ObservableList<Item> items) {
+		this.items = items;
 	}
 
 	public final int getTailleMax() {
 		return this.tailleMaxProperty.getValue();
 	}
 
-	public final void setTailleMax(int val) {
-		this.tailleMaxProperty.setValue(val);
-	}
-
 	public final IntegerProperty tailleMaxProperty() {
 		return this.tailleMaxProperty;
-	}
-
-	public void augmenterTailleMax(int val) {
-		this.setTailleMax(this.getTailleMax() + val);
 	}
 
 	public int getTaille() {
@@ -57,7 +49,7 @@ public class Inventaire {
 			this.items.add(item);
 		}
 		else {
-			throw new ErreurInventairePlein("Tous ce que vous récolterez sera détruit.\nVous devriez videz vos poche pour récolter de nouveau.");
+			throw new ErreurInventairePlein();
 		}
 	}
 
