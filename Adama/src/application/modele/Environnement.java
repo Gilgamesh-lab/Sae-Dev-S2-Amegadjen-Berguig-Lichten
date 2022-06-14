@@ -27,16 +27,6 @@ public class Environnement {
 		this.personnages = FXCollections.observableArrayList();
 	}
 
-
-
-
-
-
-
-
-
-
-
 	public void supprimer(Personnage personnage) {
 		this.personnages.remove(personnage);
 	}

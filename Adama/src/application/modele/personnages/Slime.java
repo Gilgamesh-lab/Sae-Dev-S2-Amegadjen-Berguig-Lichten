@@ -22,7 +22,6 @@ public class Slime extends Ennemis {
 	}
 
 	public void agir(){
-		System.out.println("x = "+this.getX()+", y = "+this.getY());
 		if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
 			this.droite();
 			if(!this.touchePasX(true))

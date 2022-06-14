@@ -145,7 +145,6 @@ public abstract class Personnage {
 	/**
 	 * Permet d'effectuer une translationY de -val si toucheY est true
 	 * @param val
-	 * @ failed or interrupted I/O operation
 	 */
 	public void descendre(int val) {
 		for (int i=0; i<val; i++)
@@ -213,18 +212,11 @@ public abstract class Personnage {
 	 */
 	public void sauterEnDirection(boolean direction) { //TODO a finir saut en direction
 		this.sauter();
-		int i = 0;
 		if(direction) {
-			while(i < this.hauteurMaxSaut) {
-				this.translationX(-1);
-				i++;
-			}
+			this.translationX(-1);
 		}
 		else {
-			while(i < this.hauteurMaxSaut) {
-				this.translationX(1);
-				i++;
-			}
+			this.translationX(1);
 		}
 	}
 
