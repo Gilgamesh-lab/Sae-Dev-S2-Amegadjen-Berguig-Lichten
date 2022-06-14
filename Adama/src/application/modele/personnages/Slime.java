@@ -10,11 +10,11 @@ public class Slime extends Ennemis {
 	private static final int VITESSE = 4;
 
 	public Slime(int pv, int x, int y,Environnement environnement)  {
-		super(pv, x, y, VITESSE,environnement,TAILLE, DEGATS, false);
+		super(pv, x, y, VITESSE,environnement,TAILLE, DEGATS);
 	}
 
 	public Slime(Environnement environnement)  {
-		super(environnement,TAILLE, DEGATS, false);
+		super(environnement,TAILLE, DEGATS);
 	}
 
 	public Slime(int x, int y,Environnement env)  {

@@ -2,6 +2,8 @@ package application.modele.personnages;
 
 import application.modele.Environnement;
 import application.modele.exception.ErreurInventairePlein;
+import application.modele.ressources.AntiVenin;
+import application.modele.ressources.Fils;
 
 public class Araignee extends Ennemis {
 	
@@ -10,7 +12,7 @@ public class Araignee extends Ennemis {
 	private static final int TAUX_APPARITION_ANTIVENIN = 75;
 	
 	public Araignee(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int degat) throws ErreurInventairePlein {
-		super(pv, x, y, vitesseDeplacement, environnement, TAILLE, degat, false);
+		super(pv, x, y, vitesseDeplacement, environnement, TAILLE, degat);
 		int lootFils = (int)Math.random()*101;
 		int lootANTIPOISON = (int)Math.random()*101;
 		if(lootFils <= TAUX_APPARITION_FILS)
@@ -20,7 +22,7 @@ public class Araignee extends Ennemis {
 	}
 
 	public Araignee(Environnement environnement, int degat) {
-		super(environnement, TAILLE, degat, false);
+		super(environnement, TAILLE, degat);
 		// TODO Auto-generated constructor stub
 	}
 	

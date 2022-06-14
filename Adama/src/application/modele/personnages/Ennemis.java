@@ -5,7 +5,7 @@ import java.io.IOException;
 import application.modele.Environnement;
 import application.modele.exception.ErreurObjetIntrouvable;
 
-public abstract class Ennemis extends Personnage{
+public abstract class Ennemis extends Pnj{
 	private int degat;
 
 	public Ennemis(int pv, int x, int y, int vitesseDeplacement, Environnement environnement, int[] taille, int degat) {
