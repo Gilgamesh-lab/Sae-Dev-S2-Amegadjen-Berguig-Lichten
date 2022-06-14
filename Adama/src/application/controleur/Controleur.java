@@ -327,7 +327,7 @@ public class Controleur implements Initializable {
 		/*
 		 * Test
 		 */
-		 	seau = new Seau(env);
+		 seau = new Seau(env);
 		try {
 			perso.getInventaire().ajouter(new Hache(env));
 			perso.getInventaire().ajouter(new Pelle(env));

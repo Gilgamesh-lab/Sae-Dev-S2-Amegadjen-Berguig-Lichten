@@ -47,7 +47,7 @@ public abstract class Personnage {
 	private Checkpoint checkpoint;
 	private boolean saut;
 
-	private int longueurSaut;
+//	private int longueurSaut;
 	private ObservableList<Effet> effets;
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
@@ -61,7 +61,7 @@ public abstract class Personnage {
 		this.taille = taille;
 
 
-		this.longueurSaut = longueurSaut;
+//		this.longueurSaut = longueurSaut;
 		this.environnement.ajouter(this);
 
 		this.hauteurMaxSaut = this.hauteurSaut;

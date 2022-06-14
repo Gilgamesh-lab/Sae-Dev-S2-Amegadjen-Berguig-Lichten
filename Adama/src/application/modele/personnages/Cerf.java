@@ -12,8 +12,6 @@ public class Cerf extends Pnj {
 
 
 	public Cerf(Environnement environnement) {
-
-
 		super(PV, 10, 10, VITESSE, environnement, TAILLE);
 
 	}
@@ -24,7 +22,7 @@ public class Cerf extends Pnj {
 	}
 
 	public void agir()  {
-		if (this.estPrèsDuJoueur(Carte.TAILLE_BLOCK*5, TAILLE[1])) {
+		if (this.estPrèsDuJoueur(Carte.TAILLE_BLOCK*5, TAILLE[1]*Carte.TAILLE_BLOCK)) {
 			if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
 				this.gauche();
 				if(!this.touchePasX(false))
