@@ -57,7 +57,7 @@ public class Inventaire {
 			this.items.add(item);
 		}
 		else {
-			throw new ErreurInventairePlein("Tous ce que vous récolterez sera détruit.\nVous devriez videz vos poche pour récolter de nouveau.");
+			throw new ErreurInventairePlein();
 		}
 	}
 

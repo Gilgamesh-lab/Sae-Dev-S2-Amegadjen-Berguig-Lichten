@@ -1,6 +1,7 @@
 package application.modele;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
@@ -27,15 +28,10 @@ public class Environnement {
 		this.personnages = FXCollections.observableArrayList();
 	}
 
+	public void ajouter(Personnage personnage) {
 
-	
-	
-	
-	
-	
-
-
-
+		this.personnages.add(personnage);
+	}
 	
 	public void supprimer(Personnage personnage) {
 		this.personnages.remove(personnage);
@@ -64,6 +60,8 @@ public class Environnement {
 		throw new ErreurObjetIntrouvable("Joueur", "Environnement.personnages");
 	}
 	
+	
+	
 	public ObservableList<Personnage> getPersonnages(){
 		return this.personnages;
 	}
@@ -74,15 +72,11 @@ public class Environnement {
 	
 	
 	
-	public void attaquerPersonnages(int lieu, int degat) throws ErreurInventairePlein {
-		this.personnages.get(lieu).decrementerPv(degat);
+	public void attaquerPersonnages(int lieu, int degat) {
+		this.personnages.get(lieu).decrementerPv(degat);;
 		if (this.personnages.get(lieu).estMort()) {
+			this.personnages.get(lieu).meurt();
 			this.supprimer(lieu);
 		}
-	}
-
-	public void ajouter(Personnage personnage) {
-		this.personnages.add(personnage);
-		
 	}
 }

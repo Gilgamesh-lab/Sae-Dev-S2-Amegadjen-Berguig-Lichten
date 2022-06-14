@@ -1,43 +1,37 @@
 package application.modele.personnages;
 
+import application.controleur.CerfControleur;
 import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.exception.ErreurObjetIntrouvable;
 
 public class Cerf extends Personnage {
 	
-
-	private static final int[] TAILLE = {2,2};
-	private static final int VITESSE = 10;
-	private static final int PV = 10; 
-
+	public final static int[] TAILLE = {2,2};
 
 	public Cerf(Environnement environnement) {
-
-
-		super(PV, 10, 10, VITESSE, environnement, TAILLE);
-
+		super(10, 10, 10, 10, environnement, TAILLE);
 	}
 	
 	public Cerf(int x,int y,Environnement environnement) {
-			super(PV, x, y, VITESSE, environnement, TAILLE);
-
+		super(10, x, y, 10, environnement, TAILLE);
 	}
-
+	
+	public  void agir() throws ErreurObjetIntrouvable{
+		
+	}
+	
+	public void agir(CerfControleur cerfControleur) throws ErreurObjetIntrouvable {
+		if(this.estPrèsDuJoueur(Carte.TAILLE_BLOCK * 5,1)) {
+			if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
+					this.gauche();
+				}
+				else {
+					this.droite();
+			}
+		}
+	}
+	
 	
 
-	public boolean agir() throws ErreurObjetIntrouvable {
-		if(this.ouSeTrouveLeJoueur()) {// si le joueur se trouve à sa droite
-			this.gauche();
-			if(!this.toucheX(false))
-				this.sauter();
-			return false;
-		}
-		else {
-			this.droite();
-			if(!this.toucheX(true))
-				this.sauter();
-			return true;
-		}
-	}
 }

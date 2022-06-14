@@ -1,9 +1,7 @@
 package application.modele.armes;
 
-import application.modele.ressources.Ressource;
 import application.modele.Environnement;
 import application.modele.Inventaire;
-import application.modele.exception.ErreurInventairePlein;
 import application.modele.personnages.Personnage;
 
 public class Epee extends Arme{
@@ -16,7 +14,7 @@ public class Epee extends Arme{
 		
 	}
 
-	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) throws ErreurInventairePlein {
+	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) {
 		int largeur = environnement.getCarte().getLargeur();
 		if (environnement.emplacement(lieu) instanceof Personnage)
 			environnement.attaquerPersonnages(lieu, this.getDegat());
@@ -32,9 +30,34 @@ public class Epee extends Arme{
 	}
 
 	@Override
-	public Ressource utiliser(int val) {
-		return null;
+	public void utiliser(int val) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

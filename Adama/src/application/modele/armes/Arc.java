@@ -6,7 +6,6 @@ import application.modele.Environnement;
 import application.modele.Inventaire;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
-import application.modele.ressources.Ressource;
 import application.modele.personnages.Personnage;
 
 public class Arc extends Arme {
@@ -62,8 +61,7 @@ public class Arc extends Arme {
 
 
 	@Override
-	public Ressource utiliser(int val) {
-		return null;
+	public void utiliser(int val) {
 		// TODO Auto-generated method stub
 		
 	}

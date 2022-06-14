@@ -11,7 +11,7 @@ import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
 import application.modele.ressources.PlanteDeNike;
 import application.modele.ressources.PlanteHercule;
-import application.modele.ressources.PlanteMedicinale;
+import application.modele.ressources.PlanteMédicinale;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.collections.FXCollections;
@@ -32,10 +32,13 @@ public class Carte {
 	public final static int LARGEUR = 60;
 	public final static int TAILLE_BLOCK = 32;
 	private ObservableList<Ressource> blocMap;
+	private Inventaire items;
+
 	public Carte() throws TailleMapException, IOException {
 		this.map = Csv.ouvrir("mapsTest.csv");
 		this.blocMap = FXCollections.observableArrayList();
 		creerListeBlock();
+		this.items = new Inventaire(99);
 	}
 	
 	/**
@@ -113,7 +116,7 @@ public class Carte {
 						blocMap.add(new PlanteHercule(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					case '7':
-						blocMap.add(new PlanteMedicinale(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
+						blocMap.add(new PlanteMédicinale(x*TAILLE_BLOCK, y*TAILLE_BLOCK, x+(y*((ligne.length()+1)/2))));
 						break;
 					default://tous las chiffres de tuile avec lesquelles on ne peut intéragir (ciel, nuage,...)
 						blocMap.add(null);
@@ -137,10 +140,9 @@ public class Carte {
 	 * @param indice
 	 * @throws ErreurInventairePlein 
 	 */
-	public Ressource detruireBlock(int indice) {
-		Ressource blocDetruit = this.blocMap.remove(indice);
+	public void detruireBlock(int indice) throws ErreurInventairePlein {
+		this.items.ajouter(this.blocMap.remove(indice));
 		this.blocMap.add(indice, null);
-		return blocDetruit;
 	}
 	/**
 	 * @param ressource la ressource testé
@@ -165,13 +167,12 @@ public class Carte {
 	 * Permet de faire des degats à des blocs
 	 * @param indice l'endroit où se trouve le bloc dans la liste 
 	 * @param val de combien il est attaquée
-	 * @return 
+	 * @throws ErreurInventairePlein 
 	 */
-	public Ressource attaquerBloc(int indice, int val) {
+	public void attaquerBloc(int indice, int val) throws ErreurInventairePlein {
 		this.blocMap.get(indice).prendreDegat(val);
 		if (this.blocMap.get(indice).estDetruit())
-			return detruireBlock(indice);
-		return null;			
+			detruireBlock(indice);			
 	}
 
 	/**
@@ -180,6 +181,15 @@ public class Carte {
 	 */
 	public ObservableList<Ressource> getBlockMap() {
 		return blocMap;
-	}	
+	}
+	
+	/**
+	 * 
+	 * @return la liste d'items de la map
+	 */
+	public Inventaire getItems() {
+		return items;
+	}
+	
 }
 

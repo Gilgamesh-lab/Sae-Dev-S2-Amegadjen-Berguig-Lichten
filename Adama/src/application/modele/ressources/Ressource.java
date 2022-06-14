@@ -57,6 +57,7 @@ public abstract class Ressource implements Item {
 		return this.yProperty;
 	}
 	
+	public abstract void utiliser();
 	
 	public boolean estPosable() {
 		return this.posable;

@@ -12,8 +12,7 @@ public class PlanteDeNike extends Plante {
 	}
 
 	@Override
-	public Ressource utiliser(int val) {
-		return null;
+	public void utiliser(int val) {
 
 	}
 

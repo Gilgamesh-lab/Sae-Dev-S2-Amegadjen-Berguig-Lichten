@@ -17,10 +17,4 @@ public class Loup extends Ennemis {
 		
 	}
 
-	@Override
-	public boolean agir() {
-		return true;
-		
-	}
-
 }

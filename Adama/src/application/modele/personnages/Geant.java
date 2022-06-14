@@ -13,11 +13,7 @@ public class Geant extends Ennemis {
 		super(environnement,taille, degat, vole);
 	}
     
-	
-
-	@Override
-	public boolean agir() {
-		return true;
+	public  void agir(Object controleur) throws ErreurObjetIntrouvable{
 		
 	}
 }

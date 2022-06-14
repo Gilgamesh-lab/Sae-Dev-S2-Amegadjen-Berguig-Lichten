@@ -1,7 +1,7 @@
 package application.modele.outils;
 
 import application.modele.Environnement;
-import application.modele.ressources.Ressource;
+import application.modele.exception.ErreurInventairePlein;
 import application.modele.ressources.Terre;
 
 public class Pelle extends Outil {
@@ -21,12 +21,15 @@ public class Pelle extends Outil {
 	/**
 	 * Permet d'utiliser la pelle sur le bloc visé
 	 * @param lieu indice du bloc visé
-	 * @return 
+	 * @throws ErreurInventairePlein 
 	 */
-	@Override
-	public Ressource utiliser(int lieu) {
+	public void pelleter(int lieu) throws ErreurInventairePlein {
 		if (super.getEnvironnement().getCarte().emplacement(lieu) instanceof Terre)
-			return super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
-		return null;
+			super.getEnvironnement().getCarte().attaquerBloc(lieu, DEGATS);
 	}
+	
+	public void utiliser(int val) {
+		
+	}
+
 }
