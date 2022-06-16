@@ -3,7 +3,6 @@ package application.modele.outils;
 import application.modele.Environnement;
 import application.modele.Item;
 import application.modele.personnages.Joueur;
-import application.modele.ressources.Ressource;
 
 /**
  * Est au-dessus de Hache, Pelle, Pioche

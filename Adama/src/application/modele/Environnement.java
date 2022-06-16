@@ -1,9 +1,7 @@
 package application.modele;
 
 import java.io.IOException;
-
 import application.modele.exception.ErreurInventairePlein;
-import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
 import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
@@ -37,7 +35,7 @@ public class Environnement {
 
 
 	public Personnage emplacement(int x, int y) {
-		int indiceDansMap = (x/this.getCarte().getHauteur()) + ((y/this.getCarte().getHauteur()) * this.getCarte().getLargeur());
+		int indiceDansMap = (x/Carte.HAUTEUR) + ((y/Carte.HAUTEUR) * Carte.LARGEUR);
 		return this.personnages.get(indiceDansMap);
 	}
 
