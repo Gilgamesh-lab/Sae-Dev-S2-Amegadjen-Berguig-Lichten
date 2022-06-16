@@ -10,11 +10,15 @@ public class JoueurVue {
 
 
 	public JoueurVue() {
-		this.sprite = new ImageView("ressource/perso.png");
+		this.sprite =new ImageView("ressource/perso.png");
 	}
 
 	public ImageView getSprite() {
 		return sprite;
+	}
+	
+	public void setSprite(String image) {
+		this.sprite.setImage(new Image(image));
 	}
 	
 	public void sautVue(int temps) {

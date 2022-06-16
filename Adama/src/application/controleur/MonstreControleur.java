@@ -70,7 +70,7 @@ public class MonstreControleur {
 				
 				else {
 					saut = true;
-					this.slime.getEnvironnement().getJoueur().decrementerPv(2);
+					
 //					for (int k = 0 ; k < 32 ; k++) {
 //						slime.getEnvironnement().getJoueur().translationX(-2);
 //					}

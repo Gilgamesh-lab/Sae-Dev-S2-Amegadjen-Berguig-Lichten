@@ -40,6 +40,7 @@ public class Joueur extends Personnage {
 	private final static int VITESSE_ACCROUPIE = 5;
 	private BooleanProperty estAccroupiProperty;
 	private final static int[] TAILLE = {1,2};
+	private boolean invincibiliter;
 
 
 
@@ -51,6 +52,7 @@ public class Joueur extends Personnage {
 		this.objetEquiper = objetEquiper;
 		this.inventaireRaccourci = inventaireRaccourci;
 		this.estAccroupiProperty = new SimpleBooleanProperty(false);
+		this.invincibiliter = false;
 	}
 
 	public Joueur(int x, int y, Environnement environnement) {
@@ -59,6 +61,15 @@ public class Joueur extends Personnage {
 		this.objetEquiper = this.POING;
 		this.inventaireRaccourci = new Inventaire(10);
 		this.estAccroupiProperty = new SimpleBooleanProperty(false);
+		this.invincibiliter = false;
+	}
+	
+	public boolean estInvincible() {
+		return this.invincibiliter;
+	}
+	
+	public void setInvincibiliter(boolean val) {
+		this.invincibiliter = val;
 	}
 
 	
@@ -269,6 +280,19 @@ public class Joueur extends Personnage {
 	public void teleporterToCheckpoint() {
 		this.setX(this.getCheckpoint().getX());
 		this.setY(this.getCheckpoint().getY());
+	}
+	
+	public Item getObjetEquiper() {
+		return this.objetEquiper;
+	}
+	
+	public Arme getArmeEquiper() {
+		if(this.objetEquiper instanceof Arme) {
+			return (Arme) this.objetEquiper;
+		}
+		else {
+			return this.POING;
+		}
 	}
 	
 	public  void agir() throws ErreurObjetIntrouvable{

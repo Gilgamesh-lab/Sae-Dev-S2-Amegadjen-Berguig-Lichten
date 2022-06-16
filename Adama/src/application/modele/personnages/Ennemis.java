@@ -22,8 +22,8 @@ public abstract class Ennemis extends Personnage{
 		this.vole = vole;
 	}
 	
-	public Ennemis(int x, int y,int vitesseDeplacement,Environnement environnement, int[] taille) {
-		super(10, x, y, 1, environnement, taille);
+	public Ennemis(int pv,int x, int y,int vitesseDeplacement, Environnement environnement, int[] taille) {
+		super(pv, x, y, vitesseDeplacement, environnement, taille);
 		this.degat = 1;
 		this.vole = false;
 	}
