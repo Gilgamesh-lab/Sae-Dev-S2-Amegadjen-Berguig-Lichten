@@ -6,13 +6,13 @@ import application.modele.ressources.Ressource;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public class Seau extends Outil {
+public class Sceau extends Outil {
 
 	private BooleanProperty estRempli;
 	private final static int TEMPS_REMPLISSAGE = 17647; //correspond à environ 5 minutes
 	private Eau eau;
 
-	public Seau(Environnement env) {
+	public Sceau(Environnement env) {
 		super(env, TEMPS_REMPLISSAGE);
 		this.estRempli = new SimpleBooleanProperty(false);
 		eau = null;

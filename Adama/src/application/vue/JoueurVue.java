@@ -1,5 +1,7 @@
 package application.vue;
 
+import javafx.scene.image.Image;
+
 public class JoueurVue extends PersonnageVue {
 
 
@@ -9,10 +11,10 @@ public class JoueurVue extends PersonnageVue {
 
 	
 	public void sautVue(int temps) {
-		if (temps<1) 
-			this.getsprite.setImage(new Image("ressource/persoAccroupi.jpg"));
-		else if (temps==10) 
-			this.sprite.setImage(new Image("ressource/perso.png"));
+//		if (temps<1) 
+//			this.getsprite.setImage(new Image("ressource/persoAccroupi.jpg"));
+//		else if (temps==10) 
+//			this.sprite.setImage(new Image("ressource/perso.png"));
 	}
 	
 

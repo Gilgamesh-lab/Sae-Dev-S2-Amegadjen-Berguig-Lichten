@@ -1,7 +1,7 @@
 package application.controleur;
 
 import application.modele.Item;
-import application.modele.outils.Seau;
+import application.modele.outils.Sceau;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Label;
@@ -32,14 +32,14 @@ public class InventaireControleur implements ListChangeListener<Item> {
 				image = chargerImage(ajout.getClass().getSimpleName());
 				Pane tuile = (Pane) inv.getChildren().get(compteur);
 				ImageView b = ((ImageView) tuile.getChildren().get(0));
-				if(ajout instanceof Seau) {
+				if(ajout instanceof Sceau) {
 					ChangeListener<Boolean> ecouteurDeSeau =  ((obs,old,nouv)-> {
-						if(((Seau) ajout).EstRempli())
+						if(((Sceau) ajout).EstRempli())
 							b.setImage(new Image("ressource/seau_plein.png"));
 						else
 							b.setImage(new Image("ressource/seau_vide.png"));
 					});
-					((Seau) ajout).EstRempliProperty().addListener(ecouteurDeSeau);
+					((Sceau) ajout).EstRempliProperty().addListener(ecouteurDeSeau);
 					
 				}
 				b.setImage(image);

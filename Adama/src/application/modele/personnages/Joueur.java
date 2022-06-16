@@ -20,7 +20,7 @@ import application.modele.effet.Effet;
 import application.modele.effet.Ralentir;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
-import application.modele.outils.Seau;
+import application.modele.outils.Sceau;
 import application.modele.potions.AntiPoison;
 import application.modele.potions.Potion;
 import application.modele.potions.PotionDegat;
@@ -224,11 +224,11 @@ public class Joueur extends Personnage {
 		String planteMedicinale = "PlanteMedicinale";
 		String fils = "Fils";
 		String antiPoison = "AntiPoison";
-		Seau PossedeSeau = null;
+		Sceau PossedeSeau = null;
 		String seau = null;
 		int indiceSaut = items.indexOf(PossedeSeau);
 		if(indiceSaut != -1);
-			PossedeSeau = (application.modele.outils.Seau) super.getInventaire().getItems().get(indiceSaut);
+			PossedeSeau = (application.modele.outils.Sceau) super.getInventaire().getItems().get(indiceSaut);
 			if(PossedeSeau.EstRempli())
 				seau = "Seau";
 
@@ -261,7 +261,7 @@ public class Joueur extends Personnage {
 		
 
 		else if(recette.get(bois) == 5)
-			return new Seau(getEnvironnement());
+			return new Sceau(getEnvironnement());
 
 		else if (seau != null && recette.get(planteDeNike) == 2)
 			return new PotionVitesse();

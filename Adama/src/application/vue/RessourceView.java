@@ -4,6 +4,7 @@ import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
+import application.modele.ressources.Plante;
 import application.modele.ressources.PlanteDeNike;
 import application.modele.ressources.PlanteHercule;
 import application.modele.ressources.PlanteMedicinale;
@@ -27,7 +28,8 @@ public class RessourceView extends ImageView {
 		int val;
 		if (resource==null)
 			val=0;
-		else if (resource instanceof Terre && indice>largeur && env.getCarte().getBlockMap().get(indice-largeur)==null)
+		else if (resource instanceof Terre && indice>largeur && env.getCarte().getBlockMap().get(indice-largeur)==null 
+				|| env.getCarte().getBlockMap().get(indice-largeur) instanceof Plante)
 			val=1;				
 		else if (resource instanceof Pierre)
 			val=3;
@@ -46,9 +48,9 @@ public class RessourceView extends ImageView {
 	public void choixTuile(int val) {
 		Image img = null;
 		switch(val){
-		case 0:
-			img = new Image("ressource/bleu.jpeg");
-			break;
+//		case 0:
+////			img = new Image("ressource/bleu.jpeg");
+//			break;
 		case 1:
 			img = new Image("ressource/herbe.jpeg");
 			break;
@@ -71,10 +73,11 @@ public class RessourceView extends ImageView {
 			img = new Image("ressource/plante médicinale.jpg");
 			break;
 		default:
-			System.out.println("La valeur" + val + " ne correpond à aucune tuiles !");
+//			System.out.println("La valeur" + val + " ne correpond à aucune tuiles !");
 //			img = new Image("ressource/bleu.jpeg");
 			break;
 		}
-		super.setImage(img);
+		if(img!=null)
+			super.setImage(img);
 	}
 }

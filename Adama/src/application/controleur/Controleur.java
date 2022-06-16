@@ -11,21 +11,24 @@ import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Hache;
 import application.modele.outils.Pelle;
 import application.modele.outils.Pioche;
-import application.modele.outils.Seau;
+import application.modele.outils.Sceau;
 import application.modele.personnages.Cerf;
 import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
+//import application.vue.MonstreVue;
+import application.modele.personnages.Pnj;
 import application.modele.personnages.Slime;
 import application.modele.ressources.Ressource;
+import application.modele.ressources.Terre;
 //import application.vue.CerfVue;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
-//import application.vue.MonstreVue;
-import application.modele.personnages.Pnj;
-import application.vue.PNJVue;
+import application.vue.PersonnageVue;
 import application.vue.RessourceView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,8 +55,6 @@ public class Controleur implements Initializable {
 	private Label nbPVResant;
 	@FXML
 	private TilePane inventaire;
-	@FXML
-	private Label nbPVMax;
 
 	private Timeline gameLoop;
 	private int temps;
@@ -66,9 +67,10 @@ public class Controleur implements Initializable {
 	private EnvironnementVue envVue;
 	private ListChangeListener<Ressource> listResssourceListener;
 	private ListChangeListener<Personnage> listPersonnageListener;
-	private PNJVue nouveauPnjVue;
 	private Cerf cerf;
-	private Seau seau;
+	private Sceau seau;
+	private PersonnageVue nouveauPnjVue;
+	private ChangeListener<IntegerProperty> scrollingListener;
 	//	private CerfVue cerfVue;
 	//	private IACerf cerfControleur;
 
@@ -221,7 +223,10 @@ public class Controleur implements Initializable {
 			inventaire.setVisible(false);
 		}
 	}
-
+	@FXML
+	void Organiser(MouseEvent event) {
+		
+	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		///////////// Création de l'environement
@@ -269,7 +274,7 @@ public class Controleur implements Initializable {
 						persoVue.getSprite().setFitWidth(32);
 					}
 					else {
-						nouveauPnjVue = new PNJVue(nouveau.getClass().getSimpleName());
+						nouveauPnjVue = new PersonnageVue(nouveau.getClass().getSimpleName());
 						this.plateau.getChildren().add(nouveauPnjVue.getSprite());
 						nouveauPnjVue.getSprite().xProperty().bind(nouveau.xProperty());
 						nouveauPnjVue.getSprite().yProperty().bind(nouveau.yProperty());
@@ -287,13 +292,12 @@ public class Controleur implements Initializable {
 	///////////Création du Joueur et de son menu
 
 		////////Ajout du Joueur et bind au Sprite du Joueur
-		perso  = new Joueur(420, 0, env);
-		persoVue.getSprite().xProperty().bind(perso.xProperty());
+		perso  = new Joueur(420, 199, env);
+		persoVue.getSprite().xProperty().bind(perso.xProperty().multiply(Carte.LARGEUR/10));
 		persoVue.getSprite().yProperty().bind(perso.yProperty());
 
 		////////Ajout du Joueur et bind au Sprite du Joueur
 		nbPVResant.textProperty().bind(perso.pvProperty().asString());
-		nbPVMax.textProperty().bind(Joueur.maxPvProperty().asString());
 		invControleur = new InventaireControleur(inventaire);
 		perso.getInventaire().getItems().addListener(invControleur);
 
@@ -306,12 +310,16 @@ public class Controleur implements Initializable {
 		/*
 		 * Test
 		 */
-		seau = new Seau(env);
+//		plateau.translateXProperty().bind(perso.xProperty().divide(Carte.LARGEUR/12).negate());
+//		plateau.translateYProperty().bind(perso.yProperty().negate());
+
+		seau = new Sceau(env);
 		try {
 			perso.getInventaire().ajouter(new Hache(env));
 			perso.getInventaire().ajouter(new Pelle(env));
 			perso.getInventaire().ajouter(new Pioche(env));
 			perso.getInventaire().ajouter(seau);
+			perso.getInventaire().ajouter(new Terre(0));
 		} catch (ErreurInventairePlein e) {
 			System.out.println("Plein");
 		}
@@ -327,7 +335,7 @@ public class Controleur implements Initializable {
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
 				(ev -> {
-					if (temps%Seau.getTempsRemplissage()==0 && !seau.EstRempli() && temps!=0) {
+					if (temps%Sceau.getTempsRemplissage()==0 && !seau.EstRempli() && temps!=0) {
 						seau.remplir();
 					}
 					if(temps==100)
