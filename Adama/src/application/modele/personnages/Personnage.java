@@ -9,12 +9,6 @@ import application.modele.exception.ErreurObjetIntrouvable;
 import java.io.IOException;
 
 import application.modele.Carte;
-import application.modele.Checkpoint;
-import application.modele.Environnement;
-import application.modele.Inventaire;
-import application.modele.exception.ErreurInventairePlein;
-import application.modele.exception.ErreurObjetIntrouvable;
-import application.modele.effet.Effet;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Plante;
 import application.modele.ressources.Ressource;
@@ -285,7 +279,7 @@ public abstract class Personnage {
 	public void perdreRessources() throws ErreurInventairePlein { // Lorsque mort perd ses ressources
 		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
 			if(this.inventaire.getItem(i) instanceof Ressource) {
-				this.inventaire.supprimer(i);
+				this.inventaire.getItems().remove(i);
 			}
 		}
 	}

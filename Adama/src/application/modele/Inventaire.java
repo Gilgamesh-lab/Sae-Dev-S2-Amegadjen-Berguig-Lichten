@@ -3,8 +3,11 @@ package application.modele;
 import java.util.ArrayList;
 
 import application.modele.armes.Fleche;
+import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
+import application.modele.potions.Potion;
+import application.modele.ressources.Ressource;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -26,10 +29,6 @@ public class Inventaire {
 
 	public Item getItem(int indice) {
 		return this.items.get(indice);
-	}
-
-	public void setItems(ObservableList<Item> items2) {
-		this.items = items2;
 	}
 
 	public final int getTailleMax() {
@@ -54,7 +53,17 @@ public class Inventaire {
 
 	public void ajouter(Item item) throws ErreurInventairePlein {
 		if(!estPlein()) {
-			this.items.add(item);
+			if(item instanceof Ressource) {
+				Ressource res = (Ressource) memeRessource(item, true);
+				if(res == null) {
+					this.items.add(item);
+				}
+				else
+					res.incrementerNombreProperty();
+			}
+			else {
+				this.items.add(item);
+			}
 		}
 		else {
 			throw new ErreurInventairePlein("Tous ce que vous récolterez sera détruit.\nVous devriez videz vos poche pour récolter de nouveau.");
@@ -70,7 +79,21 @@ public class Inventaire {
 		return false;
 	}
 
-	
+	/**
+	 * Si item a un objet du meme type que lui dans items la méthode le renvoie
+	 * @param item
+	 * @return
+	 */
+	public Item memeRessource (Item item, boolean ajout) {
+		String nomClassRes = "";
+		String nomClassItem = item.getClass().getSimpleName();
+		for(Item res : items) {
+			nomClassRes = res.getClass().getSimpleName();
+			if(ajout && nomClassItem == nomClassRes && ((Ressource) res).getNombre()<Ressource.TAILLE_MAX_STACK)
+				return res;
+		}
+		return null;
+	}
 
 	public boolean estDansInventaire(Item item, int indice) {
 		for(int i = 0; i < this.getTaille() ; i++) {
@@ -80,7 +103,7 @@ public class Inventaire {
 		}
 		return false;
 	}
-	
+
 	public int indiceDansInventaire(Item item) throws ErreurObjetIntrouvable {
 		for(int i = 0; i < this.getTaille() ; i++) {
 			if(this.items.get(i) == item) {
@@ -90,12 +113,34 @@ public class Inventaire {
 		throw new ErreurObjetIntrouvable(item.getClass().getSimpleName(), "Inventaire.items"); 
 	}
 
-	public void supprimer(Item item) {
-		this.items.remove(item);
+	public void supprimer(Item item) throws ErreurArmeEtOutilPasJetable, ErreurObjetIntrouvable {
+		if(item instanceof Ressource) {
+			Ressource res = (Ressource) items.get(indiceDansInventaire(item));
+			if(res == null) {
+				this.items.remove(item);
+			}
+			else {
+				res.decrementerNombre();
+				if(res.getNombre()==0)
+					items.remove(res);
+			}
+		}
+		else if(item instanceof Potion)
+			items.remove(item);
+		else
+			throw new ErreurArmeEtOutilPasJetable();
+
 	}
 
 	public void supprimer(int indice) {
-		this.items.remove(indice);
+		if(this.items.get(indice) instanceof Ressource) {
+			Ressource res = ((Ressource) this.items.get(indice));
+			res.decrementerNombre();
+			if(res.getNombre()==0)
+				items.remove(res);
+		}
+		else if(this.items.get(indice) instanceof Potion)
+			items.remove(indice);
 	}
 
 	public void remplacer(Item item, int indice) { // objet ramassé qui remplace un objet présent dans l'inventaire qui sera jeté
@@ -115,18 +160,18 @@ public class Inventaire {
 		return this.getTaille() >= this.getTailleMax();
 	}
 
-	public void transferer(Item item, Inventaire inventaireSource) throws ErreurInventairePlein { // terminer inventaire, environnement(inventaire), ressources,faire boolean pause, saut
+	public void transferer(Item item, Inventaire inventaireSource) throws ErreurInventairePlein, ErreurArmeEtOutilPasJetable, ErreurObjetIntrouvable { // terminer inventaire, environnement(inventaire), ressources,faire boolean pause, saut
 		this.ajouter(item);
 		inventaireSource.supprimer(item); // indice plus précis mais je ne sais pas si je vais y avoir accès
 	}
 
-	public void ajouterInventaire(Inventaire inventaireSource) throws ErreurInventairePlein {
+	public void ajouterInventaire(Inventaire inventaireSource) throws ErreurInventairePlein, ErreurArmeEtOutilPasJetable, ErreurObjetIntrouvable {
 		for (int i = 0 ; i < inventaireSource.getTaille() ; i++) {
 			this.transferer(inventaireSource.getItem(i), inventaireSource);
 
 		}
 	}
-	
+
 	public Fleche getFleche() throws ErreurObjetIntrouvable {
 		for(int i = 0; i < this.getTaille() ; i++) {
 			if(this.items.get(i) instanceof Fleche) {
@@ -135,8 +180,8 @@ public class Inventaire {
 		}
 		throw new ErreurObjetIntrouvable("Fleche", "Inventaire.Items");
 	}
-	
-	
+
+
 	public ArrayList<Fleche> getFleches() throws ErreurObjetIntrouvable {
 		ArrayList<Fleche> fleches = new ArrayList<Fleche>();
 		for(int i = 0; i < this.getTaille() ; i++) {
@@ -151,13 +196,6 @@ public class Inventaire {
 			return fleches;
 		}
 	}
-
-
-
-
-
-
-
 
 
 }

@@ -10,9 +10,9 @@ public class JoueurVue extends PersonnageVue {
 	
 	public void sautVue(int temps) {
 		if (temps<1) 
-			this.getsprite.setImage(new Image("ressource/persoAccroupi.jpg"));
+			super.setSprite("ressource/persoAccroupi.jpg");
 		else if (temps==10) 
-			this.sprite.setImage(new Image("ressource/perso.png"));
+			super.setSprite("ressource/perso.png");
 	}
 	
 

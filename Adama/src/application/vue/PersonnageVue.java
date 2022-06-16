@@ -1,6 +1,7 @@
 package application.vue;
 
 import javafx.geometry.NodeOrientation;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class PersonnageVue {
@@ -16,6 +17,9 @@ public class PersonnageVue {
 		return sprite;
 	}
 	
+	public void setSprite(String sprite) {
+		this.sprite.setImage(new Image(sprite));
+	}
 	
 	
 	public void orrientationSpriteGauche() {

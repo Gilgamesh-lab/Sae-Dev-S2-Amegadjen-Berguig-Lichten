@@ -11,7 +11,7 @@ import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Hache;
 import application.modele.outils.Pelle;
 import application.modele.outils.Pioche;
-import application.modele.outils.Seau;
+import application.modele.outils.Sceau;
 import application.modele.personnages.Cerf;
 import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
@@ -22,7 +22,7 @@ import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
 //import application.vue.MonstreVue;
 import application.modele.personnages.Pnj;
-import application.vue.PNJVue;
+import application.vue.PersonnageVue;
 import application.vue.RessourceView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -34,6 +34,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -66,9 +67,9 @@ public class Controleur implements Initializable {
 	private EnvironnementVue envVue;
 	private ListChangeListener<Ressource> listResssourceListener;
 	private ListChangeListener<Personnage> listPersonnageListener;
-	private PNJVue nouveauPnjVue;
+	private PersonnageVue nouveauPnjVue;
 	private Cerf cerf;
-	private Seau seau;
+	private Sceau seau;
 	//	private CerfVue cerfVue;
 	//	private IACerf cerfControleur;
 
@@ -81,7 +82,9 @@ public class Controleur implements Initializable {
 
 	@FXML
 	void sourisPresse(MouseEvent event) {
+		//		if(event.getTarget().equals(plateau)) {
 		String click = event.getButton().name();
+		//		System.out.println(click);
 		int x = (int) event.getSceneX();
 		int y = (int) event.getSceneY();
 		Ressource cible = env.getCarte().emplacement(x, y);
@@ -92,34 +95,45 @@ public class Controleur implements Initializable {
 		else {
 			persoControleur.sourisPresse(click, env.getCarte().getBlockMap().indexOf(cible));//a voir si problème avec click sur bouton
 		}
+		//		}
 	}
 
 	@FXML
 	void equiper(MouseEvent event) {
 		try {
 			ImageView ev = (ImageView) event.getTarget();
-			int indiceDansInventaire = Integer.parseInt(ev.getId());
-			Item objetAEquiper = perso.getInventaire().getItem(indiceDansInventaire);
-			String newStyle = "-fx-background-color: #bbbbbb;-fx-border-style:solid;-fx-border-color:red;-fx-border-width:5px;";
-			String oldStyle = "-fx-background-color: #bbbbbb;-fx-border-style:none;-fx-border-width:0px;";
-			for (Node a : inventaire.getChildren())
-				if(a.getStyle().equals(newStyle)) {
-					a.setStyle(oldStyle);
-					a.applyCss();
+			if(ev!=null) {
+				int indiceDansInventaire = Integer.parseInt(ev.getId());
+				Item objetAEquiper = perso.getInventaire().getItem(indiceDansInventaire);
+				String newStyle = "-fx-background-color: #bbbbbb;-fx-border-style:solid;-fx-border-color:red;-fx-border-width:5px;";
+				String oldStyle = "-fx-background-color: #bbbbbb;-fx-border-style:none;-fx-border-width:0px;";
+				for (Node a : inventaire.getChildren())
+					if(a.getStyle().equals(newStyle)) {
+						a.setStyle(oldStyle);
+						a.applyCss();
+					}
+				if(objetAEquiper.equals(perso.getObjetEquiper())) {
+					perso.desequiper();
 				}
-			if(objetAEquiper.equals(perso.getObjetEquiper())) {
-				perso.desequiper();
+				else {
+					perso.equiper(objetAEquiper);
+					ev.getParent().setStyle(newStyle);
+					ev.getParent().applyCss();
+				}
 			}
-			else {
-				perso.equiper(objetAEquiper);
-				ev.getParent().setStyle(newStyle);
-				ev.getParent().applyCss();
-			}
-
 		}catch(Exception e) {
 			System.err.println("Merci de ne pas cliquer sur le bord gris claire");
 		}
+	}
 
+
+
+
+	@FXML
+	void Organiser(DragEvent event) {
+		Object source = event.getGestureSource();
+		Object destination = event.getGestureTarget();
+		System.out.println("source : " + source + "destination : " + destination);
 	}
 
 	@FXML
@@ -131,7 +145,7 @@ public class Controleur implements Initializable {
 		 *
 		 */
 
-//		System.out.println(touchePresse);
+		//		System.out.println(touchePresse);
 		switch (touchePresse) {
 		case "e":
 			ouvrirInventaire();
@@ -171,13 +185,13 @@ public class Controleur implements Initializable {
 			break;
 
 		case "o":
-//			if(cerf.estMort()) {
-				cerf.setPv(10);
-				cerf.setX(perso.getCheckpoint().getX());
-				cerf.setY(perso.getCheckpoint().getY());
-				//cerfVue.getSprite().setVisible(true);
-				System.out.println("Respawn du cerf");
-//			}
+			//			if(cerf.estMort()) {
+			cerf.setPv(10);
+			cerf.setX(perso.getCheckpoint().getX());
+			cerf.setY(perso.getCheckpoint().getY());
+			//cerfVue.getSprite().setVisible(true);
+			System.out.println("Respawn du cerf");
+			//			}
 			break;
 
 		case "k":
@@ -232,9 +246,9 @@ public class Controleur implements Initializable {
 		}
 		envVue = new EnvironnementVue(env, carte);
 
-///////////List Listener
+		///////////List Listener
 
-	//////////Bloc de la carte
+		//////////Bloc de la carte
 		listResssourceListener = (cs -> {
 			while(cs.next()) {
 				int indiceBloc;
@@ -252,7 +266,7 @@ public class Controleur implements Initializable {
 				}
 			}});
 
-	//////////Personnages dans l'environnement
+		//////////Personnages dans l'environnement
 		listPersonnageListener = (pc -> {
 			while(pc.next()) {
 				for (Personnage mort : pc.getRemoved()) {
@@ -269,7 +283,7 @@ public class Controleur implements Initializable {
 						persoVue.getSprite().setFitWidth(32);
 					}
 					else {
-						nouveauPnjVue = new PNJVue(nouveau.getClass().getSimpleName());
+						nouveauPnjVue = new PersonnageVue(nouveau.getClass().getSimpleName());
 						this.plateau.getChildren().add(nouveauPnjVue.getSprite());
 						nouveauPnjVue.getSprite().xProperty().bind(nouveau.xProperty());
 						nouveauPnjVue.getSprite().yProperty().bind(nouveau.yProperty());
@@ -279,12 +293,12 @@ public class Controleur implements Initializable {
 				}
 			}});
 
-	//////////Ajout des listener aux deux liste de l'environement
+		//////////Ajout des listener aux deux liste de l'environement
 		env.getCarte().getBlockMap().addListener(listResssourceListener);
 		env.getPersonnages().addListener(listPersonnageListener);
 
 
-	///////////Création du Joueur et de son menu
+		///////////Création du Joueur et de son menu
 
 		////////Ajout du Joueur et bind au Sprite du Joueur
 		perso  = new Joueur(420, 0, env);
@@ -293,7 +307,6 @@ public class Controleur implements Initializable {
 
 		////////Ajout du Joueur et bind au Sprite du Joueur
 		nbPVResant.textProperty().bind(perso.pvProperty().asString());
-		nbPVMax.textProperty().bind(Joueur.maxPvProperty().asString());
 		invControleur = new InventaireControleur(inventaire);
 		perso.getInventaire().getItems().addListener(invControleur);
 
@@ -306,7 +319,7 @@ public class Controleur implements Initializable {
 		/*
 		 * Test
 		 */
-		seau = new Seau(env);
+		seau = new Sceau(env);
 		try {
 			perso.getInventaire().ajouter(new Hache(env));
 			perso.getInventaire().ajouter(new Pelle(env));
@@ -316,7 +329,8 @@ public class Controleur implements Initializable {
 			System.out.println("Plein");
 		}
 
-////////////Gameloop
+
+		////////////Gameloop
 		initAnimation();
 		gameLoop.play();
 	}
@@ -327,7 +341,7 @@ public class Controleur implements Initializable {
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
 				(ev -> {
-					if (temps%Seau.getTempsRemplissage()==0 && !seau.EstRempli() && temps!=0) {
+					if (temps%Sceau.getTempsRemplissage()==0 && !seau.EstRempli() && temps!=0) {
 						seau.remplir();
 					}
 					if(temps==100)

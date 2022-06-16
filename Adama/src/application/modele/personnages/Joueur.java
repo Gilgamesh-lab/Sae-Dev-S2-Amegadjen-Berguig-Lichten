@@ -1,26 +1,25 @@
 package application.modele.personnages;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import application.modele.exception.ErreurPasDobjetCraftable;
 import application.modele.Carte;
 import application.modele.Checkpoint;
-import application.modele.Inventaire;
-import application.modele.armes.Poing;
-import application.modele.Item;
 import application.modele.Environnement;
+import application.modele.Inventaire;
+import application.modele.Item;
+import application.modele.armes.Arc;
+import application.modele.armes.Arme;
+import application.modele.armes.Epee;
+import application.modele.armes.Fleche;
+import application.modele.armes.Poing;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.ErreurObjetInvalide;
-import application.modele.effet.Effet;
-import application.modele.effet.Ralentir;
-import application.modele.exception.ErreurArmeEtOutilPasJetable;
-import application.modele.exception.ErreurInventairePlein;
-import application.modele.outils.Seau;
+import application.modele.exception.ErreurPasDobjetCraftable;
+import application.modele.outils.Sceau;
 import application.modele.potions.AntiPoison;
 import application.modele.potions.Potion;
 import application.modele.potions.PotionDegat;
@@ -32,20 +31,12 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import application.modele.ressources.Ressource;
-import application.modele.ressources.Terre;
-import application.modele.armes.Arme;
-import application.modele.armes.Epee;
-import application.modele.armes.Arc;
-import application.modele.armes.Fleche;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class Joueur extends Personnage {
 
-	private final static IntegerProperty MAX_PV_PROPERTY = new SimpleIntegerProperty(7);
+	private final static int MAX_PV = 7;
 	private IntegerProperty faimProperty;
-	private final  int MAX_FAIM = 7;
+	private static final int MAX_FAIM = 7;
 	private Item objetEquiper;
 	private Inventaire inventaireRaccourci;
 	private final Poing POING =  new Poing();
@@ -69,13 +60,12 @@ public class Joueur extends Personnage {
 	}
 
 	public Joueur(int x, int y, Environnement environnement) {
-		super(Joueur.getMaxPv(), x, y, 5, environnement, TAILLE );
-		this.faimProperty = new SimpleIntegerProperty(MAX_FAIM);
+		super(Joueur.MAX_PV, x, y, 5, environnement, TAILLE );
+		this.faimProperty = new SimpleIntegerProperty(Joueur.MAX_FAIM);
 		this.objetEquiper = this.POING;
 		this.inventaireRaccourci = new Inventaire(10);
 		this.estAccroupiProperty = new SimpleBooleanProperty(false);
 	}
-
 
 
 
@@ -112,7 +102,7 @@ public class Joueur extends Personnage {
 	}
 
 	public void manger(int nourriture) {
-		for (int i = 0; this.getFaim() < this.MAX_FAIM && i < nourriture ; i++) {
+		for (int i = 0; this.getFaim() < Joueur.MAX_FAIM && i < nourriture ; i++) {
 			this.incrementerNourriture();
 		}
 	}
@@ -152,7 +142,7 @@ public class Joueur extends Personnage {
 	}
 
 	
-	public void utiliserMain(int emplacement) throws ErreurInventairePlein {
+	public void utiliserMain(int emplacement) throws ErreurInventairePlein, ErreurArmeEtOutilPasJetable, ErreurObjetIntrouvable {
 		if (objetEquiper instanceof Potion) {
 			String potion = objetEquiper.getClass().getSimpleName();
 			switch (potion) {
@@ -175,6 +165,9 @@ public class Joueur extends Personnage {
 				carte.getBlockMap().remove(emplacement);
 				carte.getBlockMap().add(emplacement, (Terre)this.objetEquiper);
 				//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
+				super.getInventaire().supprimer(objetEquiper);
+				if(!super.getInventaire().estDansInventaire(objetEquiper))
+					this.desequiper();
 			}
 		}
 	}
@@ -224,11 +217,11 @@ public class Joueur extends Personnage {
 		String planteMedicinale = "PlanteMedicinale";
 		String fils = "Fils";
 		String antiPoison = "AntiPoison";
-		Seau PossedeSeau = null;
+		Sceau PossedeSeau = null;
 		String seau = null;
 		int indiceSaut = items.indexOf(PossedeSeau);
 		if(indiceSaut != -1);
-			PossedeSeau = (application.modele.outils.Seau) super.getInventaire().getItems().get(indiceSaut);
+			PossedeSeau = (application.modele.outils.Sceau) super.getInventaire().getItems().get(indiceSaut);
 			if(PossedeSeau.EstRempli())
 				seau = "Seau";
 
@@ -261,7 +254,7 @@ public class Joueur extends Personnage {
 		
 
 		else if(recette.get(bois) == 5)
-			return new Seau(getEnvironnement());
+			return new Sceau(getEnvironnement());
 
 		else if (seau != null && recette.get(planteDeNike) == 2)
 			return new PotionVitesse();
@@ -279,13 +272,8 @@ public class Joueur extends Personnage {
 		return item;
 	}
 
-	public void afficherMap(Map<String, Integer> maps) {
-		for (String ressource : maps.keySet()) {
-			System.out.println(ressource + " = " + maps.get(ressource));
-		}
-	}
 
-	public void jeter(Item item) throws ErreurArmeEtOutilPasJetable {
+	public void jeter(Item item) throws ErreurArmeEtOutilPasJetable, ErreurObjetIntrouvable {
 		if(!this.estUneArmeOuUnOutil(item)) {
 
 			this.getInventaire().supprimer(item);;
@@ -301,59 +289,21 @@ public class Joueur extends Personnage {
 	}
 
 	public void incrementerPv(int nombrePvRestaurer) {
-		for (int i = 0; this.getPv() < Joueur.getMaxPv() && i < nombrePvRestaurer ; i++) {
+		for (int i = 0; this.getPv() < Joueur.MAX_PV && i < nombrePvRestaurer ; i++) {
 			this.soin();
 		}
 	}
-
-	public void poser(boolean direction) throws ErreurInventairePlein {
-		if(direction) {
-			((Ressource) this.objetEquiper).setX(this.getX() + 32);
-			((Ressource) this.objetEquiper).setY(this.getY());
-		}
-		else {
-			((Ressource) this.objetEquiper).setX(this.getX() - 32);
-			((Ressource) this.objetEquiper).setY(this.getY());
-		}
-		this.getInventaire().supprimer(this.objetEquiper);
-//		this.getEnvironnement().getCarte().getItems().ajouter(this.objetEquiper);
-		this.desequiper();
-	}
-
-
-	public static IntegerProperty maxPvProperty() {
-		return MAX_PV_PROPERTY;
-	}
-
 
 	public void teleporterToCheckpoint() {
 		this.setX(this.getCheckpoint().getX());
 		this.setY(this.getCheckpoint().getY());
 	}
 
-	public  void agir() throws ErreurObjetIntrouvable{
 
-	}
-
-
-
-	public static int getMaxPv() {
-		return MAX_PV_PROPERTY.getValue();
-	}
 
 	public Item getObjetEquiper() {
 		return objetEquiper;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
 }
