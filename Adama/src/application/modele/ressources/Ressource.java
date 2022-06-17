@@ -65,19 +65,19 @@ public abstract class Ressource implements Item {
 		this.durabiliter -= degat;
 	}
 
-	public IntegerProperty nombreProperty() {
+	public final IntegerProperty nombreProperty() {
 		return nombreProperty;
 	}
 	
-	public int getNombre() {
+	public final int getNombre() {
 		return nombreProperty.getValue();
 	}
 	
-	public void incrementerNombreProperty() {
+	public final void incrementerNombreProperty() {
 		this.nombreProperty.set(this.nombreProperty.get()+1);
 	}
 	
-	public void decrementerNombre() {
+	public final void decrementerNombre() {
 		this.nombreProperty.set(this.nombreProperty.get()-1);
 	}
 	
