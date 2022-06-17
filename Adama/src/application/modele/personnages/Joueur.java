@@ -41,7 +41,7 @@ public class Joueur extends Personnage {
 	private final static int VITESSE_MARCHE = 10;
 	private final static int VITESSE_ACCROUPIE = 5;
 	private BooleanProperty estAccroupiProperty;
-	private final static int[] TAILLE = {1,2};
+	private  static int[] TAILLE = {1,2};
 	private boolean invincibiliter;
 
 
@@ -90,7 +90,7 @@ public class Joueur extends Personnage {
 		return this.faimProperty;
 	}
 
-	public final boolean getEstAccroupi() {
+	public final boolean estAccroupi() {
 		return this.estAccroupiProperty.getValue();
 	}
 
@@ -99,7 +99,7 @@ public class Joueur extends Personnage {
 	}
 
 	public final void setEstAccroupi() {
-		this.estAccroupiProperty.setValue(!this.getEstAccroupi());
+		this.estAccroupiProperty.setValue(!this.estAccroupi());
 	}
 
 	public final BooleanProperty estAccroupiProperty() {
@@ -189,8 +189,8 @@ public class Joueur extends Personnage {
 	}
 
 
-	public void accroupie() {
-	
+	public void accroupie(boolean posture) {
+		this.setEstAccroupi(posture);
 	}
 
 	public void setModeDeplacement() { // TODO trouver un meilleure nom 
@@ -199,7 +199,7 @@ public class Joueur extends Personnage {
 		}
 		else {
 			this.setVitesseDeplacement(VITESSE_MARCHE);
-			if(this.getEstAccroupi()) {
+			if(this.estAccroupi()) {
 				this.setEstAccroupi();
 			}
 		}

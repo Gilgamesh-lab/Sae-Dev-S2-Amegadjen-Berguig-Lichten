@@ -157,6 +157,7 @@ public class Controleur implements Initializable{
 			break;						
 		case "w":
 			perso.equiper(new Terre(0));
+			
 					
 		case "a":
 			try {

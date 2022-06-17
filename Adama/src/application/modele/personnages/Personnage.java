@@ -398,6 +398,7 @@ public abstract class Personnage {
 	public int[] getTaille() {
 		return taille;
 	}
+	
 
 	public boolean getSaut() {
 		return saut;

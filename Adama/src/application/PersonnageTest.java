@@ -126,9 +126,23 @@ class PersonnageTest {
 		
 		/* cas égalité */ 
 		
-		slime.setY(7);
+		slime.setX(5);
+		slime.setY(5);
+		
+		assertTrue(slime.estPrèsDuJoueur(3, 3)); // cas le joueur se trouve sur le slime, avec un rayon de 3,3
+		
+		assertTrue(slime.estPrèsDuJoueur(0, 0)); // cas le joueur se trouve sur le slime, avec un rayon null de 0,0
+		
+		/* cas négatif */ 
+		
+		slime.setX(7);
 		slime.setY(7);
 		
+		assertFalse(slime.estPrèsDuJoueur(-3, 0)); // cas le rayon à une valeur négatif pour le x
+		
+		assertFalse(slime.estPrèsDuJoueur(0, -3)); // cas le rayon à une valeur négatif pour le y
+		
+		assertFalse(slime.estPrèsDuJoueur(-3, -3)); // cas le rayon à une valeur négatif pour le x et le y
 		
 		
 		
