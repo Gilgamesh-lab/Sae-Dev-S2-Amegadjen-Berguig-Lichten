@@ -19,6 +19,12 @@ public class Inventaire {
 		this.items = FXCollections.observableArrayList();
 		this.tailleMaxProperty = new SimpleIntegerProperty(taille);
 	}
+	
+	public Inventaire(Item item) {
+		this.items = FXCollections.observableArrayList();
+		this.tailleMaxProperty = new SimpleIntegerProperty(1);
+		this.items.add(item);
+	}
 
 	public ObservableList<Item> getItems() {
 		return this.items;

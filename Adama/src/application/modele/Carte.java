@@ -3,6 +3,7 @@ package application.modele;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
@@ -50,12 +51,21 @@ public class Carte {
 	 * @return le bloc à indiceMap
 	 */
 	
-	public BufferedReader getMap(){
-		System.out.println(map);
-		return this.map;
+	public int aMemeLeSol(int x) {
+		x-=x%TAILLE_BLOCK;
+		int y = -1;
+		int i = 0;
+		boolean trouvee=false;
+		while (i<(LARGEUR*HAUTEUR) && !trouvee) {
+			if (this.blocMap.get(i)!=null && this.blocMap.get(i).getX()==x) {
+				y=this.blocMap.get(i).getY();
+				trouvee=true;
+			}
+				
+			i++;
+		}		
+		return y;
 	}
-	
-	
 
 	public int getHauteur() {
 		return HAUTEUR;

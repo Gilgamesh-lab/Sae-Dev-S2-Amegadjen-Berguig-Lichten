@@ -38,8 +38,9 @@ public abstract class Personnage {
 	private Checkpoint checkpoint;
 	private boolean saut;
 	private ObservableList<Effet> effets;
+	private boolean direction; //true = droite || gauche = false
 
-	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, Checkpoint checkpoint){
 		this.pvProperty = new SimpleIntegerProperty(pv);
 		this.xProperty = new SimpleIntegerProperty(x);
 		this.yProperty = new SimpleIntegerProperty(y);
@@ -70,6 +71,24 @@ public abstract class Personnage {
 		this.environnement.ajouter(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
 	}
+
+	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,
+			Inventaire inventaire, int hauteurSaut, int[] taille) {
+		this.pvProperty = new SimpleIntegerProperty(pv);
+		this.xProperty = new SimpleIntegerProperty(x);
+		this.yProperty = new SimpleIntegerProperty(y);
+		this.vitesseDeplacement = vitesseDeplacement;
+		this.environnement = environnement;
+		this.inventaire = inventaire;
+		this.hauteurSaut = hauteurSaut;
+		this.taille = taille;
+		this.hauteurMaxSaut = this.hauteurSaut;
+		this.environnement.ajouter(this);
+		this.id= compteur;
+		compteur++;
+	}
+
+
 
 	public void setCheckpoint(Checkpoint checkpoint) {
 		this.checkpoint = checkpoint;
@@ -194,10 +213,10 @@ public abstract class Personnage {
 	public void sauterEnDirection(boolean direction) { //TODO a finir saut en direction
 		this.sauter();
 		if(direction) {
-			this.translationX(-1);
+			this.droite();
 		}
 		else {
-			this.translationX(1);
+			this.gauche();
 		}
 	}
 

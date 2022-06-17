@@ -266,6 +266,7 @@ public class Controleur implements Initializable{
 				}
 				for (Personnage nouveau : pc.getAddedSubList()) {
 					if (nouveau instanceof Joueur) {
+						perso = (Joueur) nouveau;
 						persoVue = new JoueurVue();
 						this.plateau.getChildren().add(persoVue.getSprite());
 						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue);
@@ -289,28 +290,14 @@ public class Controleur implements Initializable{
 		env.getCarte().getBlockMap().addListener(listResssourceListener);
 		env.getPersonnages().addListener(listPersonnageListener);
 
-
-	///////////Création du Joueur et de son menu
-
-		////////Ajout du Joueur et bind au Sprite du Joueur
-		perso  = new Joueur(420, 0, env);
-		persoVue.getSprite().xProperty().bind(perso.xProperty());
-		persoVue.getSprite().yProperty().bind(perso.yProperty());
-
-		////////Ajout du Joueur et bind au Sprite du Joueur
+		env.initJeu();
+	///////////Création du menu
+		////////Ajout des PV et bind au Sprite du Joueur
 		nbPVResant.textProperty().bind(perso.pvProperty().asString());
 		invControleur = new InventaireControleur(inventaire);
 		perso.getInventaire().getItems().addListener(invControleur);
 
-		/*
-		 * Test
-		 */
-		cerf = new Cerf(320,100,env);
-		// Test
-		monstre = new Slime(120,100,100, env);
-		/*
-		 * Test
-		 */
+
 		Carte carte = env.getCarte();
 		seau = new Sceau(carte, perso);
 		try {
@@ -337,6 +324,7 @@ public class Controleur implements Initializable{
 //		cerf.meurt();
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
 				(ev -> {
+					env.tourDejeu();
 					if (temps%Sceau.getTempsRemplissage()==0 && !seau.EstRempli() && temps!=0) {
 						seau.remplir();
 					}
@@ -347,11 +335,6 @@ public class Controleur implements Initializable{
 							((Pnj)pnj).agir();
 					});
 					env.getPersonnages().forEach(pj -> pj.gravite());
-//					else if(temps==251)
-//						System.out.println("Toto");
-//					else if(temps>300)
-//						perso.equiper(new Terre(0));
-//					
 //					if(!cerf.estMort()) {
 //						try {
 //							this.cerfControleur.agir();

@@ -47,8 +47,8 @@ public class Joueur extends Personnage {
 
 	public Joueur(int pv,int x, int y,
 			Environnement environnement, int faim, Inventaire inventaire,
-			Item objetEquiper, Inventaire inventaireRaccourci, int hauteurSaut, int longueurSaut, Checkpoint checkpoint) { 
-		super(pv, x, y,5, environnement,inventaire, hauteurSaut, TAILLE, longueurSaut, checkpoint);
+			Item objetEquiper, Inventaire inventaireRaccourci, int hauteurSaut) { 
+		super(pv, x, y, VITESSE_MARCHE, environnement,inventaire, hauteurSaut, TAILLE);
 		this.faimProperty = new SimpleIntegerProperty(faim);
 		this.objetEquiper = objetEquiper;
 		this.inventaireRaccourci = inventaireRaccourci;
