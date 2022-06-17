@@ -19,13 +19,5 @@ public abstract class Ennemis extends Pnj{
 		return this.degat;
 	}
 
-	public void attaquer() throws ErreurObjetIntrouvable {
-		if(this.ouSeTrouveLeJoueur()) {
-			this.droite();
-		}
-	}
-
-	public void sauterSurJoueur() throws ErreurObjetIntrouvable {
-		this.sauterEnDirection(this.ouSeTrouveLeJoueur());
-	}
+	
 }

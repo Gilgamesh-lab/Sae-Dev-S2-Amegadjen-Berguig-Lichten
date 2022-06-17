@@ -170,7 +170,7 @@ public class Joueur extends Personnage {
 			emplacement = this.getX() + Carte.TAILLE_BLOCK;
 		}
 		else {
-			emplacement = this.getX() + Carte.TAILLE_BLOCK;
+			emplacement = this.getX() - Carte.TAILLE_BLOCK;
 		}
 		if(this.objetEquiper instanceof Arme) {
 			this.getEnvironnement().attaquerPersonnages(emplacement, this.getArmeEquiper().getDegat());
@@ -306,6 +306,80 @@ public class Joueur extends Personnage {
 			return this.POING;
 		}
 	}
+	
+	public Personnage attaquer(boolean orientation) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		if(orientation ) {
+			System.out.println("droite");
+			for (Personnage perso : this.getEnvironnement().getPersonnages()) { // si il attaque à droite
+				if(perso != this) {
+					if (this.getX() +  Carte.TAILLE_BLOCK >= perso.getX()  && this.getX() <= perso.getX() && this.getY() == perso.getY()){
+						System.out.println("touché");
+						return perso;
+					}
+					
+					else if (this.getX() +  Carte.TAILLE_BLOCK >= perso.getX()  && this.getX() <= perso.getX() && this.getY() + Carte.TAILLE_BLOCK == perso.getY()) {
+						System.out.println("touché");
+						return perso;
+					}
+					
+					else if (this.getX() +  Carte.TAILLE_BLOCK >= perso.getX()  && this.getX() <= perso.getX() && this.getY() - Carte.TAILLE_BLOCK == perso.getY()) {
+						System.out.println("touché");
+						return perso;
+					}
+				}
+			}
+		}
+		if(!orientation ){ // si il attaque à gauche
+			
+			for (Personnage perso : this.getEnvironnement().getPersonnages()) {
+				
+				if(perso != this) {
+					System.out.println("gauche");
+					if (this.getX() -  Carte.TAILLE_BLOCK <= perso.getX()  && this.getX() >= perso.getX() && this.getY() == perso.getY()){
+						System.out.println("touché");
+						return perso;
+					}
+					
+					else if (this.getX() -  Carte.TAILLE_BLOCK <= perso.getX()  && this.getX() >= perso.getX() && this.getY() + Carte.TAILLE_BLOCK == perso.getY()) {
+						System.out.println("touché");
+						return perso;
+					}
+					
+					else if (this.getX() -  Carte.TAILLE_BLOCK <= perso.getX()  && this.getX() >= perso.getX() && this.getY() - Carte.TAILLE_BLOCK == perso.getY()) {
+						System.out.println("touché");
+						return perso;
+					}
+				}
+			}
+			
+		}
+		throw new ErreurObjetIntrouvable("t","o");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public  void agir() throws ErreurObjetIntrouvable{
 		

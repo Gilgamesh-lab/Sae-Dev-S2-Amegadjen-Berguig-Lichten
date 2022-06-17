@@ -16,16 +16,7 @@ public class Epee extends Arme{
 	}
 
 
-	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) throws ErreurInventairePlein {
-		int largeur = environnement.getCarte().getLargeur();
-		if (environnement.emplacement(lieu) instanceof Personnage)
-			environnement.attaquerPersonnages(lieu, this.getDegat());
-		if (environnement.emplacement(lieu) instanceof Personnage)
-			environnement.attaquerPersonnages(lieu-largeur, this.getDegat());
-		if (environnement.emplacement(lieu) instanceof Personnage)
-			environnement.attaquerPersonnages(lieu+largeur, this.getDegat());
-		
-	}
+
 	
 	public String toString() {
 		return "Epee";

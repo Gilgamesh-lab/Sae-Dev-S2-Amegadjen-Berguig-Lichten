@@ -234,13 +234,13 @@ public abstract class Personnage {
 	}
 
 	public void droite() {
-		if(touchePasX(true) && !this.estEnDehorsMap(vitesseDeplacement, 0))
+		if(touchePasX(true) && !this.estEnDehorsMap(vitesseDeplacement))
 			this.translationX(-vitesseDeplacement);
 		this.direction=true;
 	}
 
 	public void gauche() {
-		if(touchePasX(false) && !this.estEnDehorsMap(-vitesseDeplacement, 0)) {
+		if(touchePasX(false) && !this.estEnDehorsMap(-vitesseDeplacement)) {
 			this.translationX(vitesseDeplacement);
 		}
 
@@ -373,13 +373,11 @@ public abstract class Personnage {
 		this.hauteurMaxSaut = val;
 	}
 
-	public boolean estEnDehorsMap() {
-		return this.getX() < 0 || this.getY() > 0;
-	}
 	
-	public boolean estEnDehorsMap(int valX, int valY) {
-		return this.getX() + valX < 0 || this.getX() + valX > 1890 ;
+	public boolean estEnDehorsMap(int valX) {
+		return this.getX() + valX <= 0 || this.getX() + valX >= Carte.TAILLE_BLOCK * Carte.LARGEUR ;
 	}
+
 
 	public void setVitesseDeplacement(int vitesseDeplacement) {
 		this.vitesseDeplacement = vitesseDeplacement;
@@ -425,31 +423,7 @@ public abstract class Personnage {
 		return this.getEnvironnement().getJoueur().getX() > this.getX();
 	}
 
-	/**
-	 * Vérifie si le joueur se trouve dans un rayon correspondant à la taille du saut en  blocs autour du personnage
-	 * @return Retourne true si le joueur est à porter du personnage , false sinon
-	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans la carte
-	 */
-//	public boolean estAporterDuJoueur() throws ErreurObjetIntrouvable { // TODO a simplifier
-//		Joueur joueur = this.getEnvironnement().getJoueur();
-//		return this.getX() - this.getLongueurSaut() <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + this.getLongueurSaut() >= joueur.getX()  && this.getX() <= joueur.getX();
-//	}
-	
-	public boolean estAporterDuJoueur(int val) throws ErreurObjetIntrouvable { // TODO a simplifier
-		Joueur joueur = this.getEnvironnement().getJoueur();
-		if(this.getX() - val < joueur.getX()  && this.getX() >= joueur.getX()) {
-			return true;
-		}
-		
-		else if(this.getX() + val > joueur.getX()  && this.getX() <= joueur.getX()) {
-			return true;
-		}
-		
-		
-		else{
-			return  false ;
-		}
-	}
+
 	
 	
 	
@@ -478,7 +452,7 @@ public abstract class Personnage {
 				return true;
 			}
 			
-			else if((this.getY() + valY  <= joueur.getY() && this.getY() >= joueur.getY())) {
+			else if((this.getY() + valY  >= joueur.getY() && this.getY() <= joueur.getY())) {
 				return true;
 			}
 			
@@ -496,100 +470,14 @@ public abstract class Personnage {
 				return true;
 			}
 			
-			else if(this.getY() + valY <= joueur.getY() && this.getY() >= joueur.getY()){
+			else if(this.getY() + valY >= joueur.getY() && this.getY() <= joueur.getY()){
 				return true;
 			}
 		}
 		
 		return  false;
 	}
-	
-	
-	
-	public boolean estPrèsDunPerso(int valX, int valY, Personnage perso) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-		if (this.getX() - valX <= perso.getX()  && this.getX() >= perso.getX()){
-			System.out.println("Question 1 ");
-			return true;
-		}
-		
-		
-			
-		if( this.getX() + valX >= perso.getX()  && this.getX() < perso.getX()){
-			System.out.println("Question 2 ");
-			return true;
-		}
-				
-				
-				
-		
-		else {
-			System.out.println("Question 5 ");
-			return false;
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
-//	public boolean estPrèsDunPerso(int valX, int valY, Personnage perso) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-//		return this.getX() - valX <= perso.getX()  && this.getX() >= perso.getX() && (this.getY() == perso.getY() || (this.getY() + valY  <= perso.getY() && this.getY() >= perso.getY()) || this.getY() - valY <= perso.getY()&& this.getY() >= perso.getY())
-//				|| this.getX() + valX >= perso.getX()  && this.getX() < perso.getX() && (this.getY() == perso.getY() || (this.getY() - valY  >= perso.getY()  && this.getY() <= perso.getY()) || this.getY() + valY >= perso.getY() && this.getY() <= perso.getY());
-//	}
-	
-	public Personnage estPrèsDunPerso(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-		System.out.println("aller");
-		for (Personnage perso : this.environnement.getPersonnages()) {
-			System.out.println("come on : " + perso.getClass().getSimpleName() + " " +( estAporterDuJoueur(valX) && perso != this && !perso.estMort()));
-			if(this.estPrèsDunPerso(valX, valY, perso) && perso != this && !perso.estMort()) {
-				System.out.println("Question 7 ");
-				return perso;
-			}
-		}
-		System.out.println("Question 6 ");
-		throw new ErreurObjetIntrouvable("t","o");
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	public boolean estPrèsDuJoueurBased(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-//		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
-//		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX()
-//				|| this.getX() + valX >= joueur.getX()  && this.getX() < joueur.getX() ;
-//	}
-	
-	public boolean estPrèsDuJoueur2(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
-		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX() && this.getY() - valY <= joueur.getY()  && this.getY() >= joueur.getY()
-				|| this.getX() + valX <= joueur.getX()  && this.getX() >= joueur.getX() && this.getY() + valY <= joueur.getY()  && this.getY() >= joueur.getY();
-	}
 
-	public boolean estSurLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
-		Joueur joueur = this.getEnvironnement().getJoueur();
-		boolean surJoueur = false;
-		surJoueur = ((this.getX() >= joueur.getX() && this.getX() <= joueur.getX()+Carte.TAILLE_BLOCK*joueur.getTaille()[0])
-					|| (this.getX()+Carte.TAILLE_BLOCK*this.getTaille()[0] >= joueur.getX() && this.getX() <= joueur.getX()+Carte.TAILLE_BLOCK*joueur.getTaille()[0]))
-				&& ((this.getY() >= joueur.getY() && this.getY() <= joueur.getY()+32*joueur.getTaille()[1])
-					|| (this.getY()+Carte.TAILLE_BLOCK*this.getTaille()[1] >= joueur.getY() && this.getY() <= joueur.getY()+Carte.TAILLE_BLOCK*joueur.getTaille()[1]));
-		return surJoueur;
-	}
 
 	public int getId() {
 		return id;

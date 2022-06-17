@@ -33,17 +33,17 @@ public class Environnement {
 	}
 	
 	public void tourDejeu() {
-		if (personnages.size()<200)
-			ajouter(faireSpawner());
-		personnages.forEach(pnj -> {
-			if (pnj instanceof Pnj)
-				try {
-					((Pnj)pnj).agir();
-				} catch (ErreurObjetIntrouvable e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		});
+//		if (personnages.size()<200)
+//			ajouter(faireSpawner());
+//		personnages.forEach(pnj -> {
+//			if (pnj instanceof Pnj)
+//				try {
+//					((Pnj)pnj).agir();
+//				} catch (ErreurObjetIntrouvable e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//		});
 		personnages.forEach(perso -> perso.gravite());
 	}
 	
@@ -86,6 +86,15 @@ public class Environnement {
 	public Personnage emplacement(int indice) {
 		return this.personnages.get(indice);
 	}
+	
+	public int getEmplacementPerso(Personnage perso) {
+		for (int i = 0; i < this.getPersonnages().size() ; i++) {
+			if(this.getPersonnages().get(i).getX() == perso.getX() && this.getPersonnages().get(i).getY() == perso.getY()) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 	public Joueur getJoueur() {
 		for (int i = 0; i < this.getPersonnages().size() ; i++) {
@@ -105,10 +114,14 @@ public class Environnement {
 	}
 
 	public void attaquerPersonnages(int lieu, int degat) throws ErreurInventairePlein {
-		this.personnages.get(lieu).decrementerPv(degat);
-		if (this.personnages.get(lieu).estMort()) {
-			this.personnages.get(lieu).meurt();
-			this.supprimer(lieu);
+		for (Personnage perso : this.getPersonnages()) {
+			if (this.getJoueur().getX() + Carte.TAILLE_BLOCK >= perso.getX()  && this.getJoueur().getX() <= perso.getX()){
+					this.personnages.get(lieu).decrementerPv(degat);
+//					if (this.personnages.get(lieu).estMort()) {
+//						this.personnages.get(lieu).meurt();
+//						this.supprimer(lieu);
+//					}
+			} 
 		}
 	}
 
@@ -130,4 +143,6 @@ public class Environnement {
 		
 		return personnagesTouches;
 	}
+
 }
+

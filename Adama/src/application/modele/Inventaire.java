@@ -59,34 +59,8 @@ public class Inventaire {
 		}
 	}
 
-	public boolean estDansInventaire(Item item) {
-		for(int i = 0; i < this.getTaille() ; i++) {
-			if(this.items.get(i) == item) {
-				return true;
-			}
-		}
-		return false;
-	}
 
-	
 
-	public boolean estDansInventaire(Item item, int indice) {
-		for(int i = 0; i < this.getTaille() ; i++) {
-			if(this.items.get(i) == item && i == indice) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public int indiceDansInventaire(Item item) throws ErreurObjetIntrouvable {
-		for(int i = 0; i < this.getTaille() ; i++) {
-			if(this.items.get(i) == item) {
-				return i;
-			}
-		}
-		throw new ErreurObjetIntrouvable(item.getClass().getSimpleName(), "Inventaire.items"); 
-	}
 
 	public void supprimer(Item item) {
 		this.items.remove(item);
@@ -124,31 +98,9 @@ public class Inventaire {
 
 		}
 	}
-	
-	public Fleche getFleche() throws ErreurObjetIntrouvable {
-		for(int i = 0; i < this.getTaille() ; i++) {
-			if(this.items.get(i) instanceof Fleche) {
-				return (Fleche) this.items.get(i);
-			}
-		}
-		throw new ErreurObjetIntrouvable("Fleche", "Inventaire.Items");
-	}
+
 	
 	
-	public ArrayList<Fleche> getFleches() throws ErreurObjetIntrouvable {
-		ArrayList<Fleche> fleches = new ArrayList<Fleche>();
-		for(int i = 0; i < this.getTaille() ; i++) {
-			if(this.items.get(i) instanceof Fleche) {
-				fleches.add((Fleche) this.items.get(i));
-			}
-		}
-		if(fleches.size() == 0) {
-			throw new ErreurObjetIntrouvable("Fleche", "Inventaire.Items");
-		}
-		else {
-			return fleches;
-		}
-	}
 
 
 
