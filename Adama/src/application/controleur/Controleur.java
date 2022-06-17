@@ -8,6 +8,8 @@ import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Item;
 import application.modele.exception.ErreurInventairePlein;
+import application.modele.exception.ErreurObjetCraftable;
+import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.outils.Hache;
 import application.modele.outils.Pelle;
 import application.modele.outils.Pioche;
@@ -30,8 +32,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
@@ -52,6 +57,8 @@ public class Controleur implements Initializable {
 	private TilePane inventaire;
 	@FXML
 	private Label nbPVMax;
+	@FXML
+	private TilePane craft;
 	
 	private Timeline gameLoop;
 	private int temps;
@@ -66,7 +73,7 @@ public class Controleur implements Initializable {
 	private ListChangeListener<Personnage> listPersonnageListener;
 	private PersonnageVue nouveauPnjVue;
 	private Cerf cerf;
-	private Sceau seau;
+	private Sceau sceau;
 	//	private CerfVue cerfVue;
 	//	private IACerf cerfControleur;
 
@@ -124,18 +131,44 @@ public class Controleur implements Initializable {
 	}
 
 
-
+	@FXML
+	void craft(MouseEvent event) {
+		String objetAFrabriquer = ((ImageView) event.getTarget()).getId();
+		System.out.println(objetAFrabriquer);
+		try {
+			perso.craft(objetAFrabriquer);
+			if(objetAFrabriquer.equals("Sceau")) 
+				this.sceau = (Sceau) perso.getInventaire().getItem(perso.getInventaire().getTaille()-1);
+			
+		} catch (ErreurObjetCraftable e) {
+			Alert a = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.CLOSE);
+			a.setTitle(objetAFrabriquer + " non fabricable !");
+			a.setHeaderText("Vous n'avez pas les materiaux neccessaire au craft de " + objetAFrabriquer);
+			a.getDialogPane().setPrefWidth(400);
+			a.show();
+		} catch (ErreurInventairePlein e) {
+			Alert a = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.CLOSE);
+			a.setTitle("Inventaire Plein");
+			a.setHeaderText("Votre Inventaire est plein");
+			a.getDialogPane().setPrefWidth(400);
+			a.show();
+		} catch (ErreurObjetIntrouvable e) {
+			
+		}
+	}
 
 	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
-		System.out.println(touchePresse);
 		switch (touchePresse) {
 		case "e":
 			ouvrirInventaire();
 			event.consume();
 			break;
-
+		case "f":
+			ouvrirCraft();
+			event.consume();
+			break;
 		case "m":
 
 			try {
@@ -200,6 +233,18 @@ public class Controleur implements Initializable {
 		default:
 			persoControleur.touchePresse(touchePresse);
 		}
+	}
+
+	public void ouvrirCraft() {
+		if(!craft.isVisible()) {
+			craft.setDisable(false);
+			craft.setVisible(true);
+		}
+		else {
+			craft.setDisable(true);
+			craft.setVisible(false);
+		}
+		
 	}
 
 	private void ouvrirInventaire() {
@@ -296,12 +341,10 @@ public class Controleur implements Initializable {
 		/*
 		 * Test
 		 */
-		seau = new Sceau(env);
 		try {
 			perso.getInventaire().ajouter(new Hache(env));
 			perso.getInventaire().ajouter(new Pelle(env));
 			perso.getInventaire().ajouter(new Pioche(env));
-			perso.getInventaire().ajouter(seau);
 		} catch (ErreurInventairePlein e) {
 			System.out.println("Plein");
 		}
@@ -318,8 +361,9 @@ public class Controleur implements Initializable {
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
 				(ev -> {
-					if (temps%Sceau.getTempsRemplissage()==0 && !seau.EstRempli() && temps!=0) {
-						seau.remplir();
+					if (sceau != null && temps%Sceau.TEMPS_REMPLISSAGE==0 && !sceau.EstRempli() && temps!=0) {
+						sceau.remplir();
+						System.err.println("J'ai rempli mon sceau");
 					}
 					if(temps==100)
 						System.out.println("ok");

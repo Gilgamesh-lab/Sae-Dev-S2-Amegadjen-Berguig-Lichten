@@ -18,19 +18,26 @@ import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.ErreurObjetInvalide;
-import application.modele.exception.ErreurPasDobjetCraftable;
+import application.modele.exception.ErreurObjetCraftable;
 import application.modele.outils.Sceau;
 import application.modele.potions.AntiPoison;
 import application.modele.potions.Potion;
 import application.modele.potions.PotionDegat;
 import application.modele.potions.PotionVie;
 import application.modele.potions.PotionVitesse;
+import application.modele.ressources.AntiVenin;
+import application.modele.ressources.Bois;
+import application.modele.ressources.Pierre;
+import application.modele.ressources.PlanteDeNike;
+import application.modele.ressources.PlanteHercule;
+import application.modele.ressources.PlanteMedicinale;
 import application.modele.ressources.Ressource;
 import application.modele.ressources.Terre;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.ObservableList;
 
 public class Joueur extends Personnage {
 
@@ -209,67 +216,96 @@ public class Joueur extends Personnage {
 
 
 
-	public Item craft (ArrayList<Item> items) throws ErreurPasDobjetCraftable, ErreurObjetInvalide {
-		String pierre = "Pierre";
-		String bois = "Bois";
-		String planteDeNike = "PlanteDeNike";
-		String planteHercule = "¨PlanteHercule";
-		String planteMedicinale = "PlanteMedicinale";
-		String fils = "Fils";
-		String antiPoison = "AntiPoison";
-		Sceau PossedeSeau = null;
-		String seau = null;
-		int indiceSaut = items.indexOf(PossedeSeau);
-		if(indiceSaut != -1);
-			PossedeSeau = (application.modele.outils.Sceau) super.getInventaire().getItems().get(indiceSaut);
-			if(PossedeSeau.EstRempli())
-				seau = "Seau";
-
-		Item item;
-		Map<String, Integer> recette = new HashMap<String, Integer>();
-
-		recette.put(pierre, 0);
-		recette.put(bois, 0);
-		recette.put(planteDeNike, 0);
-		recette.put(planteMedicinale, 0);
-		recette.put(planteHercule, 0);
-		recette.put(antiPoison, 0);
-		int k = 0;
-		try {
-			for(k = 0 ; k < items.size() ; k ++) {
-				recette.put(items.get(k).getClass().getSimpleName(), recette.get(items.get(k).getClass().getSimpleName()) + 1);
+	public void craft (String ObjetAFabriquer) throws ErreurObjetCraftable, ErreurInventairePlein, ErreurObjetIntrouvable {
+		Inventaire inventaire = super.getInventaire();
+		switch (ObjetAFabriquer) {
+		case "Epee":
+			Bois bois = (Bois) inventaire.memeRessource(new Bois(-1));
+			Pierre pierre = (Pierre) inventaire.memeRessource(new Pierre(-1));
+			if(bois == null || pierre == null || bois.getNombre()<2 && pierre.getNombre()<1) {
+				throw new ErreurObjetCraftable();
 			}
-		}catch (java.lang.NullPointerException e) {
-			throw new ErreurObjetInvalide(items.get(k));
+			else {
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
+				inventaire.supprimer(pierre);
+				inventaire.ajouter(new Epee());
+			}
+			break;
+		case "Sceau":
+			bois = (Bois) inventaire.memeRessource(new Bois(-1));
+			if(bois == null || bois.getNombre()<5) {
+				throw new ErreurObjetCraftable();
+			}
+			else {
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
+				inventaire.ajouter(new Sceau(getEnvironnement()));
+			}
+			break;
+		case "PotionVie":
+			Sceau sceau = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()));
+			PlanteMedicinale med = (PlanteMedicinale) inventaire.memeRessource(new PlanteMedicinale(-1));
+			if(sceau == null || med == null || !sceau.EstRempli()||med.getNombre()<3) {
+				throw new ErreurObjetCraftable();
+			}
+			else {
+				inventaire.supprimer(med);
+				inventaire.supprimer(med);
+				inventaire.supprimer(med);
+				sceau.vider();
+				inventaire.ajouter(new PotionVie());
+			}
+			break;
+		case "PotionDegat":
+			PlanteHercule her = new PlanteHercule(-1);
+		 	Sceau s = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()));
+			med = (PlanteMedicinale) inventaire.memeRessource(her);
+			if(s == null || her == null || !s.EstRempli()||her.getNombre()<2) {
+				throw new ErreurObjetCraftable();
+			}
+			else {
+				inventaire.supprimer(her);
+				inventaire.supprimer(her);
+				s.vider();
+				inventaire.ajouter(new PotionDegat());
+			}
+			break;
+			
+		case "PotionVitesse":
+			Sceau sc = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()));
+			PlanteDeNike nike = (PlanteDeNike) inventaire.memeRessource(new PlanteDeNike(-1));
+			if(sc == null || nike == null || !sc.EstRempli()||nike.getNombre()<3) {
+				throw new ErreurObjetCraftable();
+			}
+			else {
+				inventaire.supprimer(nike);
+				inventaire.supprimer(nike);
+				inventaire.supprimer(nike);
+				sc.vider();
+				inventaire.ajouter(new PotionVitesse());
+			}
+			break;
+			
+		case "Remede":
+			AntiVenin venin = (AntiVenin) inventaire.memeRessource(new AntiVenin(-1));
+			PlanteMedicinale medicinal = (PlanteMedicinale) inventaire.memeRessource(new PlanteMedicinale(-1));
+			if(venin == null || medicinal == null || venin.getNombre()<1 ||medicinal.getNombre()<3) {
+				throw new ErreurObjetCraftable();
+			}
+			else {
+				inventaire.supprimer(medicinal);
+				inventaire.supprimer(medicinal);
+				inventaire.supprimer(venin);
+				inventaire.ajouter(new AntiPoison());
+			}
+			break;
+		default:
+			break;
 		}
-
-		if(recette.get(bois) == 2 && recette.get(pierre) == 1) // 2 bois et 1 pierre crée une épée
-			item = new Epee();
-
-
-		else if(recette.get(bois) == 1 && recette.get(pierre) == 1) // 1 de bois et 1 pierre crée une flèche
-			item = new Fleche();
-		else if(recette.get(bois) == 3 && recette.get(fils) == 1) 
-			item = new Arc(super.getInventaire());
-		
-
-		else if(recette.get(bois) == 5)
-			return new Sceau(getEnvironnement());
-
-		else if (seau != null && recette.get(planteDeNike) == 2)
-			return new PotionVitesse();
-		else if (seau != null && recette.get(planteHercule) == 2)
-			return new PotionDegat();
-
-		else if (seau != null && recette.get(planteMedicinale) == 3)
-			return new PotionVie();
-		else if (seau != null && recette.get(planteMedicinale) == 2 && recette.get(antiPoison) == 1)
-			return new AntiPoison();
-		else {
-			throw new ErreurPasDobjetCraftable();
-		}
-
-		return item;
 	}
 
 
