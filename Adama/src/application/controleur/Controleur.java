@@ -17,10 +17,8 @@ import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
 import application.modele.personnages.Slime;
 import application.modele.ressources.Ressource;
-//import application.vue.CerfVue;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
-//import application.vue.MonstreVue;
 import application.modele.personnages.Pnj;
 import application.vue.PersonnageVue;
 import application.vue.RessourceView;
@@ -30,6 +28,7 @@ import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -48,14 +47,12 @@ public class Controleur implements Initializable {
 	@FXML
 	private TilePane carte;
 	@FXML
-	private Button boutonInventaire;
-	@FXML
 	private Label nbPVResant;
 	@FXML
 	private TilePane inventaire;
 	@FXML
 	private Label nbPVMax;
-
+	
 	private Timeline gameLoop;
 	private int temps;
 	private InventaireControleur invControleur;
@@ -101,9 +98,9 @@ public class Controleur implements Initializable {
 	@FXML
 	void equiper(MouseEvent event) {
 		try {
-			ImageView ev = (ImageView) event.getTarget();
-			if(ev!=null) {
-				int indiceDansInventaire = Integer.parseInt(ev.getId());
+			ImageView image = (ImageView) event.getTarget();
+			if(image!=null) {
+				int indiceDansInventaire = Integer.parseInt(image.getId());
 				Item objetAEquiper = perso.getInventaire().getItem(indiceDansInventaire);
 				String newStyle = "-fx-background-color: #bbbbbb;-fx-border-style:solid;-fx-border-color:red;-fx-border-width:5px;";
 				String oldStyle = "-fx-background-color: #bbbbbb;-fx-border-style:none;-fx-border-width:0px;";
@@ -117,8 +114,8 @@ public class Controleur implements Initializable {
 				}
 				else {
 					perso.equiper(objetAEquiper);
-					ev.getParent().setStyle(newStyle);
-					ev.getParent().applyCss();
+					image.getParent().setStyle(newStyle);
+					image.getParent().applyCss();
 				}
 			}
 		}catch(Exception e) {
@@ -130,25 +127,13 @@ public class Controleur implements Initializable {
 
 
 	@FXML
-	void Organiser(DragEvent event) {
-		Object source = event.getGestureSource();
-		Object destination = event.getGestureTarget();
-		System.out.println("source : " + source + "destination : " + destination);
-	}
-
-	@FXML
 	void touchePresse(KeyEvent event) {
 		String touchePresse = event.getCode().toString().toLowerCase();
-		/*
-		 * TODO Mettre un switch pour gérer les action qui nécessite un wait (ex: pause avec echap)
-		 * et en default persoControleur.touchePresse(touchePresse)
-		 *
-		 */
-
-		//		System.out.println(touchePresse);
+		System.out.println(touchePresse);
 		switch (touchePresse) {
 		case "e":
 			ouvrirInventaire();
+			event.consume();
 			break;
 
 		case "m":
@@ -201,14 +186,6 @@ public class Controleur implements Initializable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
-			try {
-				perso.meurt();
-			} catch (ErreurInventairePlein e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			persoVue.getSprite().setVisible(false);
 			break;
 
 		case "i":
@@ -247,7 +224,7 @@ public class Controleur implements Initializable {
 		envVue = new EnvironnementVue(env, carte);
 
 		///////////List Listener
-
+		
 		//////////Bloc de la carte
 		listResssourceListener = (cs -> {
 			while(cs.next()) {

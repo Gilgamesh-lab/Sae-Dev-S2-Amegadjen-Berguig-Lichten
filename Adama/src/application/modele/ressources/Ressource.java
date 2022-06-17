@@ -10,7 +10,7 @@ public abstract class Ressource implements Item {
 	private IntegerProperty xProperty;
 	private IntegerProperty yProperty;
 	private int indice;
-	public static final int TAILLE_MAX_STACK = 5;
+	public static final int TAILLE_MAX_STACK = 10;
 	private IntegerProperty nombreProperty;
 
 	public Ressource(boolean posable, int x, int y, int indice){

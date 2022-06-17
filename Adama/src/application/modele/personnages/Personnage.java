@@ -41,7 +41,7 @@ public abstract class Personnage {
 	private Checkpoint checkpoint;
 	private boolean saut;
 
-//	private int longueurSaut;
+	//	private int longueurSaut;
 	private ObservableList<Effet> effets;
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,Inventaire inventaire, int hauteurSaut, int[] taille, int longueurSaut, Checkpoint checkpoint){
@@ -55,7 +55,7 @@ public abstract class Personnage {
 		this.taille = taille;
 
 
-//		this.longueurSaut = longueurSaut;
+		//		this.longueurSaut = longueurSaut;
 		this.environnement.ajouter(this);
 
 		this.hauteurMaxSaut = this.hauteurSaut;
@@ -277,11 +277,12 @@ public abstract class Personnage {
 	}
 
 	public void perdreRessources() throws ErreurInventairePlein { // Lorsque mort perd ses ressources
-		for(int i = 0 ; i < this.inventaire.getTaille(); i++) {
-			if(this.inventaire.getItem(i) instanceof Ressource) {
-				this.inventaire.getItems().remove(i);
+		int tailleInventaire =  this.inventaire.getTaille();
+			for(int i = tailleInventaire - 1; i >=0 ; i--) {
+				if(this.inventaire.getItem(i) instanceof Ressource) {
+					this.inventaire.getItems().remove(i);
+				}
 			}
-		}
 	}
 
 	public void gravite() {
@@ -350,7 +351,7 @@ public abstract class Personnage {
 	public boolean estEnLaire() throws IOException {
 		int[] taille = {1,2};//provisoire
 		return this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null;
-    }
+	}
 
 	public void setVitesseDeplacement(int vitesseDeplacement) {
 		this.vitesseDeplacement = vitesseDeplacement;
@@ -415,16 +416,16 @@ public abstract class Personnage {
 	public boolean estPrèsDuJoueur(int valX, int valY) { // peut-être à mettre dans Personnage
 		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse
 		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX() && (this.getY() == joueur.getY() || (this.getY() + valY  <= joueur.getY() && this.getY() >= joueur.getY()) || this.getY() - valY <= joueur.getY()&& this.getY() >= joueur.getY())
-		|| this.getX() + valX >= joueur.getX()  && this.getX() < joueur.getX() && (this.getY() == joueur.getY() || (this.getY() - valY  >= joueur.getY()  && this.getY() <= joueur.getY()) || this.getY() + valY >= joueur.getY() && this.getY() <= joueur.getY());
-		}
+				|| this.getX() + valX >= joueur.getX()  && this.getX() < joueur.getX() && (this.getY() == joueur.getY() || (this.getY() - valY  >= joueur.getY()  && this.getY() <= joueur.getY()) || this.getY() + valY >= joueur.getY() && this.getY() <= joueur.getY());
+	}
 
 	public boolean estSurLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
 		Joueur joueur = this.getEnvironnement().getJoueur();
 		boolean surJoueur = false;
 		surJoueur = ((this.getX() >= joueur.getX() && this.getX() <= joueur.getX()+Carte.TAILLE_BLOCK*joueur.getTaille()[0])
-					|| (this.getX()+Carte.TAILLE_BLOCK*this.getTaille()[0] >= joueur.getX() && this.getX() <= joueur.getX()+Carte.TAILLE_BLOCK*joueur.getTaille()[0]))
+				|| (this.getX()+Carte.TAILLE_BLOCK*this.getTaille()[0] >= joueur.getX() && this.getX() <= joueur.getX()+Carte.TAILLE_BLOCK*joueur.getTaille()[0]))
 				&& ((this.getY() >= joueur.getY() && this.getY() <= joueur.getY()+32*joueur.getTaille()[1])
-					|| (this.getY()+Carte.TAILLE_BLOCK*this.getTaille()[1] >= joueur.getY() && this.getY() <= joueur.getY()+Carte.TAILLE_BLOCK*joueur.getTaille()[1]));
+						|| (this.getY()+Carte.TAILLE_BLOCK*this.getTaille()[1] >= joueur.getY() && this.getY() <= joueur.getY()+Carte.TAILLE_BLOCK*joueur.getTaille()[1]));
 		return surJoueur;
 	}
 

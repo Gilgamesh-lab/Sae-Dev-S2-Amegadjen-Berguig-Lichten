@@ -19,7 +19,7 @@
 				</TilePane>
 				<HBox prefHeight="400.0" prefWidth="400.0" spacing="10.0">
 					<children>
-						<Button fx:id="boutonInventaire" alignment="TOP_RIGHT" maxHeight="64.0" maxWidth="64.0" onAction="#ouvrirInventaire" onKeyPressed="#touchePresse" prefHeight="64.0">
+						<Button alignment="TOP_RIGHT" maxHeight="64.0" maxWidth="64.0" onAction="#ouvrirInventaire" onKeyPressed="#touchePresse" prefHeight="64.0">
 							<graphic>
 								<ImageView fitHeight="64.0" fitWidth="64.0" preserveRatio="true">
 									<image>
@@ -28,7 +28,7 @@
 								</ImageView>
 							</graphic>
 						</Button>
-						<TilePane fx:id="inventaire" hgap="8.0" onDragDropped="#Organiser" prefColumns="4" prefTileHeight="64.0" prefTileWidth="64.0" style="-fx-background-color: #808080;" vgap="8.0" visible="false">
+						<TilePane fx:id="inventaire" hgap="8.0" prefColumns="4" prefTileHeight="64.0" prefTileWidth="64.0" style="-fx-background-color: #808080;" vgap="8.0" visible="false">
 							<children>
 								<Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
 									<children>
@@ -260,113 +260,6 @@
 						</Label>
 					</children>
 				</HBox>
-            <TilePane fx:id="inventaireRaccourci" alignment="BOTTOM_CENTER" hgap="4.0" onDragDropped="#Organiser" onKeyTyped="#touchePresse" onMousePressed="#equiper" prefColumns="10" prefRows="1" prefTileHeight="64.0" prefTileWidth="64.0" style="-fx-background-color: #808080;" translateX="600.0" translateY="900.0" vgap="8.0">
-               <children>
-                  <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="0" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="1" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="2" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="3" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="4" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="5" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="6" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="7" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="8" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Pane onMouseClicked="#equiper" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="9" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="0" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-               </children>
-               <padding>
-                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-               </padding>
-            </TilePane>
 			</children>
 			<padding>
 				<Insets left="40.0" />

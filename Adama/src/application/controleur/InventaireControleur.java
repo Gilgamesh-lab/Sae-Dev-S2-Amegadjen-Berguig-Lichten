@@ -6,6 +6,7 @@ import application.modele.ressources.Ressource;
 import application.vue.InventaireVue;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,29 +45,45 @@ public class InventaireControleur implements ListChangeListener<Item> {
 							b.setImage(new Image("ressource/sceau_vide.png"));
 					});
 					((Sceau) ajout).EstRempliProperty().addListener(ecouteurDeSceau);
-					
+
 				}
 				else if(ajout instanceof Ressource) {
 					nombre.textProperty().bind(((Ressource) ajout).nombreProperty().asString());
-					
+
 				}
 				b.setImage(image);
 				compteur++;
 			}
-			for(Item suppression : c.getRemoved()) {
-				Pane tuile = (Pane) inv.getChildren().get(c.getTo());
-				tuile.setStyle("-fx-background-color: #bbbbbb;-fx-border-style:none;-fx-border-width:0px;");
-				ImageView img = (ImageView) tuile.getChildren().get(0);
-				Label nombre = (Label) tuile.getChildren().get(1);
-				nombre.setVisible(false);
-				nombre.textProperty().unbind();
-				img.setImage(null);
-				
+			//Si c est supprimer, on refait l'inventaire
+			if (c.wasRemoved()) {
+				ObservableList<Item> inventaireModele = (ObservableList<Item>) c.getList();
+				for(compteur = 0; compteur<inv.getChildren().size();compteur++) {
+					Pane tuile = (Pane) inv.getChildren().get(compteur);
+					tuile.setStyle("-fx-background-color: #bbbbbb;-fx-border-style:none;-fx-border-width:0px;");
+					ImageView img = (ImageView) tuile.getChildren().get(0);
+					Label nombre = (Label) tuile.getChildren().get(1);
+					if(compteur<inventaireModele.size()) {
+						Item objet = inventaireModele.get(compteur);
+						image = invVue.chargerImage(objet.getClass().getSimpleName());
+						if(objet instanceof Ressource) {
+							nombre.textProperty().unbind();
+							nombre.textProperty().bind(((Ressource) objet).nombreProperty().asString());
+						}
+					}
+					else {
+						image = null;
+						nombre.setVisible(false);
+						nombre.textProperty().unbind();
+					}
+					img.setImage(image);
+				}
+				compteur = inventaireModele.size();
+
 			}
 
 		}
 
 	}
-	
+
 
 }
