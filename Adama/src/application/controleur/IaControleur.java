@@ -1,17 +1,19 @@
 package application.controleur;
 
-import application.modele.personnages.Ennemis;
 import application.modele.personnages.Pnj;
 import application.vue.PersonnageVue;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-public class IaControleur implements ChangeListener{
+public class IaControleur implements ChangeListener<Pnj>{
 	
 	private Pnj pnj;
 	private PersonnageVue pnjSprite;
 	private boolean saut;
 	private int tempsSaut;
+
+
+
 
 	public IaControleur(Pnj pnj, PersonnageVue pnjSprite) {
 		this.pnj = pnj;
@@ -50,8 +52,8 @@ public class IaControleur implements ChangeListener{
 
 
 	@Override
-	public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-		// TODO Auto-generated method stub
+	public void changed(ObservableValue<? extends Pnj> observable, Pnj oldValue, Pnj newValue) {
+
 		
 	}
 }

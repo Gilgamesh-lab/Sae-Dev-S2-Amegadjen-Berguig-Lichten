@@ -166,7 +166,17 @@ public class Joueur extends Personnage {
 				break;
 			}
 		}
+		if(this.getDirection()) {
+			emplacement = this.getX() + Carte.TAILLE_BLOCK;
+		}
+		else {
+			emplacement = this.getX() + Carte.TAILLE_BLOCK;
+		}
+		if(this.objetEquiper instanceof Arme) {
+			this.getEnvironnement().attaquerPersonnages(emplacement, this.getArmeEquiper().getDegat());
+		}
 		this.objetEquiper.utiliser(emplacement);
+		
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
 			if(carte.getBlockMap().get(emplacement)== null) {
@@ -175,6 +185,7 @@ public class Joueur extends Personnage {
 				//			carte.getBlockMap().set(emplacement, (Terre)this.objetEquiper);
 			}
 		}
+	
 	}
 
 

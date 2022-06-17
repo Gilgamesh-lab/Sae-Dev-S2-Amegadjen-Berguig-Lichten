@@ -14,10 +14,7 @@ public class Epee extends Arme{
 		super(DEGAT, PORTER, TEMPSRECHARGE);
 		
 	}
-	
-	public void utiliser() {
-		
-	}
+
 
 	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) throws ErreurInventairePlein {
 		int largeur = environnement.getCarte().getLargeur();
@@ -36,6 +33,6 @@ public class Epee extends Arme{
 
 	@Override
 	public void utiliser(int val) {
-
+		attaquer();
 	}
 }
