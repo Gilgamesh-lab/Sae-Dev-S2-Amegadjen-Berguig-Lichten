@@ -2,6 +2,7 @@ package application.modele.personnages;
 
 import application.modele.Environnement;
 import application.modele.Inventaire;
+import application.modele.exception.ErreurObjetIntrouvable;
 
 public abstract class Pnj extends Personnage {
 
@@ -9,6 +10,6 @@ public abstract class Pnj extends Personnage {
 		super(pv, x, y, vitesseDeplacement, environnement, inventaire, hauteurSaut, taille);
 	}
 	
-	public abstract void agir();
+	public abstract void agir() throws ErreurObjetIntrouvable;
 
 }

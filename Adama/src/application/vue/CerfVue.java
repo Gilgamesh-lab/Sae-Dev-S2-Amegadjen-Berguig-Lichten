@@ -4,23 +4,21 @@ import javafx.geometry.NodeOrientation;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class PersonnageVue {
+public class CerfVue {
 
 	private ImageView sprite;
 
 
-	public PersonnageVue(String nom) {
-		this.sprite = new ImageView("ressource/"+nom+".png");
+	public CerfVue() {
+		this.sprite = new ImageView("ressource/cerf.png");
 	}
 
 	public ImageView getSprite() {
 		return sprite;
 	}
-
-	public void setSprite(String image) {
-		this.sprite.setImage(new Image(image));
-	}
-
+	
+	
+	
 	public void orrientationSpriteGauche() {
 		if (sprite.effectiveNodeOrientationProperty().get()==NodeOrientation.RIGHT_TO_LEFT)
 			sprite.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
@@ -31,4 +29,5 @@ public class PersonnageVue {
 			sprite.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 	}
 
+	
 }

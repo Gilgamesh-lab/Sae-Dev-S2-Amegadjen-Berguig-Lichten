@@ -35,7 +35,7 @@ public class Carte {
 	private ObservableList<Ressource> blocMap;
 	private Inventaire items;
 
-	public Carte() throws TailleMapException, IOException {
+	public Carte() throws IOException, TailleMapException  {
 		this.map = Csv.ouvrir("mapsTest.csv");
 		this.blocMap = FXCollections.observableArrayList();
 		creerListeBlock();

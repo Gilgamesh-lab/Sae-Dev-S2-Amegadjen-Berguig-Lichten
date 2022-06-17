@@ -6,8 +6,12 @@ import application.modele.exception.ErreurInventairePlein;
 import application.modele.personnages.Personnage;
 
 public class Epee extends Arme{
+	public final static int DEGAT = 5;
+	public final static int PORTER = 2;
+	public final static int TEMPSRECHARGE = 2;
+	
 	public Epee() {
-		super(1, 1, 2);
+		super(DEGAT, PORTER, TEMPSRECHARGE);
 		
 	}
 	

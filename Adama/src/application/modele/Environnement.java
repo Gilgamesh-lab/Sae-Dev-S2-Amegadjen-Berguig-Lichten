@@ -26,7 +26,9 @@ public class Environnement {
 	}
 	
 	public void initJeu() {
-		ajouter(new Joueur(420, 576, this));	
+		ajouter(new Joueur(420, 576, this));
+		Checkpoint checkpoint = new Checkpoint(340,576,this);
+		this.getJoueur().setCheckpoint(checkpoint);
 	}
 	
 	public void tourDejeu() {

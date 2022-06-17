@@ -11,6 +11,9 @@ public abstract class Ennemis extends Pnj{
 		super(pv, x, y, vitesseDeplacement, environnement, inventaire, hauteurSaut, taille);
 		this.degat = degat;
 	}
+
+	
+
 	
 	public int getDegat() {
 		return this.degat;

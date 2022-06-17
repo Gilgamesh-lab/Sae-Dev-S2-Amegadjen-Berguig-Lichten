@@ -2,9 +2,12 @@ package application.modele.personnages;
 
 import application.modele.Environnement;
 import application.modele.Inventaire;
+import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.ressources.Pierre;
 
 public class Slime extends Ennemis {
+
+	
 
 	private static final int PV = 15;
 	public static final int[] TAILLE = {1,1};
@@ -17,7 +20,7 @@ public class Slime extends Ennemis {
 		super(PV, x, y, VITESSE,environnement,INVENTAIRE, HAUTEUR_SAUT, TAILLE, DEGATS);
 	}
 	
-	public void agir(){
+	public void agir() throws ErreurObjetIntrouvable{
 		//verfier si joueur est mort
 		if (!this.touchePasY(false))
 			if(!this.estPrèsDuJoueur(32, 64))
@@ -32,6 +35,7 @@ public class Slime extends Ennemis {
 						this.sauterEnDirection(false);
 				}
 	}
+
 //	public void agir() throws ErreurObjetIntrouvable {
 //		if(!slime.getEnvironnement().getJoueur().estMort()) {
 //			if(!slime.toucheY(false)) {
@@ -55,5 +59,11 @@ public class Slime extends Ennemis {
 //							avancer = true;
 //						}
 //					}
+
+	
+	
+	public  void agir(Object controleur) throws ErreurObjetIntrouvable{
+		
+	}
 
 }

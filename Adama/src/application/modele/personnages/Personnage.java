@@ -70,6 +70,7 @@ public abstract class Personnage {
 		this.taille = taille;
 		this.environnement.ajouter(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
+
 	}
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,
@@ -225,13 +226,14 @@ public abstract class Personnage {
 	}
 
 	public void droite() {
-		if(touchePasX(true))
+		if(touchePasX(true) && !this.estEnDehorsMap(vitesseDeplacement, 0))
 			this.translationX(-vitesseDeplacement);
 	}
 
 	public void gauche() {
-		if(touchePasX(false))
+		if(touchePasX(false) && !this.estEnDehorsMap(-vitesseDeplacement, 0)) {
 			this.translationX(vitesseDeplacement);
+		}
 	}
 
 	/**
@@ -351,6 +353,10 @@ public abstract class Personnage {
 	public boolean estEnDehorsMap() {
 		return this.getX() < 0 || this.getY() > 0;
 	}
+	
+	public boolean estEnDehorsMap(int valX, int valY) {
+		return this.getX() + valX < 0 || this.getX() + valX > 1890 ;
+	}
 
 
 	public boolean estEnLaire() {
@@ -407,22 +413,156 @@ public abstract class Personnage {
 	 * @return Retourne true si le joueur est à porter du personnage , false sinon
 	 * @throws ErreurObjetIntrouvable Survient si aucune instance de la classe Joueur est présente dans la carte
 	 */
-	public boolean estAporterDuJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+//	public boolean estAporterDuJoueur() throws ErreurObjetIntrouvable { // TODO a simplifier
+//		Joueur joueur = this.getEnvironnement().getJoueur();
+//		return this.getX() - this.getLongueurSaut() <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + this.getLongueurSaut() >= joueur.getX()  && this.getX() <= joueur.getX();
+//	}
+	
+	public boolean estAporterDuJoueur(int val) throws ErreurObjetIntrouvable { // TODO a simplifier
 		Joueur joueur = this.getEnvironnement().getJoueur();
-		return this.getX() - this.vitesseDeplacement*this.hauteurMaxSaut <= joueur.getX()  && this.getX() >= joueur.getX() || this.getX() + this.vitesseDeplacement*this.hauteurMaxSaut >= joueur.getX()  && this.getX() <= joueur.getX();
+		if(this.getX() - val < joueur.getX()  && this.getX() >= joueur.getX()) {
+			return true;
+		}
+		
+		else if(this.getX() + val > joueur.getX()  && this.getX() <= joueur.getX()) {
+			return true;
+		}
+		
+		
+		else{
+			return  false ;
+		}
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Vérifie si le joueur se trouve dans un rayon de val blocs autour du personnage, val étant la varaiable passé en paramètre
 	 * @param val : valeur correspondant au rayon du cercle qui définit si le joueur est à portee
 	 * @param
 	 * @return Retourne true si le joueur est près du personnage , false sinon
 	 */
-	public boolean estPrèsDuJoueur(int valX, int valY) { // peut-être à mettre dans Personnage
-		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse
-		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX() && (this.getY() == joueur.getY() || (this.getY() + valY  <= joueur.getY() && this.getY() >= joueur.getY()) || this.getY() - valY <= joueur.getY()&& this.getY() >= joueur.getY())
-		|| this.getX() + valX >= joueur.getX()  && this.getX() < joueur.getX() && (this.getY() == joueur.getY() || (this.getY() - valY  >= joueur.getY()  && this.getY() <= joueur.getY()) || this.getY() + valY >= joueur.getY() && this.getY() <= joueur.getY());
+	
+	public boolean estPrèsDuJoueur(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		Joueur joueur = this.getEnvironnement().getJoueur(); // TODO a commenter, a debugger
+		if(this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX()) { // Si le joueur se trouve dans un rayon de valX derriere le personnage
+			
+			if (this.getY() == joueur.getY() ) {
+				return true;
+			}
+			
+			else if((this.getY() + valY  <= joueur.getY() && this.getY() >= joueur.getY())) {
+				return true;
+			}
+			
+			else if(this.getY() - valY <= joueur.getY()&& this.getY() >= joueur.getY()){
+				return true;
+			}
 		}
+		if (this.getX() + valX >= joueur.getX()  && this.getX() < joueur.getX()) { // Si le joueur se trouve dans un rayon de valX devant le personnage
+			
+			if(this.getY() == joueur.getY()) {
+				return true;
+			}
+			
+			else if(this.getY() - valY  <= joueur.getY()  && this.getY() >= joueur.getY()){
+				return true;
+			}
+			
+			else if(this.getY() + valY <= joueur.getY() && this.getY() >= joueur.getY()){
+				return true;
+			}
+		}
+		
+		return  false;
+	}
+	
+	
+	
+	public boolean estPrèsDunPerso(int valX, int valY, Personnage perso) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		if (this.getX() - valX <= perso.getX()  && this.getX() >= perso.getX()){
+			System.out.println("Question 1 ");
+			return true;
+		}
+		
+		
+			
+		if( this.getX() + valX >= perso.getX()  && this.getX() < perso.getX()){
+			System.out.println("Question 2 ");
+			return true;
+		}
+				
+				
+				
+		
+		else {
+			System.out.println("Question 5 ");
+			return false;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+//	public boolean estPrèsDunPerso(int valX, int valY, Personnage perso) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+//		return this.getX() - valX <= perso.getX()  && this.getX() >= perso.getX() && (this.getY() == perso.getY() || (this.getY() + valY  <= perso.getY() && this.getY() >= perso.getY()) || this.getY() - valY <= perso.getY()&& this.getY() >= perso.getY())
+//				|| this.getX() + valX >= perso.getX()  && this.getX() < perso.getX() && (this.getY() == perso.getY() || (this.getY() - valY  >= perso.getY()  && this.getY() <= perso.getY()) || this.getY() + valY >= perso.getY() && this.getY() <= perso.getY());
+//	}
+	
+	public Personnage estPrèsDunPerso(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		System.out.println("aller");
+		for (Personnage perso : this.environnement.getPersonnages()) {
+			System.out.println("come on : " + perso.getClass().getSimpleName() + " " +( estAporterDuJoueur(valX) && perso != this && !perso.estMort()));
+			if(this.estPrèsDunPerso(valX, valY, perso) && perso != this && !perso.estMort()) {
+				System.out.println("Question 7 ");
+				return perso;
+			}
+		}
+		System.out.println("Question 6 ");
+		throw new ErreurObjetIntrouvable("t","o");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	public boolean estPrèsDuJoueurBased(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+//		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
+//		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX()
+//				|| this.getX() + valX >= joueur.getX()  && this.getX() < joueur.getX() ;
+//	}
+	
+	public boolean estPrèsDuJoueur2(int valX, int valY) throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
+		Joueur joueur = this.getEnvironnement().getJoueur(); // faire abscisse 
+		return this.getX() - valX <= joueur.getX()  && this.getX() >= joueur.getX() && this.getY() - valY <= joueur.getY()  && this.getY() >= joueur.getY()
+				|| this.getX() + valX <= joueur.getX()  && this.getX() >= joueur.getX() && this.getY() + valY <= joueur.getY()  && this.getY() >= joueur.getY();
+	}
 
 	public boolean estSurLeJoueur() throws ErreurObjetIntrouvable { // peut-être à mettre dans Personnage
 		Joueur joueur = this.getEnvironnement().getJoueur();
