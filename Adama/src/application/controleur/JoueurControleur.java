@@ -1,19 +1,20 @@
 package application.controleur;
 
 import application.modele.exception.ErreurInventairePlein;
+import application.modele.armes.Epee;
 import application.modele.personnages.Joueur;
 import application.vue.JoueurVue;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 
 public class JoueurControleur {
 
 	private Joueur perso;
 	private JoueurVue persoVue;
 	private boolean messageDejaVu;
-
 
 	public JoueurControleur(Joueur perso, JoueurVue persoVue) {
 		this.perso=perso;
@@ -43,7 +44,23 @@ public class JoueurControleur {
 				break;
 			case "s":
 				break;
-		}
+				
+		
+			
+			case "c":
+				Epee epee = new Epee();
+				perso.equiper(epee);
+				persoVue.setSprite("ressource/persoEpeeRanger.png");
+				break;
+				
+			case "v":
+				persoVue.setSprite("ressource/persoEpeeLever.png");
+				
+	
+			}
+		
+		
+			
 	}
 
 	public void sourisPresse(String click, int emplacement) {

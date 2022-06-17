@@ -1,20 +1,20 @@
 package application.modele.armes;
 
-import application.modele.ressources.Ressource;
 import application.modele.Environnement;
 import application.modele.Inventaire;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.personnages.Personnage;
 
 public class Epee extends Arme{
-	public Epee() {
-		super(1, 1, 2);
-		
-	}
+	public final static int DEGAT = 5;
+	public final static int PORTER = 2;
+	public final static int TEMPSRECHARGE = 2;
 	
-	public void utiliser() {
+	public Epee() {
+		super(DEGAT, PORTER, TEMPSRECHARGE);
 		
 	}
+
 
 	public void attaquer(Inventaire inventaire, Environnement environnement, int lieu) throws ErreurInventairePlein {
 		int largeur = environnement.getCarte().getLargeur();
@@ -33,6 +33,6 @@ public class Epee extends Arme{
 
 	@Override
 	public void utiliser(int val) {
-	
+		attaquer();
 	}
 }
