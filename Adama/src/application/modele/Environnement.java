@@ -30,8 +30,13 @@ public class Environnement {
 	}
 	
 	public void tourDejeu() {
-		ajouter(faireSpawner());
-
+		if (personnages.size()<200)
+			ajouter(faireSpawner());
+		personnages.forEach(pnj -> {
+			if (pnj instanceof Pnj)
+				((Pnj)pnj).agir();
+		});
+		personnages.forEach(perso -> perso.gravite());
 	}
 	
 	private ArrayList<Pnj> faireSpawner() {

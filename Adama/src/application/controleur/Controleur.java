@@ -66,6 +66,7 @@ public class Controleur implements Initializable{
 	private Cerf cerf;
 	private Sceau seau;
 	private Slime monstre;
+	private IaControleur ia;
 
 	@FXML
 	void ouvrirInventaire(ActionEvent event) {
@@ -272,15 +273,16 @@ public class Controleur implements Initializable{
 						persoControleur = new JoueurControleur((Joueur)nouveau, persoVue);
 						persoVue.getSprite().xProperty().bind(nouveau.xProperty());
 						persoVue.getSprite().yProperty().bind(nouveau.yProperty());
-						persoVue.getSprite().setFitHeight(64);
-						persoVue.getSprite().setFitWidth(32);
+						persoVue.getSprite().setFitWidth(nouveau.getTaille()[0]*Carte.TAILLE_BLOCK);
+						persoVue.getSprite().setFitHeight(nouveau.getTaille()[1]*Carte.TAILLE_BLOCK);
 					}
 					else {
 						nouveauPnjVue = new PersonnageVue(nouveau.getClass().getSimpleName());
 						this.plateau.getChildren().add(nouveauPnjVue.getSprite());
+						ia = new IaControleur((Pnj)nouveau, nouveauPnjVue);
 						nouveauPnjVue.getSprite().xProperty().bind(nouveau.xProperty());
 						nouveauPnjVue.getSprite().yProperty().bind(nouveau.yProperty());
-						nouveauPnjVue.getSprite().setFitHeight(nouveau.getTaille()[0]*Carte.TAILLE_BLOCK);
+						nouveauPnjVue.getSprite().setFitWidth(nouveau.getTaille()[0]*Carte.TAILLE_BLOCK);
 						nouveauPnjVue.getSprite().setFitHeight(nouveau.getTaille()[1]*Carte.TAILLE_BLOCK);
 					}
 				}
@@ -330,11 +332,6 @@ public class Controleur implements Initializable{
 					}
 					if(temps==100)
 						System.out.println("ok");
-					env.getPersonnages().forEach(pnj -> {
-						if (pnj instanceof Pnj)
-							((Pnj)pnj).agir();
-					});
-					env.getPersonnages().forEach(pj -> pj.gravite());
 //					if(!cerf.estMort()) {
 //						try {
 //							this.cerfControleur.agir();

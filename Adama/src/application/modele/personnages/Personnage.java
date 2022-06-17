@@ -54,6 +54,7 @@ public abstract class Personnage {
 		this.checkpoint = checkpoint;
 		this.id= compteur;
 		compteur++;
+		this.direction=false;
 	}
 
 	
@@ -70,6 +71,9 @@ public abstract class Personnage {
 		this.taille = taille;
 		this.environnement.ajouter(this);
 		this.checkpoint = new Checkpoint(x,y,environnement);
+		this.id= compteur;
+		compteur++;
+		this.direction=false;
 	}
 
 	public Personnage(int pv, int x, int y, int vitesseDeplacement, Environnement environnement,
@@ -86,6 +90,7 @@ public abstract class Personnage {
 		this.environnement.ajouter(this);
 		this.id= compteur;
 		compteur++;
+		this.direction=false;
 	}
 
 
@@ -227,11 +232,25 @@ public abstract class Personnage {
 	public void droite() {
 		if(touchePasX(true))
 			this.translationX(-vitesseDeplacement);
+		this.direction=true;
 	}
 
 	public void gauche() {
 		if(touchePasX(false))
 			this.translationX(vitesseDeplacement);
+		this.direction=false;
+	}
+	
+	public void droitePousse(int pousseDe) {
+		if(touchePasX(true))
+			this.translationX(-pousseDe);
+		this.direction=false;
+	}
+
+	public void gauchePousse(int pousseDe) {
+		if(touchePasX(false))
+			this.translationX(pousseDe);
+		this.direction=true;
 	}
 
 	/**
