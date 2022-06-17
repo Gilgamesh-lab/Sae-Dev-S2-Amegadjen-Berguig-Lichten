@@ -5,7 +5,7 @@ import application.modele.Environnement;
 public class Slime extends Ennemis {
 
 
-	private static final int[] TAILLE = {1,1};
+	public static final int[] TAILLE = {1,1};
 	private static final int DEGATS = 5;
 	private static final int VITESSE = 4;
 

@@ -2,10 +2,7 @@ package application.modele;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import application.modele.exception.ErreurInventairePlein;
-import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.TailleMapException;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
@@ -64,11 +61,6 @@ public class Carte {
 	
 	public Ressource emplacement(int x, int y) {
 		int indiceDansMap = (x/TAILLE_BLOCK) + ((y/TAILLE_BLOCK) * LARGEUR);
-		return this.blocMap.get(indiceDansMap);
-	}
-	
-	public Ressource emplacement(int x, int y, int[] taille) {
-		int indiceDansMap = (x/TAILLE_BLOCK)+(taille[0]/2) + ((y/TAILLE_BLOCK) * LARGEUR)+taille[1];
 		return this.blocMap.get(indiceDansMap);
 	}
 	

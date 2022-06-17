@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Item;
+import application.modele.armes.Epee;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.outils.Hache;
 import application.modele.outils.Pelle;
@@ -66,13 +67,18 @@ public class Controleur implements Initializable {
 	private EnvironnementVue envVue;
 	private ListChangeListener<Ressource> listResssourceListener;
 	private ListChangeListener<Personnage> listPersonnageListener;
-	private PNJVue nouveauPnjVue;
-	private Cerf cerf;
-	private Seau seau;
-	//	private CerfVue cerfVue;
-	//	private IACerf cerfControleur;
+//	private PersonnageVue nouveauPnjVue;
+//	private Sceau seau;
+//	private boolean toucherM = false;
+//	private int tempsToucherM = 0 ;
+//
+//	private boolean toucherJ = false;
+//	private int tempsToucherJ = 0 ;
+//
+//	private boolean toucherE = false;
+//	private int tempsToucherE = 0 ;
 
-	private Slime monstre;
+//	private IaControleur ia;
 
 	@FXML
 	void ouvrirInventaire(ActionEvent event) {
@@ -131,86 +137,17 @@ public class Controleur implements Initializable {
 		 *
 		 */
 
-//		System.out.println(touchePresse);
+		//		System.out.println(touchePresse);
 		switch (touchePresse) {
 		case "e":
 			ouvrirInventaire();
-			break;
-
-		case "m":
-
-			try {
-				monstre.meurt();
-			} catch (ErreurInventairePlein e3) {
-				// TODO Auto-generated catch block
-				e3.printStackTrace();
-			}
-			//monstreVue.getSprite().setVisible(false);
-			System.out.println("You Win");
-			break;
-
-		case "p":
-			if(monstre.estMort()) {
-				monstre.setPv(10);
-				monstre.setX(perso.getCheckpoint().getX());
-				monstre.setY(perso.getCheckpoint().getY());
-				//monstreVue.getSprite().setVisible(true);
-				System.out.println("Respawn du slime");
-			}
-			break;
-
-		case "l":
-			try {
-				cerf.meurt();
-			} catch (ErreurInventairePlein e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			///cerfVue.getSprite().setVisible(false);
-			System.out.println("Good Meal");
-			break;
-
-		case "o":
-//			if(cerf.estMort()) {
-				cerf.setPv(10);
-				cerf.setX(perso.getCheckpoint().getX());
-				cerf.setY(perso.getCheckpoint().getY());
-				//cerfVue.getSprite().setVisible(true);
-				System.out.println("Respawn du cerf");
-//			}
-			break;
-
-		case "k":
-			try {
-				perso.meurt();
-			} catch (ErreurInventairePlein e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-			try {
-				perso.meurt();
-			} catch (ErreurInventairePlein e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			persoVue.getSprite().setVisible(false);
-			break;
-
-		case "i":
-			if(perso.estMort()) {
-				perso.incrementerPv(7);
-				perso.teleporterToCheckpoint();
-				persoVue.getSprite().setVisible(true);
-				System.out.println("Respawn");
-			}
-			break;
-
+			break;						
 		default:
 			persoControleur.touchePresse(touchePresse);
+			break;
 		}
 	}
-
+	
 	private void ouvrirInventaire() {
 		if(!inventaire.isVisible()) {
 			inventaire.setDisable(false);
@@ -269,12 +206,13 @@ public class Controleur implements Initializable {
 						persoVue.getSprite().setFitWidth(32);
 					}
 					else {
-						nouveauPnjVue = new PNJVue(nouveau.getClass().getSimpleName());
-						this.plateau.getChildren().add(nouveauPnjVue.getSprite());
-						nouveauPnjVue.getSprite().xProperty().bind(nouveau.xProperty());
-						nouveauPnjVue.getSprite().yProperty().bind(nouveau.yProperty());
-						nouveauPnjVue.getSprite().setFitHeight(nouveau.getTaille()[0]*Carte.TAILLE_BLOCK);
-						nouveauPnjVue.getSprite().setFitHeight(nouveau.getTaille()[1]*Carte.TAILLE_BLOCK);
+//						nouveauPnjVue = new PNJVue(nouveau.getClass().getSimpleName());
+//						this.plateau.getChildren().add(nouveauPnjVue.getSprite());
+//						ia = new IaControleur((Pnj)nouveau, nouveauPnjVue);
+//						nouveauPnjVue.getSprite().xProperty().bind(nouveau.xProperty());
+//						nouveauPnjVue.getSprite().yProperty().bind(nouveau.yProperty());
+//						nouveauPnjVue.getSprite().setFitHeight(nouveau.getTaille()[0]*Carte.TAILLE_BLOCK);
+//						nouveauPnjVue.getSprite().setFitHeight(nouveau.getTaille()[1]*Carte.TAILLE_BLOCK);
 					}
 				}
 			}});
@@ -283,15 +221,11 @@ public class Controleur implements Initializable {
 		env.getCarte().getBlockMap().addListener(listResssourceListener);
 		env.getPersonnages().addListener(listPersonnageListener);
 
+		env.initJeu();
 
-	///////////Création du Joueur et de son menu
+///////////Création du menu
 
-		////////Ajout du Joueur et bind au Sprite du Joueur
-		perso  = new Joueur(420, 0, env);
-		persoVue.getSprite().xProperty().bind(perso.xProperty());
-		persoVue.getSprite().yProperty().bind(perso.yProperty());
-
-		////////Ajout du Joueur et bind au Sprite du Joueur
+	////////Ajout des PV et bind au Sprite du Joueur
 		nbPVResant.textProperty().bind(perso.pvProperty().asString());
 		nbPVMax.textProperty().bind(Joueur.maxPvProperty().asString());
 		invControleur = new InventaireControleur(inventaire);
@@ -300,23 +234,24 @@ public class Controleur implements Initializable {
 		/*
 		 * Test
 		 */
-		cerf = new Cerf(320,100,env);
-		// Test
-		monstre = new Slime(120,100,100, env);
-		/*
-		 * Test
-		 */
-		seau = new Seau(env);
+		Carte carte = env.getCarte();
+//		seau = new Sceau(carte, perso);
 		try {
 			perso.getInventaire().ajouter(new Hache(env));
 			perso.getInventaire().ajouter(new Pelle(env));
 			perso.getInventaire().ajouter(new Pioche(env));
-			perso.getInventaire().ajouter(seau);
+//			perso.getInventaire().ajouter(seau);
+			perso.getInventaire().ajouter(new Epee());
 		} catch (ErreurInventairePlein e) {
 			System.out.println("Plein");
 		}
+		/*
+		 * Test
+		 */
 
-////////////Gameloop
+////////////Lancement du Jeu
+	
+	////////////Gameloop
 		initAnimation();
 		gameLoop.play();
 	}
@@ -327,19 +262,344 @@ public class Controleur implements Initializable {
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
 				(ev -> {
-					if (temps%Seau.getTempsRemplissage()==0 && !seau.EstRempli() && temps!=0) {
-						seau.remplir();
-					}
+					env.tourDejeu();
+//					if (temps%Seau.getTempsRemplissage()==0 && !seau.EstRempli() && temps!=0) {
+//						seau.remplir();
+//					}
 					if(temps==100)
 						System.out.println("ok");
-					env.getPersonnages().forEach(pnj -> {
-						if (pnj instanceof Pnj)
-							((Pnj)pnj).agir();
-					});
-					env.getPersonnages().forEach(pj -> pj.gravite());
+					
 
-					temps++;
+					//					if(!cerf.estMort()) {
+					//						try {
+					//							this.cerfControleur.agir();
+					//						} catch (ErreurObjetIntrouvable e1) {
+					//							// TODO Auto-generated catch block
+					//							System.out.println("Pas d'ennemie");
+					//						}
+					//					}
+					////
+					////							
+					////					
+					//					try {
+					//						if(!monstre.estMort()) {
+					//							monstreControleur.agir();
+					//							if(monstreControleur.getTempsSaut() < 8 &&monstreControleur.isSaut()) {
+					//			//						perso.monter(4);
+					//									System.out.println(2);
+					//									monstre.monter(4);
+					//									monstre.translationX(-2);
+					//									monstreControleur.incremterTempsSaut();
+					//							}
+					//					if(temps==100)
+					//						System.out.println("ok");
+					//					
+					//					else if(temps==251)
+					//						System.out.println("Toto");
+					//					else if(temps>300)
+					//						perso.equiper(new Terre(0));
 
+					//					if(!cerf.estMort()) {
+					//						try {
+					//							this.cerf.agir();
+					//						} catch (ErreurObjetIntrouvable e1) {
+					//							// TODO Auto-generated catch block
+					//							System.out.println("Pas d'ennemie");
+					//						}
+					//					}
+					//
+					//							
+					//							if(monstreControleur.getTempsSaut() >= 8) {
+					//								if(monstre.ouSeTrouveLeJoueur()) {
+					//									valRecul = -2;
+					//								}
+					//								else {
+					//									valRecul = 2;
+					//								}
+					//								
+					//								System.out.println(valRecul);
+					//								for (int k = 0 ; k < 32 ; k++) {
+					//									perso.translationX(valRecul);
+					//								}
+					//								
+					//								monstreControleur.reinisialiseTempsSaut();
+					//								monstreControleur.setSaut(false);
+					//								this.toucherJ = true;
+					//							}
+					//							
+					//							
+					//							if(monstreControleur.getTempsSaut()== 32 && monstreControleur.isSaut()) {
+					//								System.out.println("0k");
+					//								monstreControleur.setSaut(false);
+					//								monstreControleur.reinisialiseTempsSaut();
+					//							}
+					//						}
+					//					}catch (ErreurObjetIntrouvable  e) {
+					//						System.out.println("Pas d'ennemie");
+					//					}
+					//					
+					//					if(perso.estMort() && timeRespawn ==  -1) {
+					//						persoVue.getSprite().setVisible(false);
+					//						System.out.println("Game over");
+					//						timeRespawn =  0;
+					//					}
+					//					
+					//					if(timeRespawn > 1) {
+					//						perso.incrementerPv(7);
+					//						perso.teleporterToCheckpoint();
+					//						persoVue.getSprite().setVisible(true);
+					//						System.out.println("Respawn");
+					//						timeRespawn =  -1;
+					//					try {
+					//						if(!monstre.estMort()) {
+					//							monstre.agir();
+					//							if(monstre.getTempsSaut() < 8 && monstre.isSaut()) {
+					//			//						perso.monter(4);
+					//									System.out.println(2);
+					//									monstre.monter(4);
+					//									monstre.translationX(-2);
+					//									monstreControleur.incremterTempsSaut();
+					//							}
+					//							
+					//							if(monstreControleur.getTempsSaut() >= 8) {
+					//								if(monstre.ouSeTrouveLeJoueur()) {
+					//									valRecul = -2;
+					//								}
+					//								else {
+					//									valRecul = 2;
+					//								}
+					//								
+					//								System.out.println(valRecul);
+					//								for (int k = 0 ; k < 32 ; k++) {
+					//									perso.translationX(valRecul);
+					//								}
+					//								monstre.getEnvironnement().getJoueur().decrementerPv(2);
+					//								
+					//								monstreControleur.reinisialiseTempsSaut();
+					//								monstreControleur.setSaut(false);
+					//								this.toucherJ = true;
+					//							}
+					//							
+					//							
+					//							if(monstreControleur.getTempsSaut()== 32 && monstreControleur.isSaut()) {
+					//								System.out.println("0k");
+					//								monstreControleur.setSaut(false);
+					//								monstreControleur.reinisialiseTempsSaut();
+					//							}
+					//						}
+					//					}catch (ErreurObjetIntrouvable  e) {
+					//						System.out.println("Pas d'ennemie");
+					//					}
+
+					if(perso.estMort() ) {
+						persoVue.getSprite().setVisible(false);
+						System.out.println("Game over");
+						perso.incrementerPv(7);
+						perso.teleporterToCheckpoint();
+						persoVue.getSprite().setVisible(true);
+						System.out.println("Respawn");
+					}
+
+
+
+					//					if(!perso.estMort()) {
+					//						if(persoControleur.getTempsSaut()<30&&persoControleur.isSaut()) {
+					//								perso.monter(4);
+					//								//perso.sauter();
+					//								persoControleur.incremterTempsSaut();
+					//							}	
+					//							
+					//							
+					//							
+					//						else if(persoControleur.getTempsSaut()==30&&persoControleur.isSaut()) {
+					//							persoControleur.setSaut(false);
+					//							persoControleur.reinisialiseTempsSaut();
+					//						}
+					//					}
+					//					if(tempsToucherM%2==0 && tempsToucherM <50 && toucherM) {
+					//						monstreVue.getSprite().setVisible(false);
+					//					}
+					//					
+					//					if(tempsToucherM%2 ==1 && tempsToucherM < 50 && toucherM) {
+					//						if(toucherM) {
+					//							monstreVue.getSprite().setVisible(true);
+					//						}
+					//					}
+//
+//					if(tempsToucherJ%2==0 && tempsToucherJ < 50 && toucherJ) {
+//						persoVue.getSprite().setVisible(false);
+//					}
+//
+//					if(tempsToucherJ%2 ==1 && tempsToucherJ < 50 && toucherJ) {
+//						if(toucherJ) {
+//							persoVue.getSprite().setVisible(true);
+//						}
+//					}
+
+					//					if(toucherE && tempsToucherE == 0) {
+					//						Personnage ennemie;
+					//						try {
+					//							System.out.println("Porter : " + perso.getArmeEquiper().getPorter());
+					//							ennemie = perso.estPrèsDunPerso(perso.getArmeEquiper().getPorter() * Carte.TAILLE_BLOCK, 1);
+					//							System.out.println("marche");
+					//							if(ennemie.ouSeTrouveLeJoueur()) {
+					//								ennemie.translationX(Carte.TAILLE_BLOCK  * 2);
+					//							}
+					//							else {
+					//								ennemie.translationX(-Carte.TAILLE_BLOCK  * 2);
+					//							}
+					//							ennemie.decrementerPv(perso.getArmeEquiper().getDegat());
+					//							System.out.println(ennemie.getPv());
+					//							if(ennemie.estMort()) {
+					//								if(ennemie instanceof Cerf) {
+					//									cerfVue.getSprite().setVisible(false);
+					//							
+					//								}
+					//								if(ennemie instanceof Slime) {
+					//									monstreVue.getSprite().setVisible(false);
+					//								}
+					//							}
+					//						}catch (ErreurObjetIntrouvable | ErreurInventairePlein e) {
+					//							System.out.println("Pas d'ennemie");
+					//						}
+					//
+					//					}
+//
+//					if(tempsToucherE == 1 && toucherE) {
+//						persoVue.setSprite("ressource/persoEpeeLever.png");
+//					}
+//
+//					if(tempsToucherE >= 10 && toucherE) {
+//						persoVue.setSprite("ressource/persoEpeeRanger.png");
+//					}
+//
+//					System.out.println("x : " + perso.getX() + "y : " + perso.getY());
+//
+//					if(temps%2==0)
+
+						//					}
+						//					
+						//					if(!perso.estMort()) {
+						//						if(persoControleur.getTempsSaut()<30&&persoControleur.isSaut()) {
+						//								perso.monter(4);
+						//								//perso.sauter();
+						//								persoControleur.incremterTempsSaut();
+						//							}	
+						//							
+						//							
+						//							
+						//						else if(persoControleur.getTempsSaut()==30&&persoControleur.isSaut()) {
+						//							persoControleur.setSaut(false);
+						//							persoControleur.reinisialiseTempsSaut();
+						//						}
+						//					}
+						//					if(tempsToucherM%2==0 && tempsToucherM <50 && toucherM) {
+						//						monstreVue.getSprite().setVisible(false);
+						//					}
+						//					
+						//					if(tempsToucherM%2 ==1 && tempsToucherM < 50 && toucherM) {
+						//						if(toucherM) {
+						//							monstreVue.getSprite().setVisible(true);
+						//						}
+						//					}
+						//					
+						//					if(tempsToucherJ%2==0 && tempsToucherJ < 50 && toucherJ) {
+						//						persoVue.getSprite().setVisible(false);
+						//					}
+						//					
+						//					if(tempsToucherJ%2 ==1 && tempsToucherJ < 50 && toucherJ) {
+						//						if(toucherJ) {
+						//							persoVue.getSprite().setVisible(true);
+						//						}
+						//					}
+						//					
+						//					if(temps%2==0)
+						////						
+						//						for(Personnage personnage : env.getPersonnages()) {
+						//							if(!personnage.estMort()) {
+						//								personnage.gravite();
+						//							}
+						//							else if (!personnage.estEnDehorsMap()) {
+						//								personnage.meurt();
+						//								if(personnage instanceof Cerf) {
+						//									cerfVue.getSprite().setVisible(false);
+						//							
+						//								}
+						//								if(personnage instanceof Slime) {
+						//									monstreVue.getSprite().setVisible(false);
+						//								}
+						//								
+						//							}
+						//						}
+
+
+						//					temps++;
+						//					if(toucherM) {
+						//						tempsToucherM ++;
+						//					}
+						//					if(tempsToucherM> 50) {
+						//						toucherM = false;
+						//						tempsToucherM =0;
+						//					}
+						//					if(toucherJ) {
+						//						tempsToucherJ ++;
+						//					}
+						//					if(tempsToucherJ> 50) {
+						//						toucherJ = false;
+						//						tempsToucherJ =0;
+						//					}
+						//					if(timeRespawn >= 0) {
+						//						timeRespawn++;
+						//					}
+						//					
+						//						for(Personnage personnage : env.getPersonnages()) {
+						//							if(!personnage.estMort()) {
+						//								personnage.gravite();
+						//							}
+						//							else if (!personnage.estEnDehorsMap(0,0)) {
+						//								try {
+						//									personnage.meurt();
+						//								} catch (ErreurInventairePlein e) {
+						//									// TODO Auto-generated catch block
+						//									e.printStackTrace();
+						//								}
+						//								if(personnage instanceof Cerf) {
+						//									cerfVue.getSprite().setVisible(false);
+						//							
+						//								}
+						//								if(personnage instanceof Slime) {
+						//									monstreVue.getSprite().setVisible(false);
+						//								}
+						//								
+						//							}
+						//						}
+						temps++;
+//					if(toucherM) {
+//						tempsToucherM ++;
+//					}
+//					if(tempsToucherM> 50) {
+//						toucherM = false;
+//						tempsToucherM =0;
+//					}
+//
+//					if(tempsToucherE> perso.getArmeEquiper().getTempsRecharge() * 10 ) { // temps de recharge arme
+//						toucherE = false;
+//						tempsToucherE =0;
+//					}
+//
+//					if(toucherE) {
+//						tempsToucherE ++;
+//					}
+//
+//
+//					if(toucherJ) {
+//						tempsToucherJ ++;
+//					}
+//					if(tempsToucherJ> 50) {
+//						toucherJ = false;
+//						tempsToucherJ =0;
+//					}
+//
 				})
 				);
 		gameLoop.getKeyFrames().add(kf);

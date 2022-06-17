@@ -352,12 +352,6 @@ public abstract class Personnage {
 		return this.getX() < 0 || this.getY() > 0;
 	}
 
-
-	public boolean estEnLaire() throws IOException {
-		int[] taille = {1,2};//provisoire
-		return this.environnement.getCarte().emplacement(this.getX(), this.getY(), taille)==null;
-    }
-
 	public void setVitesseDeplacement(int vitesseDeplacement) {
 		this.vitesseDeplacement = vitesseDeplacement;
 	}

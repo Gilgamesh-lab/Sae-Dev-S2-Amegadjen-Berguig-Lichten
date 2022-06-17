@@ -6,7 +6,7 @@ import application.modele.Environnement;
 public class Cerf extends Pnj {
 
 
-	private static final int[] TAILLE = {2,2};
+	public static final int[] TAILLE = {2,2};
 	private static final int VITESSE = 10;
 	private static final int PV = 10;
 
