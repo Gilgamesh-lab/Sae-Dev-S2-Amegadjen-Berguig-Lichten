@@ -138,7 +138,9 @@ public class Controleur implements Initializable {
 		try {
 			perso.craft(objetAFrabriquer);
 			if(objetAFrabriquer.equals("Sceau")) 
-				this.sceau = (Sceau) perso.getInventaire().getItem(perso.getInventaire().getTaille()-1);
+				//Si on est ici c'est que le sceau a ete fabriquer. C'est donc le dernier item de l'inventaire
+				this.sceau = (Sceau) perso.getInventaire().getItem(perso.getInventaire().getTaille()-1); 
+			//Je le récupere pour savoir si c'est il est plein ou non
 			
 		} catch (ErreurObjetCraftable e) {
 			Alert a = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.CLOSE);

@@ -1,18 +1,12 @@
 package application.modele.personnages;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import application.modele.Carte;
 import application.modele.Checkpoint;
 import application.modele.Environnement;
 import application.modele.Inventaire;
 import application.modele.Item;
-import application.modele.armes.Arc;
 import application.modele.armes.Arme;
 import application.modele.armes.Epee;
-import application.modele.armes.Fleche;
 import application.modele.armes.Poing;
 import application.modele.exception.ErreurArmeEtOutilPasJetable;
 import application.modele.exception.ErreurInventairePlein;
@@ -37,7 +31,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.ObservableList;
 
 public class Joueur extends Personnage {
 
@@ -215,92 +208,99 @@ public class Joueur extends Personnage {
 	}
 
 
-
+	/**
+	 * Cherche dans l'inventaire du joueur si il a les materiaux necessaire au caft
+	 * Si c'est le cas on ajoute l'objet dans l'inventaire et on le supprime les matériaux
+	 * sinon on envoie l'erreur ErreurObjetCraftable.
+	 * @param ObjetAFabriquer
+	 * @throws ErreurObjetCraftable Si le joueur n'a pas les ressources neccessaire au craft
+	 * @throws ErreurInventairePlein
+	 * @throws ErreurObjetIntrouvable
+	 */
 	public void craft (String ObjetAFabriquer) throws ErreurObjetCraftable, ErreurInventairePlein, ErreurObjetIntrouvable {
 		Inventaire inventaire = super.getInventaire();
 		switch (ObjetAFabriquer) {
 		case "Epee":
-			Bois bois = (Bois) inventaire.memeRessource(new Bois(-1));
-			Pierre pierre = (Pierre) inventaire.memeRessource(new Pierre(-1));
+			Bois bois = (Bois) inventaire.memeRessource(new Bois(-1), false);
+			Pierre pierre = (Pierre) inventaire.memeRessource(new Pierre(-1), false);
 			if(bois == null || pierre == null || bois.getNombre()<2 && pierre.getNombre()<1) {
 				throw new ErreurObjetCraftable();
 			}
 			else {
+				inventaire.ajouter(new Epee());
 				inventaire.supprimer(bois);
 				inventaire.supprimer(bois);
 				inventaire.supprimer(pierre);
-				inventaire.ajouter(new Epee());
 			}
 			break;
 		case "Sceau":
-			bois = (Bois) inventaire.memeRessource(new Bois(-1));
+			bois = (Bois) inventaire.memeRessource(new Bois(-1), false);
 			if(bois == null || bois.getNombre()<5) {
 				throw new ErreurObjetCraftable();
 			}
 			else {
-				inventaire.supprimer(bois);
-				inventaire.supprimer(bois);
-				inventaire.supprimer(bois);
-				inventaire.supprimer(bois);
-				inventaire.supprimer(bois);
 				inventaire.ajouter(new Sceau(getEnvironnement()));
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
+				inventaire.supprimer(bois);
 			}
 			break;
 		case "PotionVie":
-			Sceau sceau = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()));
-			PlanteMedicinale med = (PlanteMedicinale) inventaire.memeRessource(new PlanteMedicinale(-1));
+			Sceau sceau = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()), false);
+			PlanteMedicinale med = (PlanteMedicinale) inventaire.memeRessource(new PlanteMedicinale(-1), false);
 			if(sceau == null || med == null || !sceau.EstRempli()||med.getNombre()<3) {
 				throw new ErreurObjetCraftable();
 			}
 			else {
+				inventaire.ajouter(new PotionVie());
 				inventaire.supprimer(med);
 				inventaire.supprimer(med);
 				inventaire.supprimer(med);
 				sceau.vider();
-				inventaire.ajouter(new PotionVie());
 			}
 			break;
 		case "PotionDegat":
-			PlanteHercule her = new PlanteHercule(-1);
-		 	Sceau s = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()));
-			med = (PlanteMedicinale) inventaire.memeRessource(her);
+		 	Sceau s = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()), false);
+			PlanteHercule her = (PlanteHercule) inventaire.memeRessource(new PlanteHercule(-1),false);
 			if(s == null || her == null || !s.EstRempli()||her.getNombre()<2) {
 				throw new ErreurObjetCraftable();
 			}
 			else {
+				inventaire.ajouter(new PotionDegat());
 				inventaire.supprimer(her);
 				inventaire.supprimer(her);
 				s.vider();
-				inventaire.ajouter(new PotionDegat());
 			}
 			break;
 			
 		case "PotionVitesse":
-			Sceau sc = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()));
-			PlanteDeNike nike = (PlanteDeNike) inventaire.memeRessource(new PlanteDeNike(-1));
+			Sceau sc = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()), false);
+			PlanteDeNike nike = (PlanteDeNike) inventaire.memeRessource(new PlanteDeNike(-1), false);
 			if(sc == null || nike == null || !sc.EstRempli()||nike.getNombre()<3) {
 				throw new ErreurObjetCraftable();
 			}
 			else {
+				inventaire.ajouter(new PotionVitesse());
 				inventaire.supprimer(nike);
 				inventaire.supprimer(nike);
 				inventaire.supprimer(nike);
 				sc.vider();
-				inventaire.ajouter(new PotionVitesse());
 			}
 			break;
 			
 		case "Remede":
-			AntiVenin venin = (AntiVenin) inventaire.memeRessource(new AntiVenin(-1));
-			PlanteMedicinale medicinal = (PlanteMedicinale) inventaire.memeRessource(new PlanteMedicinale(-1));
+			AntiVenin venin = (AntiVenin) inventaire.memeRessource(new AntiVenin(-1), false);
+			PlanteMedicinale medicinal = (PlanteMedicinale) inventaire.memeRessource(new PlanteMedicinale(-1), false);
 			if(venin == null || medicinal == null || venin.getNombre()<1 ||medicinal.getNombre()<3) {
 				throw new ErreurObjetCraftable();
 			}
 			else {
+				inventaire.ajouter(new AntiPoison());
 				inventaire.supprimer(medicinal);
 				inventaire.supprimer(medicinal);
 				inventaire.supprimer(venin);
-				inventaire.ajouter(new AntiPoison());
 			}
 			break;
 		default:

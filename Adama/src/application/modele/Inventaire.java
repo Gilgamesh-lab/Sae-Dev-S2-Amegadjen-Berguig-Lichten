@@ -53,7 +53,7 @@ public class Inventaire {
 	public void ajouter(Item item) throws ErreurInventairePlein {
 		if(!estPlein()) {
 			if(item instanceof Ressource) {
-				Ressource res = (Ressource) memeRessource(item);
+				Ressource res = (Ressource) memeRessource(item, true);
 				if(res == null) {
 					this.items.add(item);
 				}
@@ -81,14 +81,17 @@ public class Inventaire {
 	/**
 	 * Si item a un objet du meme type que lui dans items la méthode le renvoie
 	 * @param item
+	 * @param ajout pour savoir si on utilise pour ajouter une ressource ou pour en trouver une pour le craft
 	 * @return
 	 */
-	public Item memeRessource (Item item) {
+	public Item memeRessource (Item item, boolean ajout) {
 		String nomClassRes = "";
 		String nomClassItem = item.getClass().getSimpleName();
 		for(Item res : items) {
 			nomClassRes = res.getClass().getSimpleName();
-			if(nomClassItem == nomClassRes && ((Ressource) res).getNombre()<Ressource.TAILLE_MAX_STACK)
+			if(ajout && nomClassItem == nomClassRes && ((Ressource) res).getNombre()<Ressource.TAILLE_MAX_STACK)
+				return res;
+			if(!ajout && nomClassItem == nomClassRes && ((Ressource) res).getNombre()<=Ressource.TAILLE_MAX_STACK)
 				return res;
 		}
 		return null;
