@@ -234,7 +234,7 @@
                   </Pane>
                   <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
                      <children>
-                        <ImageView fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" translateX="10.0">
+                        <ImageView fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../ressource/planteNikéIcone.png" />
                            </image></ImageView>

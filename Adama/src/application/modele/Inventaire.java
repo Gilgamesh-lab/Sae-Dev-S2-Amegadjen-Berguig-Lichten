@@ -89,10 +89,16 @@ public class Inventaire {
 		String nomClassItem = item.getClass().getSimpleName();
 		for(Item res : items) {
 			nomClassRes = res.getClass().getSimpleName();
-			if(ajout && nomClassItem == nomClassRes && ((Ressource) res).getNombre()<Ressource.TAILLE_MAX_STACK)
-				return res;
-			if(!ajout && nomClassItem == nomClassRes && ((Ressource) res).getNombre()<=Ressource.TAILLE_MAX_STACK)
-				return res;
+			if(item instanceof Ressource) {
+				if(ajout && nomClassItem == nomClassRes && ((Ressource) res).getNombre()<Ressource.TAILLE_MAX_STACK)
+					return res;
+				if(!ajout && nomClassItem == nomClassRes && ((Ressource) res).getNombre()<=Ressource.TAILLE_MAX_STACK)
+					return res;
+			}
+			else {
+				if (!ajout && nomClassItem == nomClassRes)
+					return res;
+			}
 		}
 		return null;
 	}
@@ -196,12 +202,12 @@ public class Inventaire {
 			return fleches;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return items.toString();
 	}
-	
+
 
 
 }

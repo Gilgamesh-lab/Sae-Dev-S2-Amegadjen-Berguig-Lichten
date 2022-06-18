@@ -6,7 +6,6 @@ public class Remede implements Potion {
 		
 	}
 
-	@Override
 	public void utiliser(int val) {
 
 	}

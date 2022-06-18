@@ -134,7 +134,6 @@ public class Controleur implements Initializable {
 	@FXML
 	void craft(MouseEvent event) {
 		String objetAFrabriquer = ((ImageView) event.getTarget()).getId();
-		System.out.println(objetAFrabriquer);
 		try {
 			perso.craft(objetAFrabriquer);
 			if(objetAFrabriquer.equals("Sceau")) 
