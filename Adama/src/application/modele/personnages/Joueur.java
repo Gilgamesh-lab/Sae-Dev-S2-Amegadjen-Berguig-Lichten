@@ -14,12 +14,12 @@ import application.modele.exception.ErreurObjetIntrouvable;
 import application.modele.exception.ErreurObjetInvalide;
 import application.modele.exception.ErreurObjetCraftable;
 import application.modele.outils.Sceau;
-import application.modele.potions.AntiPoison;
+import application.modele.potions.Remede;
 import application.modele.potions.Potion;
 import application.modele.potions.PotionDegat;
 import application.modele.potions.PotionVie;
 import application.modele.potions.PotionVitesse;
-import application.modele.ressources.AntiVenin;
+import application.modele.ressources.Venin;
 import application.modele.ressources.Bois;
 import application.modele.ressources.Pierre;
 import application.modele.ressources.PlanteDeNike;
@@ -291,13 +291,13 @@ public class Joueur extends Personnage {
 			break;
 			
 		case "Remede":
-			AntiVenin venin = (AntiVenin) inventaire.memeRessource(new AntiVenin(-1), false);
+			Venin venin = (Venin) inventaire.memeRessource(new Venin(-1), false);
 			PlanteMedicinale medicinal = (PlanteMedicinale) inventaire.memeRessource(new PlanteMedicinale(-1), false);
 			if(venin == null || medicinal == null || venin.getNombre()<1 ||medicinal.getNombre()<3) {
 				throw new ErreurObjetCraftable();
 			}
 			else {
-				inventaire.ajouter(new AntiPoison());
+				inventaire.ajouter(new Remede());
 				inventaire.supprimer(medicinal);
 				inventaire.supprimer(medicinal);
 				inventaire.supprimer(venin);

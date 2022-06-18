@@ -1,8 +1,8 @@
 package application.modele.potions;
 
-public class AntiPoison implements Potion {
+public class Remede implements Potion {
 
-	public AntiPoison() {
+	public Remede() {
 		
 	}
 

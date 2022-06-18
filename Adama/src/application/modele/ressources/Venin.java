@@ -1,8 +1,8 @@
 package application.modele.ressources;
 
-public class AntiVenin extends Ressource {
+public class Venin extends Ressource {
 
-	public AntiVenin(int indice) {
+	public Venin(int indice) {
 		super(false, -1, -1, indice);
 	}
 
