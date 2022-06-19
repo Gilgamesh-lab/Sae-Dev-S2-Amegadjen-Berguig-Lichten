@@ -30,7 +30,7 @@
                   </Pane>
                   <Pane style="-fx-background-color: #bbbbbb;">
                      <children>
-                        <ImageView id="1" fitHeight="60" fitWidth="60" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="1" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../ressource/resultat.png" />
                            </image>
@@ -97,27 +97,13 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
-                     <children>
-                        <ImageView id="7" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true" />
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="1" textAlignment="CENTER" textFill="WHITE" visible="false">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
+                  <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER" />
                   <Pane onMouseClicked="#craft" style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
                      <children>
                         <ImageView id="PotionVie" fitHeight="60" fitWidth="60" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../ressource/potionVie.png" />
                            </image></ImageView>
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="1" textAlignment="CENTER" textFill="WHITE" visible="false">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
                      </children>
                   </Pane>
                   <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
@@ -160,11 +146,6 @@
                            <image>
                               <Image url="@../../ressource/potionDegat.png" />
                            </image></ImageView>
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="1" textAlignment="CENTER" textFill="WHITE" visible="false">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
                      </children>
                   </Pane>
                   <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
@@ -173,11 +154,6 @@
                            <image>
                               <Image url="@../../ressource/resultat.png" />
                            </image></ImageView>
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="1" textAlignment="CENTER" textFill="WHITE" visible="false">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
                      </children>
                   </Pane>
                   <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
@@ -212,11 +188,6 @@
                            <image>
                               <Image url="@../../ressource/potionVitesse.png" />
                            </image></ImageView>
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="1" textAlignment="CENTER" textFill="WHITE" visible="false">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
                      </children>
                   </Pane>
                   <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
@@ -225,11 +196,6 @@
                            <image>
                               <Image url="@../../ressource/resultat.png" />
                            </image></ImageView>
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="1" textAlignment="CENTER" textFill="WHITE" visible="false">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
                      </children>
                   </Pane>
                   <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
@@ -264,11 +230,6 @@
                            <image>
                               <Image url="@../../ressource/potionAntipoison.png" />
                            </image></ImageView>
-                        <Label alignment="BOTTOM_LEFT" onMouseClicked="#equiper" text="1" textAlignment="CENTER" textFill="WHITE" visible="false">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
                      </children>
                   </Pane>
                   <Pane style="-fx-background-color: #bbbbbb;" TilePane.alignment="CENTER">
