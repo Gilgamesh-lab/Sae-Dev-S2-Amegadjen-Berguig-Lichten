@@ -141,23 +141,8 @@ public class Joueur extends Personnage {
 		super.setVitesseDeplacement(VITESSE_COURRIR);
 	}
 
-	
+
 	public void utiliserMain(int emplacement) throws ErreurInventairePlein, ErreurArmeEtOutilPasJetable, ErreurObjetIntrouvable {
-		if (objetEquiper instanceof Potion) {
-			String potion = objetEquiper.getClass().getSimpleName();
-			switch (potion) {
-			case "PotionVie":
-				incrementerPv(PotionVie.getNombrePvRestaurer());
-				break;
-			case "PotionVitesse":
-//				super.Deplacement(objetEquiper.getDuree());
-				break;
-			case "AntiPoison":
-				super.SupprimerEffet(0);
-			default:
-				break;
-			}
-		}
 		this.objetEquiper.utiliser(emplacement);
 		if (objetEquiper instanceof Terre) {
 			Carte carte = this.getEnvironnement().getCarte();
@@ -254,7 +239,7 @@ public class Joueur extends Personnage {
 				throw new ErreurObjetCraftable();
 			}
 			else {
-				inventaire.ajouter(new PotionVie());
+				inventaire.ajouter(new PotionVie(this));
 				inventaire.supprimer(med);
 				inventaire.supprimer(med);
 				inventaire.supprimer(med);
@@ -262,19 +247,19 @@ public class Joueur extends Personnage {
 			}
 			break;
 		case "PotionDegat":
-		 	Sceau s = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()), false);
+			Sceau s = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()), false);
 			PlanteHercule her = (PlanteHercule) inventaire.memeRessource(new PlanteHercule(-1),false);
 			if(s == null || her == null || !s.EstRempli()||her.getNombre()<2) {
 				throw new ErreurObjetCraftable();
 			}
 			else {
-				inventaire.ajouter(new PotionDegat());
+				inventaire.ajouter(new PotionDegat(this));
 				inventaire.supprimer(her);
 				inventaire.supprimer(her);
 				s.vider();
 			}
 			break;
-			
+
 		case "PotionVitesse":
 			Sceau sc = (Sceau) inventaire.memeRessource(new Sceau(getEnvironnement()), false);
 			PlanteDeNike nike = (PlanteDeNike) inventaire.memeRessource(new PlanteDeNike(-1), false);
@@ -282,14 +267,14 @@ public class Joueur extends Personnage {
 				throw new ErreurObjetCraftable();
 			}
 			else {
-				inventaire.ajouter(new PotionVitesse());
+				inventaire.ajouter(new PotionVitesse(this));
 				inventaire.supprimer(nike);
 				inventaire.supprimer(nike);
 				inventaire.supprimer(nike);
 				sc.vider();
 			}
 			break;
-			
+
 		case "Remede":
 			Venin venin = (Venin) inventaire.memeRessource(new Venin(-1), false);
 			PlanteMedicinale medicinal = (PlanteMedicinale) inventaire.memeRessource(new PlanteMedicinale(-1), false);
@@ -297,7 +282,7 @@ public class Joueur extends Personnage {
 				throw new ErreurObjetCraftable();
 			}
 			else {
-				inventaire.ajouter(new Remede());
+				inventaire.ajouter(new Remede(this));
 				inventaire.supprimer(medicinal);
 				inventaire.supprimer(medicinal);
 				inventaire.supprimer(venin);
@@ -340,6 +325,6 @@ public class Joueur extends Personnage {
 	public Item getObjetEquiper() {
 		return objetEquiper;
 	}
-	
-	
+
+
 }

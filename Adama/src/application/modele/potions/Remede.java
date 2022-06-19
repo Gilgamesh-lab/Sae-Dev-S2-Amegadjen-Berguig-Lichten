@@ -1,12 +1,15 @@
 package application.modele.potions;
 
-public class Remede implements Potion {
+import application.modele.personnages.Joueur;
 
-	public Remede() {
-		
+public class Remede extends Potion {
+
+	public Remede(Joueur joueur) {
+		super(joueur);
 	}
 
 	public void utiliser(int val) {
-
+		getJoueur().SupprimerEffet(0);
+		getJoueur().getInventaire().getItems().remove(this);
 	}
 }

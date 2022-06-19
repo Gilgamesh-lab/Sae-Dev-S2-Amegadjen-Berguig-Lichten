@@ -7,6 +7,10 @@ import java.util.ResourceBundle;
 import application.modele.Carte;
 import application.modele.Environnement;
 import application.modele.Item;
+import application.modele.effet.Accelerer;
+import application.modele.effet.Empoisoner;
+import application.modele.effet.Ralentir;
+import application.modele.effet.Renforcer;
 import application.modele.exception.ErreurInventairePlein;
 import application.modele.exception.ErreurObjetCraftable;
 import application.modele.exception.ErreurObjetIntrouvable;
@@ -18,6 +22,7 @@ import application.modele.personnages.Cerf;
 import application.modele.personnages.Joueur;
 import application.modele.personnages.Personnage;
 import application.modele.personnages.Slime;
+import application.modele.potions.Potion;
 import application.modele.ressources.Ressource;
 import application.vue.EnvironnementVue;
 import application.vue.JoueurVue;
@@ -30,15 +35,12 @@ import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -116,13 +118,19 @@ public class Controleur implements Initializable {
 						a.setStyle(oldStyle);
 						a.applyCss();
 					}
+				
 				if(objetAEquiper.equals(perso.getObjetEquiper())) {
 					perso.desequiper();
 				}
 				else {
 					perso.equiper(objetAEquiper);
-					image.getParent().setStyle(newStyle);
-					image.getParent().applyCss();
+					if(objetAEquiper instanceof Potion) {
+						perso.utiliserMain(-1);
+					}
+					else {
+						image.getParent().setStyle(newStyle);
+						image.getParent().applyCss();
+					}
 				}
 			}
 		}catch(Exception e) {
@@ -133,7 +141,7 @@ public class Controleur implements Initializable {
 
 	@FXML
 	void craft(MouseEvent event) {
-		String objetAFrabriquer = ((ImageView) event.getTarget()).getId();
+		String objetAFrabriquer = ((ImageView) event.getTarget()).getId(); //J'ai mis comme Id le type de l'objet à fabriquer
 		try {
 			perso.craft(objetAFrabriquer);
 			if(objetAFrabriquer.equals("Sceau")) 
@@ -230,10 +238,11 @@ public class Controleur implements Initializable {
 				System.out.println("Respawn");
 			}
 			break;
-
 		default:
 			persoControleur.touchePresse(touchePresse);
 		}
+		
+			
 	}
 
 	public void ouvrirCraft() {
@@ -346,6 +355,7 @@ public class Controleur implements Initializable {
 			perso.getInventaire().ajouter(new Hache(env));
 			perso.getInventaire().ajouter(new Pelle(env));
 			perso.getInventaire().ajouter(new Pioche(env));
+
 		} catch (ErreurInventairePlein e) {
 			System.out.println("Plein");
 		}
@@ -362,9 +372,25 @@ public class Controleur implements Initializable {
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.seconds(0.017),
 				(ev -> {
+					//Au bout de temps de remplissage si le sceau est vide il se rempli
 					if (sceau != null && temps%Sceau.TEMPS_REMPLISSAGE==0 && !sceau.EstRempli() && temps!=0) {
 						sceau.remplir();
 						System.err.println("J'ai rempli mon sceau");
+					}
+					if(perso.getEffets().get(0)!=null) { //Si le joueur est empoisonner
+						if(temps%Empoisoner.INTERVALLE_DEGAT==0&&temps!=0)
+							perso.degat();
+						if(temps%Empoisoner.DUREE == 0 &&temps!=0)
+							perso.SupprimerEffet(0);
+					}
+					if(perso.getEffets().get(1)!=null && temps%Ralentir.DUREE== 0 && temps!=0) { //Si le joueur est ralenti
+							perso.SupprimerEffet(1);
+					}
+					if(perso.getEffets().get(2)!=null && temps%Renforcer.DUREE== 0 && temps!=0) { //Si le joueur a un bonus d'attaque
+						perso.SupprimerEffet(2);
+					}
+					if(perso.getEffets().get(3)!=null && temps%Accelerer.DUREE== 0 && temps!=0) { //Si le joueur a un bonus de vitesse
+						perso.SupprimerEffet(3);
 					}
 					if(temps==100)
 						System.out.println("ok");
